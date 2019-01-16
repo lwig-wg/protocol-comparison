@@ -263,11 +263,11 @@ The previous estimates of typical message sizes are summarized in {{fig-summary}
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 =====================================================================
-                PSK       RPK       x5t     x5chain                  
+                PSK       RPK       x5t     x5chain
 ---------------------------------------------------------------------
-message_1       44        39        39        39                     
-message_2       46       120       126       116 + Certificate chain 
-message_3       11        85        91        81 + Certificate chain 
+message_1       44        39        39        39
+message_2       46       120       126       116 + Certificate chain
+message_3       11        85        91        81 + Certificate chain
 ---------------------------------------------------------------------
 Total          101       244       256       236 + Certificate chains
 =====================================================================
@@ -422,9 +422,9 @@ Note that this header compression is not available when DTLS is used over transp
 
 ~~~~~~~~~~~
 Compressed DTLS 1.3 record layer (18 bytes, 12 bytes overhead):
-11 21 05 ae a0 15 56 67 92 ec 4d ff 8a 24 e4 cb 
+11 21 05 ae a0 15 56 67 92 ec 4d ff 8a 24 e4 cb
 35 b9
-    
+
 Compressed DTLS 1.3 record layer header and nonce:
 11 21 05
 Ciphertext (including encrypted content type):
@@ -467,7 +467,7 @@ Note that this header compression is not available when DTLS is used over transp
 
 ~~~~~~~~~~~
 Compressed DTLS 1.3 record layer (19 bytes, 13 bytes overhead):
-12 31 05 42 ae a0 15 56 67 92 ec 4d ff 8a 24 e4 
+12 31 05 42 ae a0 15 56 67 92 ec 4d ff 8a 24 e4
 cb 35 b9
 
 Compressed DTLS 1.3 record layer header and nonce:
@@ -517,7 +517,7 @@ Note that this header compression is not available when TLS is used over transpo
 Compressed TLS 1.2 record layer (23 bytes, 17 bytes overhead):
 05 17 03 03 00 16 85 0f 05 ae a0 15 56 67 92 4d
 ff 8a 24 e4 cb 35 b9
-    
+
 Compressed TLS 1.2 record layer header and nonce:
 05 17 03 03 00 16 85 0f 05
 Ciphertext:
@@ -704,7 +704,7 @@ DTLS 1.2 has quite a large overhead as it uses an explicit sequence number and a
 
 The Generic Header Compression (6LoWPAN-GHC) can in addition to DTLS 1.2 handle TLS 1.2, and DTLS 1.2 with Connection ID. The Generic Header Compression (6LoWPAN-GHC) works very well for Connection ID and the overhead seems to increase exactly with the length of the Connection ID (which is optimal). The compression of TLS 1.2 is not as good as the compression of DTLS 1.2 (as the static dictionary only contains the DTLS 1.2 version number). Similar compression levels as for DTLS could be achieved also for TLS 1.2, but this would require different static dictionaries. For TLS 1.3 and DTLS 1.3, GHC increases the overhead. The 6LoWPAN-GHC header compression is not available when (D)TLS is used over transports that do not use 6LoWPAN together with 6LoWPAN-GHC.
 
-Only the minimal header format for DTLS 1.3 was considered, which reduces the header of 3 bytes compared to the full header, by omitting the 2-byte-long length value and sending 1 byte of sequence number instead of 2. This may create problems reconstructing the full sequence number, if ~2000 datagrams in sequence are lost.
+Only the minimal header format for DTLS 1.3 was considered, which reduces the header of 3 bytes compared to the full header, by omitting the 2-byte-long length value and sending 1 byte of sequence number instead of 2. This may create problems reconstructing the full sequence number, if ~ 2000 datagrams in sequence are lost.
 
 OSCORE has much lower overhead than DTLS 1.2 and TLS 1.2. The overhead of OSCORE is smaller than DTLS 1.2 and TLS 1.2 over 6LoWPAN with compression, and this small overhead is achieved even on deployments without 6LoWPAN or 6LoWPAN without DTLS compression. OSCORE is lightweight because it makes use of CoAP, CBOR, and COSE, which were designed to have as low overhead as possible.
 

@@ -1,6 +1,6 @@
-# Comparison of CoAP Securi y Pro ocols
+# Comparison of CoAP Security Protocols
 
-This is the working area for the IETF [LWIG Working Group](https://datatracker.ietf.org/wg/lwig/documents/) Internet-Draft, "Comparison of CoAP Securi y Pro ocols".
+This is the working area for the IETF [LWIG Working Group](https://datatracker.ietf.org/wg/lwig/documents/) Internet-Draft, "Comparison of CoAP Security Protocols".
 
 * [Editor's Copy](https://EricssonResearch.github.io/lwig-comparison/#go.draft-ietf-lwig-security-protocol-comparison.html)
 * [Working Group Draft](https://tools.ietf.org/html/draft-ietf-lwig-security-protocol-comparison)
