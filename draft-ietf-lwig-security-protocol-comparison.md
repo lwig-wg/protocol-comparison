@@ -30,6 +30,7 @@ informative:
   I-D.ietf-core-object-security:
   I-D.ietf-tls-dtls13:
   I-D.ietf-tls-dtls-connection-id:
+  I-D.selander-ace-cose-ecdhe:
 
   RFC5246:
   RFC6347:
@@ -49,18 +50,34 @@ informative:
 
 --- abstract
 
-This document analyzes and compares handshake and per-packet message size overheads when using different security protocols to secure CoAP. The analyzed security protocols are DTLS 1.2, DTLS 1.3, TLS 1.2, TLS 1.3, and OSCORE. DTLS and TLS are analyzed with and without 6LoWPAN-GHC compression. DTLS is analyzed with and without Connection ID.
+This document analyzes and compares handshake and per-packet message size overheads when using different security protocols to secure CoAP. The analyzed security protocols are DTLS 1.2, DTLS 1.3, TLS 1.2, TLS 1.3, EDHOC and OSCORE. DTLS and TLS are analyzed with and without 6LoWPAN-GHC compression. DTLS is analyzed with and without Connection ID.
 
 --- middle
 
 # Introduction
 
-This document analyzes and compares handshake and per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{I-D.ietf-tls-dtls13}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, and OSCORE {{I-D.ietf-core-object-security}}. The DTLS and TLS record layers are analyzed with and without compression. DTLS is anlyzed with and without Connection ID {{I-D.ietf-tls-dtls-connection-id}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as ICV.
+This document analyzes and compares handshake and per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{I-D.ietf-tls-dtls13}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, EDHOC {{I-D.selander-ace-cose-ecdhe}}, and OSCORE {{I-D.ietf-core-object-security}}. {{handshake}} compares the handshake overhead for the protocols considered, while {{record}} covers the overhead for application data. or record layer.
+
+The DTLS and TLS record layers are analyzed with and without compression. DTLS is anlyzed with and without Connection ID {{I-D.ietf-tls-dtls-connection-id}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as ICV.
 
 
-# Overhead of Handshake Protocols
+# Overhead of Handshake Protocols {#handshake}
 
-To enable comparison, all the overhead calculations in this section use AES-CCM with a tag length of 8 bytes (e.g.  AES_128_CCM_8 or AES-CCM-16-64).
+In this section we present the overhead of the handshake for different protocols.
+
+To enable a fair comparison between protocols with similar outcome, a number of assumptions are made for each protocol. These assumptions, which have an effect on the total number, are:
+
+* All the overhead calculations in this section use AES-CCM with a tag length of 8 bytes (e.g.  AES_128_CCM_8 or AES-CCM-16-64).
+* A minimum number of algorithms and cipher suites is offered during the handshake. The algorithm used/offered are Curve25519, ECDSA with P-256, AES-CCM_8, SHA-256.
+* The length of key identifiers for EDHOC is 4 bytes.
+* The length of connection identifiers for DTLS and TLS is 1 byte.
+* DTLS RPK makes use of point compression, which saves 32 bytes.
+* DTLS handshake message fragmentation is not considered.
+* Only the DTLS mandatory extensions are considered, except for Connection ID.
+
+## Overhead with Different Parameters
+
+{{fig-compare1}} compares the message sizes of EDHOC {{I-D.selander-ace-cose-ecdhe}} with the DTLS 1.3 {{I-D.ietf-tls-dtls13}} and TLS 1.3 {{RFC8446}} handshakes with connection ID.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 =====================================================================
@@ -95,6 +112,8 @@ EDHOC PSK + ECDHE                  44         45        10         98
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes without Connection ID" artwork-align="center"}
+
+The details of the message size calculations are given in the following sections.
 
 ## DTLS 1.3
 
@@ -274,7 +293,7 @@ Total          101       244       256       236 + Certificate chains
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-summary title="Typical message sizes in bytes" artwork-align="center"}
 
-# Overhead for Protection of Application Data
+# Overhead for Protection of Application Data {#record}
 
 To enable comparison, all the overhead calculations in this section use AES-CCM with a tag length of 8 bytes (e.g.  AES_128_CCM_8 or AES-CCM-16-64), a plaintext of 6 bytes, and the sequence number ‘05’. This follows the example in {{RFC7400}}, Figure 16.
 
