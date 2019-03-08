@@ -82,7 +82,7 @@ This document analyzes and compares handshake and per-packet message size overhe
 The DTLS and TLS record layers are analyzed with and without compression. DTLS is anlyzed with and without Connection ID {{I-D.ietf-tls-dtls-connection-id}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as ICV.
 
 
-# Overhead of Handshake Protocols {#handshake}
+# Overhead of Key Exchange Protocols {#handshake}
 
 In this section we present the overhead of the handshake for different protocols.
 
