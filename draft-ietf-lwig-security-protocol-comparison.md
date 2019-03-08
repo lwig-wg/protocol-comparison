@@ -77,6 +77,13 @@ To enable a fair comparison between protocols with similar outcome, a number of 
 
 ## Overhead with Different Parameters
 
+
+The DTLS overhead is dependent on the parameter Connection ID. The following overheads apply for all Connection IDs of the same length.
+
+The EDHOC overhead is dependent on the key identifiers included. The following overheads apply for Sender IDs of the same length.
+
+All the overhead are dependent on the tag length. The following overheads apply for tags of the same length.
+
 {{fig-compare1}} compares the message sizes of EDHOC {{I-D.selander-ace-cose-ecdhe}} with the DTLS 1.3 {{I-D.ietf-tls-dtls13}} and TLS 1.3 {{RFC8446}} handshakes with connection ID.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -117,12 +124,145 @@ The details of the message size calculations are given in the following sections
 
 ## DTLS 1.3
 
+This section gives an estimate of the message sizes of DTLS 1.3 with different authentication methods. Note that the examples in this section are not test vectors, the cryptographic parts are just replaced with byte strings of the same length, while other fixed length fields are replace with arbitrary strings. Those strings that are not arbitrary are given in hexadecimal.
+
+### Message Sizes RPK + ECDHE
+
+#### flight_1 {#dtls13f1rpk}
+
+~~~~~~~~~~~~~~~~~~~~~~~
+Record Header - DTLSPlaintext (13 bytes):
+16 fe fd EE EE SS SS SS SS SS SS LL LL
+
+  Handshake Header - Client Hello (10 bytes):
+  01 LL LL LL SS SS 00 00 00 LL LL LL
+
+    Legacy Version (2 bytes):
+    fe fd
+
+    Client Random (32 bytes):
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+
+    Legacy Session ID (1 bytes):
+    00
+
+    Cipher Suites (TLS_AES_128_CCM_8_SHA256) (4 bytes):
+    00 02 13 05
+
+    Compression Methods (null) (2 bytes):
+    01 00
+
+    Extensions Length (2 bytes):
+    LL LL
+
+      Extension - Supported Groups (x25519) (8 bytes):
+      00 0a 00 04 00 02 00 1d
+
+      Extension - Signature Algorithms (ecdsa_secp256r1_sha256) (8 bytes):
+      00 0d 00 04 00 02 08 07
+
+      Extension - Key Share (42 bytes):
+      00 33 00 26 00 24 00 1d 00 20
+      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+
+      Extension - Supported Versions (1.3) (7 bytes):
+      00 2b 00 03 02 03 04
+
+      Extension - Client Certificate Type (Raw Public Key) (6 bytes):
+      00 13 00 01 01 02
+
+      Extension - Server Certificate Type (Raw Public Key) (6 bytes):
+      00 14 00 01 01 02
+
+      Extension - Connection Identifier (43) (6 bytes):
+      XX XX 00 02 01 42
+
+13 + 10 + 2 + 32 + 1 + 4 + 2 + 2 + 8 + 8 + 42 + 7 + 6 + 6 + 6 = 149 bytes
+
+~~~~~~~~~~~~~~~~~~~~~~~
+
+DTLS 1.3 RPK + ECDHE flight_1 gives 149 bytes of overhead.
+
+#### flight_2 {#dtls13f2rpk}
+
+#### flight_3 {#dtls13f3rpk}
+
+### Message Sizes PSK + ECDHE
+
+#### flight_1 {#dtls13f1pskecdhe}
+
+The differences in overhead compared to {{dtls13f1rpk}} are:
+
+The following is added:
+
+~~~~~~~~~~~~~~~~~~~~~~~
++ Extension - PSK Key Exchange Modes (6 bytes):
+  00 2d 00 02 01 01
+
++ Extension - Pre Shared Key (51 bytes):
+  00 29 00 2F
+  00 0a 00 04 ID ID ID ID 00 00 00 00
+  00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The following is removed:
+
+~~~~~~~~~~~~~~~~~~~~~~~
+- Extension - Signature Algorithms (ecdsa_secp256r1_sha256) (8 bytes)
+
+- Extension - Client Certificate Type (Raw Public Key) (6 bytes)
+
+- Extension - Server Certificate Type (Raw Public Key) (6 bytes)
+
+~~~~~~~~~~~~~~~~~~~~~~~
+
+In total:
+
+~~~~~~~~~~~~~~~~~~~~~~~
+149 + 6 + 51 - 8 - 6 - 6 = 186 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+DTLS 1.3 PSK + ECDHE flight_1 gives 186 bytes of overhead.
+
+#### flight_2 {#dtls13f2pskecdhe}
+
+#### flight_3 {#dtls13f3pskecdhe}
+
+### Message Sizes PSK
+
+#### flight_1 {#dtls13f1psk}
+
+The differences in overhead compared to {{dtls13f1pskecdhe}} are:
+
+The following is removed:
+
+~~~~~~~~~~~~~~~~~~~~~~~
+- Extension - Supported Groups (x25519) (8 bytes)
+
+- Extension - Key Share (42 bytes)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+In total:
+
+~~~~~~~~~~~~~~~~~~~~~~~
+186 - 8 - 42 = 136 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+DTLS 1.3 PSK flight_1 gives 136 bytes of overhead.
+
+
+#### flight_2 {#dtls13f2psk}
+
+
+#### flight_3 {#dtls13f3psk}
+
 ## TLS 1.3
 
 ## EDHOC
 
 
-This appendix gives an estimate of the message sizes of EDHOC with different authentication methods. Note that the examples in this appendix are not test vectors, the cryptographic parts are just replaced with byte strings of the same length. All examples are given in CBOR diagnostic notation and hexadecimal.
+This section gives an estimate of the message sizes of EDHOC with different authentication methods. Note that the examples in this section are not test vectors, the cryptographic parts are just replaced with byte strings of the same length. All examples are given in CBOR diagnostic notation and hexadecimal.
 
 ### Message Sizes RPK
 
