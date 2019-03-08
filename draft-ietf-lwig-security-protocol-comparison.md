@@ -51,6 +51,22 @@ informative:
         ins: O. Hahm
     date: July 2016
 
+  Ulfheim-TLS13:
+    target: https://tls13.ulfheim.net/
+    title: Every Byte Explained: The Illustrated TLS 1.3 Connection
+    author:
+      -
+        ins: M. Driscoll
+    date: March 2018
+
+  IoT-Cert:
+    target: https://kth.diva-portal.org/smash/get/diva2:1153958/FULLTEXT01.pdf
+    title: Digital Certificates for the Internet of Things
+    author:
+      -
+        ins: F. Forsby
+    date: June 2017
+
 --- abstract
 
 This document analyzes and compares handshake and per-packet message size overheads when using different security protocols to secure CoAP. The analyzed security protocols are DTLS 1.2, DTLS 1.3, TLS 1.2, TLS 1.3, EDHOC and OSCORE. DTLS and TLS are analyzed with and without 6LoWPAN-GHC compression. DTLS is analyzed with and without Connection ID.
@@ -664,11 +680,14 @@ Total of 59 bytes
 In this section, the message sizes are calculated for TLS 1.3. The major changes compared to DTLS 1.3 are that the record header is smaller, the handshake headers is smaller, and that Connection ID is not supported.
 
 TLS Assumptions:
-- Minimum number of algorithms and cipher suites offered
-- Curve25519, ECDSA with P-256, AES-CCM_8, SHA-256
-- Length of key identifiers: 4 bytes
-- TLS RPK with point compression (saves 32 bytes)
-- Only mandatory TLS extentions
+
+* Minimum number of algorithms and cipher suites offered
+* Curve25519, ECDSA with P-256, AES-CCM_8, SHA-256
+* Length of key identifiers: 4 bytes
+* TLS RPK with point compression (saves 32 bytes)
+* Only mandatory TLS extensions
+
+For the PSK calculations, {{Ulfheim-TLS13}} was a useful resource, while for RPK calculations we followed the work of {{IoT-Cert}}.
 
 ### Message Sizes RPK + ECDHE
 
