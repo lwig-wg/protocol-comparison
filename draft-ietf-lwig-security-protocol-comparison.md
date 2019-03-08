@@ -31,6 +31,8 @@ informative:
   I-D.ietf-tls-dtls13:
   I-D.ietf-tls-dtls-connection-id:
   I-D.selander-ace-cose-ecdhe:
+  I-D.schaad-ace-tls-cbor-handshake:
+# I-D.rescorla-tls-ctls: not submitted yet
 
   RFC5246:
   RFC6347:
@@ -56,7 +58,9 @@ This document analyzes and compares handshake and per-packet message size overhe
 
 # Introduction
 
-This document analyzes and compares handshake and per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{I-D.ietf-tls-dtls13}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, EDHOC {{I-D.selander-ace-cose-ecdhe}}, and OSCORE {{I-D.ietf-core-object-security}}. {{handshake}} compares the handshake overhead for the protocols considered, while {{record}} covers the overhead for application data. or record layer.
+This document analyzes and compares handshake and per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{I-D.ietf-tls-dtls13}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, EDHOC {{I-D.selander-ace-cose-ecdhe}}, and OSCORE {{I-D.ietf-core-object-security}}. Recently, additional work has taken shape with the goal to further reduce overhead for TLS 1.3 (see {{I-D.schaad-ace-tls-cbor-handshake}} <!--and {{I-D.rescorla-tls-ctls}}-->)
+
+{{handshake}} compares the handshake overhead for the protocols considered, while {{record}} covers the overhead for application data. or record layer.
 
 The DTLS and TLS record layers are analyzed with and without compression. DTLS is anlyzed with and without Connection ID {{I-D.ietf-tls-dtls-connection-id}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as ICV.
 
@@ -75,10 +79,11 @@ To enable a fair comparison between protocols with similar outcome, a number of 
 * DTLS handshake message fragmentation is not considered.
 * Only the DTLS mandatory extensions are considered, except for Connection ID.
 
-## Overhead with Different Parameters
+{{summ-handshake}} gives a short summary of the message overhead based on different parameters and some assumptions. The following sections detail the assumptions and the calculations.
 
+## Summary {#summ-handshake}
 
-The DTLS overhead is dependent on the parameter Connection ID. The following overheads apply for all Connection IDs of the same length.
+The DTLS overhead is dependent on the parameter Connection ID. The following overheads apply for all Connection IDs of the same length, when Connection ID is used.
 
 The EDHOC overhead is dependent on the key identifiers included. The following overheads apply for Sender IDs of the same length.
 
@@ -127,6 +132,8 @@ The details of the message size calculations are given in the following sections
 This section gives an estimate of the message sizes of DTLS 1.3 with different authentication methods. Note that the examples in this section are not test vectors, the cryptographic parts are just replaced with byte strings of the same length, while other fixed length fields are replace with arbitrary strings or omitted, in which case their length is indicated. Values that are not arbitrary are given in hexadecimal.
 
 ### Message Sizes RPK + ECDHE
+
+In this section, a Connection ID of 1 byte is used.
 
 #### flight_1 {#dtls13f1rpk}
 
@@ -474,7 +481,26 @@ There are no differences in overhead compared to {{dtls13f3pskecdhe}}.
 
 DTLS 1.3 PSK flight_3 gives 57 bytes of overhead.
 
+### Cached Information
+
+### Resumption
+
+### Without Connection
+
+### DTLS Raw Public Keys
+
 ## TLS 1.3
+
+In this section, the message sizes are calculated for TLS 1.3. The major changes compared to DTLS 1.3 are that the record header is smaller, the handshake headers is smaller, and that Connection ID is not supported.
+
+TLS Assumptions:
+- Minimum number of algorithms and cipher suites offered
+- Curve25519, ECDSA with P-256, AES-CCM_8, SHA-256
+- Length of key identifiers: 4 bytes
+- TLS RPK with point compression (saves 32 bytes)
+- Only mandatory TLS extentions
+
+
 
 ## EDHOC
 
@@ -649,11 +675,76 @@ Total          101       244       256       236 + Certificate chains
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-summary title="Typical message sizes in bytes" artwork-align="center"}
 
+## Conclusion
+
+To do a fair comparision, one has to chose a specific deployment and look at the topology, the whole protocol stack, frame sizes (e.g. 128 bytes), how and where in the protocol stack fragmentation is done, and the expected packet loss. There is ongoint work to do such simulations for 6tisch. Fragmentation and/or packet loss causes the total number of bytes in the table below to be multiplied close to a linear factor. And as more bytes often lead to increased packet loss, one can often see a non-linear relation between logical number of bytes on the transport/application layer as shown in the table below and physical number of bytes and/or time from completion of the protocol. Any realistic comparision over constrained radio would reasonably make the difference between TLS 1.3 and EDHOC larger.
+
 # Overhead for Protection of Application Data {#record}
 
 To enable comparison, all the overhead calculations in this section use AES-CCM with a tag length of 8 bytes (e.g.  AES_128_CCM_8 or AES-CCM-16-64), a plaintext of 6 bytes, and the sequence number ‘05’. This follows the example in {{RFC7400}}, Figure 16.
 
-Note that the compressed overhead calculations for DLTS 1.2, DTLS 1.3, TLS 1.2 and TLS 1.3 are dependent on the parameters epoch, sequence number, and length, and all the overhead calculations are dependent on the parameter Connection ID when used. Note that the OSCORE overhead calculations are dependent on the CoAP option numbers, as well as the length of the OSCORE parameters Sender ID and Sequence Number. The following are only examples.
+Note that the compressed overhead calculations for DLTS 1.2, DTLS 1.3, TLS 1.2 and TLS 1.3 are dependent on the parameters epoch, sequence number, and length, and all the overhead calculations are dependent on the parameter Connection ID when used. Note that the OSCORE overhead calculations are dependent on the CoAP option numbers, as well as the length of the OSCORE parameters Sender ID and Sequence Number. The following calculations are only examples.
+
+{{summ-record}} gives a short summary of the message overhead based on different parameters and some assumptions. The following sections detail the assumptions and the calculations.
+
+## Summary {#summ-record}
+
+The DTLS overhead is dependent on the parameter Connection ID. The following overheads apply for all Connection IDs with the same length.
+
+The compression overhead (GHC) is dependent on the parameters epoch, sequence number, Connection ID, and length (where applicable). The following overheads should be representative for sequence numbers and Connection IDs with the same length.
+
+The OSCORE overhead is dependent on the included CoAP Option numbers as well as the length of the OSCORE parameters Sender ID and sequence number. The following overheads apply for all sequence numbers and Sender IDs with the same length.
+
+~~~~~~~~~~~
+Sequence Number                '05'       '1005'     '100005'
+-------------------------------------------------------------
+DTLS 1.2                        29          29          29
+DTLS 1.3                        11          12          12
+-------------------------------------------------------------
+DTLS 1.2 (GHC)                  16          16          16
+DTLS 1.3 (GHC)                  12          13          13
+-------------------------------------------------------------
+TLS  1.2                        21          21          21
+TLS  1.3                        14          14          14
+-------------------------------------------------------------
+TLS  1.2 (GHC)                  17          18          19
+TLS  1.3 (GHC)                  15          16          17
+-------------------------------------------------------------
+OSCORE request                  13          14          15
+OSCORE response                 11          11          11
+~~~~~~~~~~~
+{: #fig-overhead title="Overhead in bytes as a function of sequence number &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Connection/Sender ID = '')"}
+{: artwork-align="center"}
+
+~~~~~~~~~~~
+Connection/Sender ID            ''         '42'       '4002'
+-------------------------------------------------------------
+DTLS 1.2                        29          30          31
+DTLS 1.3                        11          12          13
+-------------------------------------------------------------
+DTLS 1.2 (GHC)                  16          17          18
+DTLS 1.3 (GHC)                  12          13          14
+-------------------------------------------------------------
+OSCORE request                  13          14          15
+OSCORE response                 11          11          11
+~~~~~~~~~~~
+{: #fig-overhead2 title="Overhead in bytes as a function of Connection/Sender ID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Sequence Number = '05')"}
+{: artwork-align="center"}
+
+~~~~~~~~~~~
+Protocol                     Overhead      Overhead (GHC)
+-------------------------------------------------------------
+DTLS 1.2                        21               8
+DTLS 1.3                         3               4
+-------------------------------------------------------------
+TLS  1.2                        13               9
+TLS  1.3                         6               7
+-------------------------------------------------------------
+OSCORE request                   5
+OSCORE response                  3
+~~~~~~~~~~~
+{: #fig-overhead3 title="Overhead (excluding ICV) in bytes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Connection/Sender ID = '', Sequence Number = '05')"}
+{: artwork-align="center"}
 
 ## DTLS 1.2
 
@@ -1014,66 +1105,7 @@ OSCORE with the above parameters gives 13-14 bytes overhead for requests and 11 
 
 Unlike DTLS and TLS, OSCORE has much smaller overhead for responses than requests.
 
-## Overhead with Different Parameters
-
-The DTLS overhead is dependent on the parameter Connection ID. The following overheads apply for all Connection IDs with the same length.
-
-The compression overhead (GHC) is dependent on the parameters epoch, sequence number, Connection ID, and length (where applicable). The following overheads should be representative for sequence numbers and Connection IDs with the same length.
-
-The OSCORE overhead is dependent on the included CoAP Option numbers as well as the length of the OSCORE parameters Sender ID and sequence number. The following overheads apply for all sequence numbers and Sender IDs with the same length.
-
-~~~~~~~~~~~
-Sequence Number                '05'       '1005'     '100005'
--------------------------------------------------------------
-DTLS 1.2                        29          29          29
-DTLS 1.3                        11          12          12
--------------------------------------------------------------
-DTLS 1.2 (GHC)                  16          16          16
-DTLS 1.3 (GHC)                  12          13          13
--------------------------------------------------------------
-TLS  1.2                        21          21          21
-TLS  1.3                        14          14          14
--------------------------------------------------------------
-TLS  1.2 (GHC)                  17          18          19
-TLS  1.3 (GHC)                  15          16          17
--------------------------------------------------------------
-OSCORE request                  13          14          15
-OSCORE response                 11          11          11
-~~~~~~~~~~~
-{: #fig-overhead title="Overhead in bytes as a function of sequence number &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Connection/Sender ID = '')"}
-{: artwork-align="center"}
-
-~~~~~~~~~~~
-Connection/Sender ID            ''         '42'       '4002'
--------------------------------------------------------------
-DTLS 1.2                        29          30          31
-DTLS 1.3                        11          12          13
--------------------------------------------------------------
-DTLS 1.2 (GHC)                  16          17          18
-DTLS 1.3 (GHC)                  12          13          14
--------------------------------------------------------------
-OSCORE request                  13          14          15
-OSCORE response                 11          11          11
-~~~~~~~~~~~
-{: #fig-overhead2 title="Overhead in bytes as a function of Connection/Sender ID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Sequence Number = '05')"}
-{: artwork-align="center"}
-
-~~~~~~~~~~~
-Protocol                     Overhead      Overhead (GHC)
--------------------------------------------------------------
-DTLS 1.2                        21               8
-DTLS 1.3                         3               4
--------------------------------------------------------------
-TLS  1.2                        13               9
-TLS  1.3                         6               7
--------------------------------------------------------------
-OSCORE request                   5
-OSCORE response                  3
-~~~~~~~~~~~
-{: #fig-overhead3 title="Overhead (excluding ICV) in bytes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Connection/Sender ID = '', Sequence Number = '05')"}
-{: artwork-align="center"}
-
-## Summary
+## Conclusion
 
 DTLS 1.2 has quite a large overhead as it uses an explicit sequence number and an explicit nonce. TLS 1.2 has significantly less (but not small) overhead. TLS 1.3 has quite a small overhead. OSCORE and DTLS 1.3 (using the minimal structure) format have very small overhead.
 
