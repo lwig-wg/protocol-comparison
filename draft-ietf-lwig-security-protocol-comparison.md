@@ -41,6 +41,7 @@ informative:
   RFC7925:
   RFC8323:
   RFC8446:
+  RFC7924:
 
   OlegHahm-ghc:
     target: https://github.com/OlegHahm/ghc
@@ -58,7 +59,7 @@ This document analyzes and compares handshake and per-packet message size overhe
 
 # Introduction
 
-This document analyzes and compares handshake and per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{I-D.ietf-tls-dtls13}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, EDHOC {{I-D.selander-ace-cose-ecdhe}}, and OSCORE {{I-D.ietf-core-object-security}}. Recently, additional work has taken shape with the goal to further reduce overhead for TLS 1.3 (see {{I-D.schaad-ace-tls-cbor-handshake}} <!--and {{I-D.rescorla-tls-ctls}}-->)
+This document analyzes and compares handshake and per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{I-D.ietf-tls-dtls13}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, EDHOC {{I-D.selander-ace-cose-ecdhe}}, and OSCORE {{I-D.ietf-core-object-security}}. Recently, additional work has taken shape with the goal to further reduce overhead for TLS 1.3 (see {{I-D.schaad-ace-tls-cbor-handshake}} <!--and {{I-D.rescorla-tls-ctls}}-->).
 
 {{handshake}} compares the handshake overhead for the protocols considered, while {{record}} covers the overhead for application data. or record layer.
 
@@ -96,6 +97,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
 Flight                             #1         #2        #3      Total
 ---------------------------------------------------------------------
 DTLS 1.3 RPK + ECDHE              150        373       213        736
+DTLS 1.3 Cached X.509/RPK + ECDHE 182        347       213        742
 DTLS 1.3 PSK + ECDHE              187        190        57        434
 DTLS 1.3 PSK                      137        150        57        344
 ---------------------------------------------------------------------
@@ -131,7 +133,7 @@ The details of the message size calculations are given in the following sections
 
 This section gives an estimate of the message sizes of DTLS 1.3 with different authentication methods. Note that the examples in this section are not test vectors, the cryptographic parts are just replaced with byte strings of the same length, while other fixed length fields are replace with arbitrary strings or omitted, in which case their length is indicated. Values that are not arbitrary are given in hexadecimal.
 
-### Message Sizes RPK + ECDHE
+### Message Sizes RPK + ECDHE {#size-dtls13rpk}
 
 In this section, a Connection ID of 1 byte is used.
 
@@ -479,6 +481,65 @@ There are no differences in overhead compared to {{dtls13f3pskecdhe}}.
 DTLS 1.3 PSK flight_3 gives 57 bytes of overhead.
 
 ### Cached Information
+
+In this section, we consider the effect of {{RFC7924}} on the message size overhead.
+
+Cached information together with server X.509 can be used to move bytes from flight #2 to flight #1 (cached RPK increases the number of bytes compared to cached X.509).
+
+The differences compared to {{size-dtls13rpk}} are the following.
+
+For the flight #1, the following is added:
+
+~~~~~~~~~~~~~~~~~~~~~~~
++ Extension - Client Cashed Information (39 bytes):
+  00 19 LL LL LL LL
+  01 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+~~~~~~~~~~~~~~~~~~~~~~~
+
+And the following is removed:
+
+~~~~~~~~~~~~~~~~~~~~~~~
+- Extension - Server Certificate Type (Raw Public Key) (6 bytes)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Giving a total of:
+
+~~~~~~~~~~~~~~~~~~~~~~~
+150 + 33 = 183 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+For the flight #2, the following is added:
+
+~~~~~~~~~~~~~~~~~~~~~~~
++ Extension - Server Cashed Information (7 bytes):
+  00 19 LL LL LL LL 01
+~~~~~~~~~~~~~~~~~~~~~~~
+
+And the following is removed:
+
+~~~~~~~~~~~~~~~~~~~~~~~
+- Extension - Server Certificate Type (Raw Public Key) (6 bytes)
+
+- Server Certificate (59 bytes -> 32 bytes)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Giving a total of:
+
+~~~~~~~~~~~~~~~~~~~~~~~
+373 - 26 = 347 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+A summary of the calculation is given in {{fig-compare3}}.
+
+~~~~~~~~~~~~~~~~~~~~~~~
+==============================================================================
+Flight                                #1         #2        #3       Total
+------------------------------------------------------------------------------
+DTLS 1.3 Cached X.509/RPK + ECDHE    183        347       213        743
+DTLS 1.3 RPK + ECDHE                 150        373       213        736
+==============================================================================
+~~~~~~~~~~~~~~~~~~~~~~~
+{: #fig-compare3 title="Comparison of message sizes in bytes for DTLS 1.3 RPK + ECDH with and without cached X.509" artwork-align="center"}
 
 ### Resumption
 
