@@ -580,6 +580,25 @@ The resumption handshake is just a PSK handshake with 137 + 150 + 57 + 42 = 386 
 
 ### Without Connection ID
 
+Without a Connection ID the DTLS 1.3 flight sizes changes as follows.
+
+~~~~~~~~~~~~~~~~~~~~~~~
+DTLS 1.3 Flight #1:   -6 bytes
+DTLS 1.3 Flight #2:   -7 bytes
+DTLS 1.3 Flight #3:   -1 byte
+~~~~~~~~~~~~~~~~~~~~~~~
+
+~~~~~~~~~~~~~~~~~~~~~~~
+==============================================================================
+Flight                                #1         #2        #3       Total
+------------------------------------------------------------------------------
+DTLS 1.3 RPK + ECDHE (no cid)        144        364       212        722
+DTLS 1.3 PSK + ECDHE (no cid)        181        183        56        420
+DTLS 1.3 PSK (no cid)                131        143        56        330
+==============================================================================
+~~~~~~~~~~~~~~~~~~~~~~~
+{: #fig-compare4 title="Comparison of message sizes in bytes for DTLS 1.3 without Connection ID" artwork-align="center"}
+
 ### DTLS Raw Public Keys
 
 ## TLS 1.3
