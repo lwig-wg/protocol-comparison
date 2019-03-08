@@ -155,6 +155,9 @@ Record Header - DTLSPlaintext (13 bytes):
     Legacy Session ID (1 bytes):
     00
 
+    Legacy Cookie (1 bytes):
+    00
+
     Cipher Suites (TLS_AES_128_CCM_8_SHA256) (4 bytes):
     00 02 13 05
 
@@ -186,10 +189,10 @@ Record Header - DTLSPlaintext (13 bytes):
       Extension - Connection Identifier (43) (6 bytes):
       XX XX 00 02 01 42
 
-13 + 10 + 2 + 32 + 1 + 4 + 2 + 2 + 8 + 8 + 42 + 7 + 6 + 6 + 6 = 149 bytes
+13 + 10 + 2 + 32 + 1 + 1 + 4 + 2 + 2 + 8 + 8 + 42 + 7 + 6 + 6 + 6 = 150 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 RPK + ECDHE flight_1 gives 149 bytes of overhead.
+DTLS 1.3 RPK + ECDHE flight_1 gives 150 bytes of overhead.
 
 #### flight_2 {#dtls13f2rpk}
 
@@ -376,7 +379,7 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-149 + 6 + 51 - 8 - 6 - 6 = 186 bytes
+150 + 6 + 51 - 8 - 6 - 6 = 187 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 DTLS 1.3 PSK + ECDHE flight_1 gives 186 bytes of overhead.
@@ -451,7 +454,7 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-186 - 8 - 42 = 136 bytes
+187 - 8 - 42 = 137 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 DTLS 1.3 PSK flight_1 gives 136 bytes of overhead.
@@ -543,7 +546,39 @@ DTLS 1.3 RPK + ECDHE                 150        373       213        736
 
 ### Resumption
 
-### Without Connection
+To enable resumption, a 4th flight (New Session Ticket) is added to the PSK handshake.
+
+~~~~~~~~~~~~~~~~~~~~~~~
+Record Header - DTLSCiphertext, Full (6 bytes):
+HH ES SS 43 LL LL
+
+  Handshake Header - New Session Ticket (10 bytes):
+  04 LL LL LL SS SS 00 00 00 LL LL LL
+
+    Ticket Lifetime (4 bytes):
+    00 01 02 03
+
+    Ticket Age Add (4 bytes):
+    00 01 02 03
+
+    Ticket Nonce (2 bytes):
+    01 00
+
+    Ticket (6 bytes):
+    00 04 ID ID ID ID
+
+    Extensions (2 bytes):
+    00 00
+
+Auth Tag (8 bytes) // AES-CCM_8:
+00 01 02 03 04 05 06 07
+
+6 + 10 + 4 + 4 + 2 + 6 + 2 + 8 = 42 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The resumption handshake is just a PSK handshake with 137 + 150 + 57 + 42 = 386 bytes.
+
+### Without Connection ID
 
 ### DTLS Raw Public Keys
 
