@@ -601,6 +601,48 @@ DTLS 1.3 PSK (no cid)                131        143        56        330
 
 ### DTLS Raw Public Keys
 
+TODO
+
+#### SubjectPublicKeyInfo without point compression
+
+~~~~~~~~~~~~~~~~~~~~~~~
+0x30 // Sequence
+0x59 // Size 89
+
+0x30 // Sequence
+0x13 // Size 19
+0x06 0x07 0x2A 0x86 0x48 0xCE 0x3D 0x02 0x01      // OID 1.2.840.10045.2.1 (ecPublicKey)
+0x06 0x08 0x2A 0x86 0x48 0xCE 0x3D 0x03 0x01 0x07 // OID 1.2.840.10045.3.1.7 (secp256r1)
+
+0x03 // Bit string
+0x42 // Size 66
+0x00 // Unused bits 0
+0x04 // Uncompressed
+...... 64 bytes X and Y
+
+Total of 91 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+#### SubjectPublicKeyInfo with point compression
+
+~~~~~~~~~~~~~~~~~~~~~~~
+0x30 // Sequence
+0x59 // Size 89
+
+0x30 // Sequence
+0x13 // Size 19
+0x06 0x07 0x2A 0x86 0x48 0xCE 0x3D 0x02 0x01      // OID 1.2.840.10045.2.1 (ecPublicKey)
+0x06 0x08 0x2A 0x86 0x48 0xCE 0x3D 0x03 0x01 0x07 // OID 1.2.840.10045.3.1.7 (secp256r1)
+
+0x03 // Bit string
+0x42 // Size 66
+0x00 // Unused bits 0
+0x03 // Compressed
+...... 32 bytes X
+
+Total of 59 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
 ## TLS 1.3
 
 In this section, the message sizes are calculated for TLS 1.3. The major changes compared to DTLS 1.3 are that the record header is smaller, the handshake headers is smaller, and that Connection ID is not supported.
