@@ -11,7 +11,7 @@ pi: # can use array (if all yes) or hash here
   toc: yes
   sortrefs: yes
   symrefs: yes
-  tocdepth: 2
+  tocdepth: 3
 
 author:
       -
@@ -150,7 +150,8 @@ Record Header - DTLSPlaintext (13 bytes):
     fe fd
 
     Client Random (32 bytes):
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
 
     Legacy Session ID (1 bytes):
     00
@@ -170,12 +171,14 @@ Record Header - DTLSPlaintext (13 bytes):
       Extension - Supported Groups (x25519) (8 bytes):
       00 0a 00 04 00 02 00 1d
 
-      Extension - Signature Algorithms (ecdsa_secp256r1_sha256) (8 bytes):
+      Extension - Signature Algorithms (ecdsa_secp256r1_sha256)
+      (8 bytes):
       00 0d 00 04 00 02 08 07
 
       Extension - Key Share (42 bytes):
       00 33 00 26 00 24 00 1d 00 20
-      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+      16 17 18 19 1a 1b 1c 1d 1e 1f
 
       Extension - Supported Versions (1.3) (7 bytes):
       00 2b 00 03 02 03 04
@@ -189,7 +192,8 @@ Record Header - DTLSPlaintext (13 bytes):
       Extension - Connection Identifier (43) (6 bytes):
       XX XX 00 02 01 42
 
-13 + 10 + 2 + 32 + 1 + 1 + 4 + 2 + 2 + 8 + 8 + 42 + 7 + 6 + 6 + 6 = 150 bytes
+13 + 10 + 2 + 32 + 1 + 1 + 4 + 2 + 2 + 8 + 8 + 42 + 7 + 6 + 6 + 6 = 150
+bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 DTLS 1.3 RPK + ECDHE flight_1 gives 150 bytes of overhead.
@@ -207,7 +211,8 @@ Record Header - DTLSPlaintext (13 bytes):
     fe fd
 
     Server Random (32 bytes):
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
 
     Legacy Session ID (1 bytes):
     00
@@ -223,7 +228,8 @@ Record Header - DTLSPlaintext (13 bytes):
 
       Extension - Key Share (40 bytes):
       00 33 00 24 00 1d 00 20
-      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+       16 17 18 19 1a 1b 1c 1d 1e 1f
 
       Extension - Supported Versions (1.3) (6 bytes):
       00 2b 00 02 03 04
@@ -255,7 +261,8 @@ HH ES SS 43 LL LL
     Extensions Length (2 bytes):
     LL LL
 
-      Extension - Signature Algorithms (ecdsa_secp256r1_sha256) (8 bytes):
+      Extension - Signature Algorithms (ecdsa_secp256r1_sha256)
+      (8 bytes):
       00 0d 00 04 00 02 08 07
 
   Handshake Header - Certificate (10 bytes):
@@ -286,7 +293,8 @@ HH ES SS 43 LL LL
   14 LL LL LL SS SS 00 00 00 LL LL LL
 
     Verify Data (32 bytes):
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
 
   Record Type (1 byte):
   16
@@ -328,14 +336,16 @@ ZZ ES SS 42 LL LL
 
     Signature  (68 bytes):
     04 03 LL LL //ecdsa_secp256r1_sha256
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f 00 01 02 03 04 05 06 07 08 09 0a 0b
+     0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
   Handshake Header - Finished (10 bytes):
   14 LL LL LL SS SS 00 00 00 LL LL LL
 
     Verify Data (32 bytes) // SHA-256:
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
 
   Record Type (1 byte):
   16
@@ -363,7 +373,8 @@ The following is added:
 + Extension - Pre Shared Key (51 bytes):
   00 29 00 2F
   00 0a 00 04 ID ID ID ID 00 00 00 00
-  00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+  00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+  14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 The following is removed:
@@ -496,7 +507,8 @@ For the flight #1, the following is added:
 ~~~~~~~~~~~~~~~~~~~~~~~
 + Extension - Client Cashed Information (39 bytes):
   00 19 LL LL LL LL
-  01 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+  01 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+  16 17 18 19 1a 1b 1c 1d 1e 1f
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 And the following is removed:
@@ -535,12 +547,12 @@ Giving a total of:
 A summary of the calculation is given in {{fig-compare3}}.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-==============================================================================
-Flight                                #1         #2        #3       Total
-------------------------------------------------------------------------------
-DTLS 1.3 Cached X.509/RPK + ECDHE    183        347       213        743
-DTLS 1.3 RPK + ECDHE                 150        373       213        736
-==============================================================================
+======================================================================
+Flight                             #1         #2        #3      Total
+----------------------------------------------------------------------
+DTLS 1.3 Cached X.509/RPK + ECDHE 183        347       213       743
+DTLS 1.3 RPK + ECDHE              150        373       213       736
+=======================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare3 title="Comparison of message sizes in bytes for DTLS 1.3 RPK + ECDH with and without cached X.509" artwork-align="center"}
 
@@ -589,13 +601,13 @@ DTLS 1.3 Flight #3:   -1 byte
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-==============================================================================
-Flight                                #1         #2        #3       Total
-------------------------------------------------------------------------------
-DTLS 1.3 RPK + ECDHE (no cid)        144        364       212        722
-DTLS 1.3 PSK + ECDHE (no cid)        181        183        56        420
-DTLS 1.3 PSK (no cid)                131        143        56        330
-==============================================================================
+=======================================================================
+Flight                                #1         #2       #3    Total
+-----------------------------------------------------------------------
+DTLS 1.3 RPK + ECDHE (no cid)        144        364       212    722
+DTLS 1.3 PSK + ECDHE (no cid)        181        183        56    420
+DTLS 1.3 PSK (no cid)                131        143        56    330
+=======================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare4 title="Comparison of message sizes in bytes for DTLS 1.3 without Connection ID" artwork-align="center"}
 
@@ -611,8 +623,10 @@ TODO
 
 0x30 // Sequence
 0x13 // Size 19
-0x06 0x07 0x2A 0x86 0x48 0xCE 0x3D 0x02 0x01      // OID 1.2.840.10045.2.1 (ecPublicKey)
-0x06 0x08 0x2A 0x86 0x48 0xCE 0x3D 0x03 0x01 0x07 // OID 1.2.840.10045.3.1.7 (secp256r1)
+0x06 0x07 0x2A 0x86 0x48 0xCE 0x3D 0x02 0x01
+     // OID 1.2.840.10045.2.1 (ecPublicKey)
+0x06 0x08 0x2A 0x86 0x48 0xCE 0x3D 0x03 0x01 0x07
+     // OID 1.2.840.10045.3.1.7 (secp256r1)
 
 0x03 // Bit string
 0x42 // Size 66
@@ -631,8 +645,10 @@ Total of 91 bytes
 
 0x30 // Sequence
 0x13 // Size 19
-0x06 0x07 0x2A 0x86 0x48 0xCE 0x3D 0x02 0x01      // OID 1.2.840.10045.2.1 (ecPublicKey)
-0x06 0x08 0x2A 0x86 0x48 0xCE 0x3D 0x03 0x01 0x07 // OID 1.2.840.10045.3.1.7 (secp256r1)
+0x06 0x07 0x2A 0x86 0x48 0xCE 0x3D 0x02 0x01
+     // OID 1.2.840.10045.2.1 (ecPublicKey)
+0x06 0x08 0x2A 0x86 0x48 0xCE 0x3D 0x03 0x01 0x07
+     // OID 1.2.840.10045.3.1.7 (secp256r1)
 
 0x03 // Bit string
 0x42 // Size 66
@@ -669,7 +685,8 @@ Record Header - TLSPlaintext (5 bytes):
     03 03
 
     Client Random (32 bytes):
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
 
     Legacy Session ID (1 bytes):
     00
@@ -691,7 +708,8 @@ Record Header - TLSPlaintext (5 bytes):
 
       Extension - Key Share (42 bytes):
       00 33 00 26 00 24 00 1d 00 20
-      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+      16 17 18 19 1a 1b 1c 1d 1e 1f
 
       Extension - Supported Versions (1.3) (7 bytes):
       00 2b 00 03 02 03 04
@@ -720,7 +738,8 @@ Record Header - TLSPlaintext (5 bytes):
     fe fd
 
     Server Random (32 bytes):
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
 
     Legacy Session ID (1 bytes):
     00
@@ -736,7 +755,8 @@ Record Header - TLSPlaintext (5 bytes):
 
       Extension - Key Share (40 bytes):
       00 33 00 24 00 1d 00 20
-      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+      16 17 18 19 1a 1b 1c 1d 1e 1f
 
       Extension - Supported Versions (1.3) (6 bytes):
       00 2b 00 02 03 04
@@ -796,7 +816,8 @@ Record Header - TLSCiphertext (5 bytes):
   14 LL LL LL
 
     Verify Data (32 bytes):
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
 
   Record Type (1 byte):
   16
@@ -811,6 +832,8 @@ TLS 1.3 RPK + ECDHE flight_2 gives 322 bytes of overhead.
 
 #### flight_3 {#tls13f3rpk}
 
+<!--TODO: Don't know why this is not formatting correctly in txt, tried to separate in several code sections, it still doesn't work. -->
+
 ~~~~~~~~~~~~~~~~~~~~~~~
 Record Header - TLSCiphertext (5 bytes):
 17 03 03 LL LL
@@ -823,6 +846,7 @@ Record Header - TLSCiphertext (5 bytes):
 
     Certificate List Length (3 bytes):
     LL LL LL
+
 
     Certificate Length (3 bytes):
     LL LL LL
@@ -838,14 +862,16 @@ Record Header - TLSCiphertext (5 bytes):
 
     Signature  (68 bytes):
     04 03 LL LL //ecdsa_secp256r1_sha256
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f 00 01 02 03 04 05 06 07 08 09 0a 0b
+    0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
   Handshake Header - Finished (4 bytes):
   14 LL LL LL
 
     Verify Data (32 bytes) // SHA-256:
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
 
   Record Type (1 byte)
   16
@@ -873,7 +899,8 @@ The following is added:
 + Extension - Pre Shared Key (51 bytes):
   00 29 00 2F
   00 0a 00 04 ID ID ID ID 00 00 00 00
-  00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+  00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+  14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 The following is removed:
