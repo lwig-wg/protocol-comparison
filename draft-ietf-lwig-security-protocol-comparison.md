@@ -124,7 +124,7 @@ The details of the message size calculations are given in the following sections
 
 ## DTLS 1.3
 
-This section gives an estimate of the message sizes of DTLS 1.3 with different authentication methods. Note that the examples in this section are not test vectors, the cryptographic parts are just replaced with byte strings of the same length, while other fixed length fields are replace with arbitrary strings. Those strings that are not arbitrary are given in hexadecimal.
+This section gives an estimate of the message sizes of DTLS 1.3 with different authentication methods. Note that the examples in this section are not test vectors, the cryptographic parts are just replaced with byte strings of the same length, while other fixed length fields are replace with arbitrary strings or omitted, in which case their length is indicated. Values that are not arbitrary are given in hexadecimal.
 
 ### Message Sizes RPK + ECDHE
 
@@ -185,7 +185,157 @@ DTLS 1.3 RPK + ECDHE flight_1 gives 149 bytes of overhead.
 
 #### flight_2 {#dtls13f2rpk}
 
+~~~~~~~~~~~~~~~~~~~~~~~
+Record Header - DTLSPlaintext (13 bytes):
+16 fe fd EE EE SS SS SS SS SS SS LL LL
+
+  Handshake Header - Server Hello (10 bytes):
+  02 LL LL LL SS SS 00 00 00 LL LL LL
+
+    Legacy Version (2 bytes):
+    fe fd
+
+    Server Random (32 bytes):
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+
+    Legacy Session ID (1 bytes):
+    00
+
+    Cipher Suite (TLS_AES_128_CCM_8_SHA256) (2 bytes):
+    13 05
+
+    Compression Method (null) (1 bytes):
+    00
+
+    Extensions Length (2 bytes):
+    LL LL
+
+      Extension - Key Share (40 bytes):
+      00 33 00 24 00 1d 00 20
+      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+
+      Extension - Supported Versions (1.3) (6 bytes):
+      00 2b 00 02 03 04
+
+      Extension - Connection Identifier (43) (6 bytes):
+      XX XX 00 02 01 43
+
+Record Header - DTLSCiphertext, Full (6 bytes):
+HH ES SS 43 LL LL
+
+  Handshake Header - Encrypted Extensions (10 bytes):
+  08 LL LL LL SS SS 00 00 00 LL LL LL
+
+    Extensions Length (2 bytes):
+    LL LL
+
+      Extension - Client Certificate Type (Raw Public Key) (6 bytes):
+      00 13 00 01 01 02
+
+      Extension - Server Certificate Type (Raw Public Key) (6 bytes):
+      00 14 00 01 01 02
+
+  Handshake Header - Certificate Request (10 bytes):
+  0d LL LL LL SS SS 00 00 00 LL LL LL
+
+    Request Context (1 bytes):
+    00
+
+    Extensions Length (2 bytes):
+    LL LL
+
+      Extension - Signature Algorithms (ecdsa_secp256r1_sha256) (8 bytes):
+      00 0d 00 04 00 02 08 07
+
+  Handshake Header - Certificate (10 bytes):
+  0b LL LL LL SS SS 00 00 00 LL LL LL
+
+    Request Context (1 bytes):
+    00
+
+    Certificate List Length (3 bytes):
+    LL LL LL
+
+    Certificate Length (3 bytes):
+    LL LL LL
+
+    Certificate (59 bytes) // Point compression
+    ....
+
+    Certificate Extensions (2 bytes):
+    00 00
+
+  Handshake Header - Certificate Verify (10 bytes):
+  0f LL LL LL SS SS 00 00 00 LL LL LL
+
+    Signature  (68 bytes):
+    ZZ ZZ 00 40 ....
+
+  Handshake Header - Finished (10 bytes):
+  14 LL LL LL SS SS 00 00 00 LL LL LL
+
+    Verify Data (32 bytes):
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+
+  Record Type (1 byte):
+  16
+
+Auth Tag (8 bytes):
+e0 8b 0e 45 5a 35 0a e5
+
+13 + 102 + 6 + 24 + 21 + 78 + 78 + 42 + 1 + 8 = 373 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+DTLS 1.3 RPK + ECDHE flight_2 gives 373 bytes of overhead.
+
 #### flight_3 {#dtls13f3rpk}
+
+~~~~~~~~~~~~~~~~~~~~~~~
+Record Header (6 bytes) // DTLSCiphertext, Full:
+ZZ ES SS 42 LL LL
+
+  Handshake Header - Certificate (10 bytes):
+  0b LL LL LL SS SS XX XX XX LL LL LL
+
+    Request Context (1 bytes):
+    00
+
+    Certificate List Length (3 bytes):
+    LL LL LL
+
+    Certificate Length (3 bytes):
+    LL LL LL
+
+    Certificate (59 bytes) // Point compression
+    ....
+
+    Certificate Extensions (2 bytes):
+    00 00
+
+  Handshake Header - Certificate Verify (10 bytes):
+  0f LL LL LL SS SS 00 00 00 LL LL LL
+
+    Signature  (68 bytes):
+    04 03 LL LL //ecdsa_secp256r1_sha256
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+
+  Handshake Header - Finished (10 bytes):
+  14 LL LL LL SS SS 00 00 00 LL LL LL
+
+    Verify Data (32 bytes) // SHA-256:
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+
+  Record Type (1 byte):
+  16
+
+Auth Tag (8 bytes) // AES-CCM_8:
+00 01 02 03 04 05 06 07
+
+6 + 78 + 78 + 42 + 1 + 8 = 213 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+DTLS 1.3 RPK + ECDHE flight_2 gives 213 bytes of overhead.
 
 ### Message Sizes PSK + ECDHE
 
@@ -227,7 +377,56 @@ DTLS 1.3 PSK + ECDHE flight_1 gives 186 bytes of overhead.
 
 #### flight_2 {#dtls13f2pskecdhe}
 
+The differences in overhead compared to {{dtls13f2rpk}} are:
+
+The following is added:
+
+~~~~~~~~~~~~~~~~~~~~~~~
++ Extension - Pre Shared Key (6 bytes)
+  00 29 00 02 00 00
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The following is removed:
+
+~~~~~~~~~~~~~~~~~~~~~~~
+- Handshake Message Certificate (78 bytes)
+
+- Handshake Message CertificateVerify (78 bytes)
+
+- Handshake Message CertificateRequest (21 bytes)
+
+- Extension - Client Certificate Type (Raw Public Key) (6 bytes)
+
+- Extension - Server Certificate Type (Raw Public Key) (6 bytes)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+In total:
+
+~~~~~~~~~~~~~~~~~~~~~~~
+373 - 78 - 78 - 21 - 6 - 6  + 6 = 190 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+DTLS 1.3 PSK + ECDHE flight_2 gives 190 bytes of overhead.
+
 #### flight_3 {#dtls13f3pskecdhe}
+
+The differences in overhead compared to {{dtls13f3rpk}} are:
+
+The following is removed:
+
+~~~~~~~~~~~~~~~~~~~~~~~
+- Handshake Message Certificate (78 bytes)
+
+- Handshake Message Certificate Verify (78 bytes)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+In total:
+
+~~~~~~~~~~~~~~~~~~~~~~~
+213 - 78 - 78 = 57 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+DTLS 1.3 PSK + ECDHE flight_3 gives 57 bytes of overhead.
 
 ### Message Sizes PSK
 
@@ -251,16 +450,33 @@ In total:
 
 DTLS 1.3 PSK flight_1 gives 136 bytes of overhead.
 
-
 #### flight_2 {#dtls13f2psk}
 
+The differences in overhead compared to {{dtls13f2pskecdhe}} are:
+
+The following is removed:
+
+~~~~~~~~~~~~~~~~~~~~~~~
+- Extension - Key Share (40 bytes)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+In total:
+
+~~~~~~~~~~~~~~~~~~~~~~~
+190 - 40 = 150 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+DTLS 1.3 PSK flight_2 gives 150 bytes of overhead.
 
 #### flight_3 {#dtls13f3psk}
+
+There are no differences in overhead compared to {{dtls13f3pskecdhe}}.
+
+DTLS 1.3 PSK flight_3 gives 57 bytes of overhead.
 
 ## TLS 1.3
 
 ## EDHOC
-
 
 This section gives an estimate of the message sizes of EDHOC with different authentication methods. Note that the examples in this section are not test vectors, the cryptographic parts are just replaced with byte strings of the same length. All examples are given in CBOR diagnostic notation and hexadecimal.
 
