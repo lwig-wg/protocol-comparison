@@ -1044,53 +1044,52 @@ This section gives an estimate of the message sizes of EDHOC with different auth
 ~~~~~~~~~~~~~~~~~~~~~~~
 message_1 = (
   1,
-  h'c3',
   0,
   0,
   h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d
-    1e1f'
+    1e1f',
+  h'c3'
 )
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 message_1 (39 bytes):
-01 41 C3 00 00 58 20 00 01 02 03 04 05 06 07 08 09 0A 0B 0C
-0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F
+01 00 00 58 20 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E
+0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 41 C3
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 #### message_2
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 plaintext = <<
-  { 4 : 'acdc' },
+  h'a1',
   h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d
     1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b
     3c3d3e3f'
 >>
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-The protected header map is 7 bytes. The length of plaintext is 73 bytes so assuming a 64-bit MAC value the length of ciphertext is 81 bytes.
+The header map { 4 : h'a1' } is encoded as the two bytes h'a1'. The length of plaintext is 68 bytes so assuming a 64-bit MAC value the length of ciphertext is 76 bytes.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 message_2 = (
-  null,
-  h'c4',
   h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d
     1e1f',
+  h'c4',
   h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d
     1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b
-    3c3d3e3f404142434445464748494a4b4c4d4e4f50'
+    3c3d3e3f404142434445464748494a4b'
 )
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-message_2 (120 bytes):
-F6 41 C4 58 20 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E
-0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 58 51 00
-01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14
-15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28
-29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C
-3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50
+message_2 (114 bytes):
+58 20 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11
+12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 41 C4 58 51 00 01
+02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15
+16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29
+2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D
+3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 #### message_3
@@ -1099,25 +1098,24 @@ The plaintext and ciphertext in message_3 are assumed to be of equal sizes as in
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 message_3 = (
-  h'c3',
+  h'c4',
   h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d
     1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b
-    3c3d3e3f404142434445464748494a4b4c4d4e4f50'
+    3c3d3e3f404142434445464748494a4b'
 )
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-message_3 (85 bytes):
-41 C3 58 51 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+message_3 (80 bytes):
+41 C4 58 51 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23
 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37
 38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B
-4C 4D 4E 4F 50
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Message Sizes Certificates
 
-When the certificates are distributed out-of-band and identified with the x5t header and a SHA256/64 hash value, the protected header map will be 13 bytes instead of 7 bytes (assuming labels in the range -24&hellip;23).
+When the certificates are distributed out-of-band and identified with the x5t header and a SHA256/64 hash value, the protected header map will be 13 bytes instead of 2 bytes (assuming labels in the range -24&hellip;23).
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 protected = << { TDB1 : [ TDB6, h'0001020304050607' ] } >>
@@ -1131,77 +1129,76 @@ protected = << { TDB3 : h'0001020304050607...' } >>
 
 ### Message Sizes PSK
 
-#### message_1
+### message_1
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 message_1 = (
-  2,
-  h'c3',
+  4,
   0,
   0,
   h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d
     1e1f',
-  'abba'
+  h'c3',
+  h'a2'
 )
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-message_1 (44 bytes):
-02 41 C3 00 00 58 20 00 01 02 03 04 05 06 07 08 09 0A 0B 0C
-0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F
-44 61 63 64 63
+message_1 (41 bytes):
+04 00 00 58 20 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E
+0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 41 C3 41
+A2
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-#### message_2
+### message_2
 
 Assuming a 0 byte plaintext and a 64-bit MAC value the ciphertext is 8 bytes
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 message_2 = (
-  null,
-  h'c4',
   h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d
     1e1f',
+  h'c4',
   h'0001020304050607'
 )
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-message_2 (46 bytes):
-F6 41 C4 58 20 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E
-0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 48 61 62
-63 64 65 66 67 68
+message_2 (45 bytes):
+58 20 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11
+12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 41 C4 48 61 62 63
+64 65 66 67 68
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-#### message_3
+### message_3
 
 The plaintext and ciphertext in message_3 are assumed to be of equal sizes as in message_2.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 message_3 = (
-  h'c3',
+  h'c4',
   h'0001020304050607'
 )
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 message_3 (11 bytes):
-41 C3 48 00 01 02 03 04 05 06 07
+41 C4 48 00 01 02 03 04 05 06 07
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Summary
 
-The previous estimates of typical message sizes are summarized in {{fig-summary}}.
+The previous examples of typical message sizes are summarized in {{fig-summary}}.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 =====================================================================
-                PSK       RPK       x5t     x5chain
+               PSK       RPK       x5t     x5chain                  
 ---------------------------------------------------------------------
-message_1       44        39        39        39
-message_2       46       120       126       116 + Certificate chain
-message_3       11        85        91        81 + Certificate chain
+message_1       41        39        39        39                     
+message_2       45       114       126       116 + Certificate chain 
+message_3       11        80        91        81 + Certificate chain 
 ---------------------------------------------------------------------
-Total          101       244       256       236 + Certificate chains
+Total           97       233       256       236 + Certificate chains
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-summary title="Typical message sizes in bytes" artwork-align="center"}
