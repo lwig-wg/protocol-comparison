@@ -69,29 +69,26 @@ informative:
 
 --- abstract
 
-This document analyzes and compares handshake and per-packet message size overheads when using different security protocols to secure CoAP. The analyzed security protocols are DTLS 1.2, DTLS 1.3, TLS 1.2, TLS 1.3, EDHOC and OSCORE. DTLS and TLS are analyzed with and without 6LoWPAN-GHC compression. DTLS is analyzed with and without Connection ID.
+This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP. The analyzed security protocols are DTLS 1.2, DTLS 1.3, TLS 1.2, TLS 1.3, EDHOC and OSCORE. The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression. DTLS is analyzed with and without Connection ID.
 
 --- middle
 
 # Introduction
 
-This document analyzes and compares handshake and per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{I-D.ietf-tls-dtls13}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, EDHOC {{I-D.selander-ace-cose-ecdhe}}, and OSCORE {{I-D.ietf-core-object-security}}.
+This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{I-D.ietf-tls-dtls13}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, EDHOC {{I-D.selander-ace-cose-ecdhe}}, and OSCORE {{I-D.ietf-core-object-security}}.
 
-{{handshake}} compares the overhead of key exchange, while {{record}} covers the overhead for protection application data.
-
-The DTLS and TLS record layers are analyzed with and without compression. DTLS is anlyzed with and without Connection ID {{I-D.ietf-tls-dtls-connection-id}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as ICV.
-
+The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression. DTLS is anlyzed with and without Connection ID {{I-D.ietf-tls-dtls-connection-id}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as ICV. {{handshake}} compares the overhead of key exchange, while {{record}} covers the overhead for protection application data.
 
 # Overhead of Key Exchange Protocols {#handshake}
 
-In this section we present the overhead of the handshake for different protocols.
+This section analyzes and compares the sizes of key exchange flights for different protocols.
 
-To enable a fair comparison between protocols with similar outcome, a number of assumptions are made for each protocol. These assumptions, which have an effect on the total number, are:
+To enable a fair comparison between protocols, the following assumptions are made:
 
 * All the overhead calculations in this section use AES-CCM with a tag length of 8 bytes (e.g.  AES_128_CCM_8 or AES-CCM-16-64-128).
-* A minimum number of algorithms and cipher suites is offered during the handshake. The algorithm used/offered are Curve25519, ECDSA with P-256, AES-CCM_8, SHA-256.
-* The length of key identifiers for EDHOC is 4 bytes.
-* The length of connection identifiers for DTLS and TLS is 1 byte.
+* A minimum number of algorithms and cipher suites is offered. The algorithm used/offered are Curve25519, ECDSA with P-256, AES-CCM_8, SHA-256.
+* The length of key identifiers are 4 bytes.
+* The length of connection identifiers are 1 byte.
 * DTLS RPK makes use of point compression, which saves 32 bytes.
 * DTLS handshake message fragmentation is not considered.
 * Only the DTLS mandatory extensions are considered, except for Connection ID.
@@ -117,8 +114,8 @@ DTLS 1.3 Cached X.509/RPK + ECDHE 182        347       213        742
 DTLS 1.3 PSK + ECDHE              187        190        57        434
 DTLS 1.3 PSK                      137        150        57        344
 ---------------------------------------------------------------------
-EDHOC RPK + ECDHE                  39        120        85        244
-EDHOC PSK + ECDHE                  44         46        11        101
+EDHOC RPK + ECDHE                  39        114        80        233
+EDHOC PSK + ECDHE                  41         45        11         97
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare1 title="Comparison of message sizes in bytes with Connection ID" artwork-align="center"}
@@ -136,10 +133,6 @@ DTLS 1.3 PSK                      131        143        56        330
 TLS 1.3  RPK + ECDHE              129        322       194        645
 TLS 1.3  PSK + ECDHE              166        157        50        373
 TLS 1.3  PSK                      116        117        50        283
----------------------------------------------------------------------
-EDHOC RPK + ECDHE                  38        119        84        241
-EDHOC PSK + ECDHE                  44         45        10         98
-=====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes without Connection ID" artwork-align="center"}
 
