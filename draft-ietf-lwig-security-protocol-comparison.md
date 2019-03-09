@@ -75,9 +75,9 @@ This document analyzes and compares handshake and per-packet message size overhe
 
 # Introduction
 
-This document analyzes and compares handshake and per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{I-D.ietf-tls-dtls13}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, EDHOC {{I-D.selander-ace-cose-ecdhe}}, and OSCORE {{I-D.ietf-core-object-security}}. Recently, additional work has taken shape with the goal to further reduce overhead for TLS 1.3 (see {{I-D.schaad-ace-tls-cbor-handshake}} <!--and {{I-D.rescorla-tls-ctls}}-->).
+This document analyzes and compares handshake and per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{I-D.ietf-tls-dtls13}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, EDHOC {{I-D.selander-ace-cose-ecdhe}}, and OSCORE {{I-D.ietf-core-object-security}}.
 
-{{handshake}} compares the handshake overhead for the protocols considered, while {{record}} covers the overhead for application data. or record layer.
+{{handshake}} compares the overhead of key exchange, while {{record}} covers the overhead for protection application data.
 
 The DTLS and TLS record layers are analyzed with and without compression. DTLS is anlyzed with and without Connection ID {{I-D.ietf-tls-dtls-connection-id}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as ICV.
 
@@ -88,7 +88,7 @@ In this section we present the overhead of the handshake for different protocols
 
 To enable a fair comparison between protocols with similar outcome, a number of assumptions are made for each protocol. These assumptions, which have an effect on the total number, are:
 
-* All the overhead calculations in this section use AES-CCM with a tag length of 8 bytes (e.g.  AES_128_CCM_8 or AES-CCM-16-64).
+* All the overhead calculations in this section use AES-CCM with a tag length of 8 bytes (e.g.  AES_128_CCM_8 or AES-CCM-16-64-128).
 * A minimum number of algorithms and cipher suites is offered during the handshake. The algorithm used/offered are Curve25519, ECDSA with P-256, AES-CCM_8, SHA-256.
 * The length of key identifiers for EDHOC is 4 bytes.
 * The length of connection identifiers for DTLS and TLS is 1 byte.
@@ -677,7 +677,7 @@ Total of 59 bytes
 
 ## TLS 1.3
 
-In this section, the message sizes are calculated for TLS 1.3. The major changes compared to DTLS 1.3 are that the record header is smaller, the handshake headers is smaller, and that Connection ID is not supported.
+In this section, the message sizes are calculated for TLS 1.3. The major changes compared to DTLS 1.3 are that the record header is smaller, the handshake headers is smaller, and that Connection ID is not supported.  Recently, additional work has taken shape with the goal to further reduce overhead for TLS 1.3 (see {{I-D.schaad-ace-tls-cbor-handshake}} <!--and {{I-D.rescorla-tls-ctls}}-->).
 
 TLS Assumptions:
 
