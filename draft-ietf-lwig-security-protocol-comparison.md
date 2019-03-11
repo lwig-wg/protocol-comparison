@@ -476,10 +476,10 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-187 - 8 - 42 = 137 bytes
+184 - 8 - 42 = 134 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 PSK flight_1 gives 136 bytes of overhead.
+DTLS 1.3 PSK flight_1 gives 134 bytes of overhead.
 
 #### flight_2 {#dtls13f2psk}
 
@@ -599,7 +599,7 @@ Auth Tag (8 bytes) // AES-CCM_8:
 6 + 10 + 4 + 4 + 2 + 6 + 2 + 8 = 42 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-The resumption handshake is just a PSK handshake with 137 + 150 + 57 + 42 = 386 bytes.
+The initial handshake when resumption is enabled is just a PSK handshake with 134 + 150 + 57 + 42 = 383 bytes.
 
 ### Without Connection ID
 
@@ -616,8 +616,8 @@ DTLS 1.3 Flight #3:   -1 byte
 Flight                                #1         #2       #3    Total
 -----------------------------------------------------------------------
 DTLS 1.3 RPK + ECDHE (no cid)        144        364       212    722
-DTLS 1.3 PSK + ECDHE (no cid)        181        183        56    420
-DTLS 1.3 PSK (no cid)                131        143        56    330
+DTLS 1.3 PSK + ECDHE (no cid)        178        183        56    417
+DTLS 1.3 PSK (no cid)                128        143        56    327
 =======================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare4 title="Comparison of message sizes in bytes for DTLS 1.3 without Connection ID" artwork-align="center"}
@@ -678,7 +678,7 @@ TLS Assumptions:
 
 * Minimum number of algorithms and cipher suites offered
 * Curve25519, ECDSA with P-256, AES-CCM_8, SHA-256
-* Length of key identifiers: 4 bytes
+* Length of key identifiers: 1 bytes
 * TLS RPK with point compression (saves 32 bytes)
 * Only mandatory TLS extensions
 
@@ -910,9 +910,9 @@ The following is added:
 + Extension - PSK Key Exchange Modes (6 bytes):
   00 2d 00 02 01 01
 
-+ Extension - Pre Shared Key (51 bytes):
++ Extension - Pre Shared Key (48 bytes):
   00 29 00 2F
-  00 0a 00 04 ID ID ID ID 00 00 00 00
+  00 0a 00 01 ID 00 00 00 00
   00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
   14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -930,7 +930,7 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-129 + 6 + 51 - 8 - 6 - 6 = 166 bytes
+129 + 6 + 48 - 8 - 6 - 6 = 163 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 TLS 1.3 PSK + ECDHE flight_1 gives 166 bytes of overhead.
@@ -1005,7 +1005,7 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-166 - 8 - 42 = 116 bytes
+163 - 8 - 42 = 113 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 TLS 1.3 PSK flight_1 gives 116 bytes of overhead.
