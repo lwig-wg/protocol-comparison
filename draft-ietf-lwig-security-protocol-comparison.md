@@ -1045,7 +1045,6 @@ This section gives an estimate of the message sizes of EDHOC with different auth
 message_1 = (
   1,
   0,
-  0,
   h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d
     1e1f',
   h'c3'
@@ -1053,9 +1052,9 @@ message_1 = (
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-message_1 (39 bytes):
-01 00 00 58 20 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E
-0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 41 C3
+message_1 (38 bytes):
+01 00 58 20 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 41 C3
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 #### message_2
@@ -1115,16 +1114,16 @@ message_3 (80 bytes):
 
 ### Message Sizes Certificates
 
-When the certificates are distributed out-of-band and identified with the x5t header and a SHA256/64 hash value, the protected header map will be 13 bytes instead of 2 bytes (assuming labels in the range -24&hellip;23).
+When the certificates are distributed out-of-band and identified with the x5t header parameter and a SHA256/64 hash value, the header map will be 13 bytes (assuming labels in the range -24&hellip;23).
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-protected = << { TDB1 : [ TDB6, h'0001020304050607' ] } >>
+{ TDB1 : [ TDB6, h'0001020304050607' ] }
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-When the certificates are identified with the x5chain header, the message sizes depends on the size of the (truncated) certificate chains. The protected header map will be 3 bytes + the size of the certificate chain (assuming a label in the range -24&hellip;23).
+When the certificates are identified with the x5chain header parameter, the message sizes depends on the size of the (truncated) certificate chains. The header map will be 3 bytes + the size of the certificate chain (assuming a label in the range -24&hellip;23).
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-protected = << { TDB3 : h'0001020304050607...' } >>
+{ TDB3 : h'0001020304050607...' }
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Message Sizes PSK
@@ -1135,7 +1134,6 @@ protected = << { TDB3 : h'0001020304050607...' } >>
 message_1 = (
   4,
   0,
-  0,
   h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d
     1e1f',
   h'c3',
@@ -1144,10 +1142,9 @@ message_1 = (
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-message_1 (41 bytes):
-04 00 00 58 20 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E
-0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 41 C3 41
-A2
+message_1 (40 bytes):
+04 00 58 20 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 41 C3 41 A2
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ### message_2
@@ -1194,11 +1191,11 @@ The previous examples of typical message sizes are summarized in {{fig-summary}}
 =====================================================================
                PSK       RPK       x5t     x5chain                  
 ---------------------------------------------------------------------
-message_1       41        39        39        39                     
+message_1       40        38        38        38                     
 message_2       45       114       126       116 + Certificate chain 
 message_3       11        80        91        81 + Certificate chain 
 ---------------------------------------------------------------------
-Total           97       233       256       236 + Certificate chains
+Total           96       232       255       235 + Certificate chains
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-summary title="Typical message sizes in bytes" artwork-align="center"}
