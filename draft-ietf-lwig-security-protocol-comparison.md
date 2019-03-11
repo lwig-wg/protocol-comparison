@@ -28,6 +28,7 @@ author:
 informative:
 
   I-D.ietf-core-object-security:
+  I-D.ietf-core-oscore-groupcomm
   I-D.ietf-tls-dtls13:
   I-D.ietf-tls-dtls-connection-id:
   I-D.selander-ace-cose-ecdhe:
@@ -1630,6 +1631,12 @@ OSCORE with the above parameters gives 13-14 bytes overhead for requests and 11 
 
 Unlike DTLS and TLS, OSCORE has much smaller overhead for responses than requests.
 
+## Group OSCORE
+
+This section analyzes the overhead of Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}.
+
+TODO
+
 ## Conclusion
 
 DTLS 1.2 has quite a large overhead as it uses an explicit sequence number and an explicit nonce. TLS 1.2 has significantly less (but not small) overhead. TLS 1.3 has quite a small overhead. OSCORE and DTLS 1.3 (using the minimal structure) format have very small overhead.
@@ -1638,8 +1645,7 @@ The Generic Header Compression (6LoWPAN-GHC) can in addition to DTLS 1.2 handle 
 
 New security protocols like OSCORE, TLS 1.3, and DTLS 1.3 have much lower overhead than DTLS 1.2 and TLS 1.2. The overhead of is smaller even when DTLS 1.2 and TLS 1.2 over 6LoWPAN with compression, and this small overhead is achieved even on deployments without 6LoWPAN or 6LoWPAN without compression. OSCORE is lightweight because it makes use of CoAP, CBOR, and COSE, which were designed to have as low overhead as possible.
 
-Note that the compared protocols have slightly different use cases. TLS and DTLS are designed for the transport layer and is terminated in CoAP proxies. OSCORE is designed for the application layer and protects application data between the CoAP client and the CoAP server.
-
+Note that the compared protocols have slightly different use cases. TLS and DTLS are designed for the transport layer and is terminated in CoAP proxies. OSCORE is designed for the application layer and protects information between the CoAP client and the CoAP server. Group OSCORE is designed for group communication and protect information between a CoAP client and any number of CoAP servers.
 
 # Security Considerations
 
