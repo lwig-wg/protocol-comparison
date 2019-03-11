@@ -88,7 +88,7 @@ To enable a fair comparison between protocols, the following assumptions are mad
 
 * All the overhead calculations in this section use AES-CCM with a tag length of 8 bytes (e.g.  AES_128_CCM_8 or AES-CCM-16-64-128).
 * A minimum number of algorithms and cipher suites is offered. The algorithm used/offered are Curve25519, ECDSA with P-256, AES-CCM_8, SHA-256.
-* The length of key identifiers are 4 bytes.
+* The length of key identifiers are 1 byte.
 * The length of connection identifiers are 1 byte.
 * DTLS RPK makes use of point compression, which saves 32 bytes.
 * DTLS handshake message fragmentation is not considered.
@@ -112,8 +112,8 @@ Flight                             #1         #2        #3      Total
 ---------------------------------------------------------------------
 DTLS 1.3 RPK + ECDHE              150        373       213        736
 DTLS 1.3 Cached X.509/RPK + ECDHE 182        347       213        742
-DTLS 1.3 PSK + ECDHE              187        190        57        434
-DTLS 1.3 PSK                      137        150        57        344
+DTLS 1.3 PSK + ECDHE              184        190        57        431
+DTLS 1.3 PSK                      134        150        57        341
 ---------------------------------------------------------------------
 EDHOC RPK + ECDHE                  39        114        80        233
 EDHOC PSK + ECDHE                  41         45        11         97
@@ -128,12 +128,13 @@ EDHOC PSK + ECDHE                  41         45        11         97
 Flight                             #1         #2        #3      Total
 ---------------------------------------------------------------------
 DTLS 1.3 RPK + ECDHE              144        364       212        722
-DTLS 1.3 PSK + ECDHE              181        183        56        420
-DTLS 1.3 PSK                      131        143        56        330
+DTLS 1.3 PSK + ECDHE              178        183        56        417
+DTLS 1.3 PSK                      128        143        56        327
 ---------------------------------------------------------------------
 TLS 1.3  RPK + ECDHE              129        322       194        645
-TLS 1.3  PSK + ECDHE              166        157        50        373
-TLS 1.3  PSK                      116        117        50        283
+TLS 1.3  PSK + ECDHE              163        157        50        370
+TLS 1.3  PSK                      113        117        50        280
+=====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes without Connection ID" artwork-align="center"}
 
@@ -380,9 +381,9 @@ The following is added:
 + Extension - PSK Key Exchange Modes (6 bytes):
   00 2d 00 02 01 01
 
-+ Extension - Pre Shared Key (51 bytes):
++ Extension - Pre Shared Key (48 bytes):
   00 29 00 2F
-  00 0a 00 04 ID ID ID ID 00 00 00 00
+  00 0a 00 01 ID 00 00 00 00
   00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
   14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -400,10 +401,10 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-150 + 6 + 51 - 8 - 6 - 6 = 187 bytes
+150 + 6 + 48 - 8 - 6 - 6 = 184 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 PSK + ECDHE flight_1 gives 186 bytes of overhead.
+DTLS 1.3 PSK + ECDHE flight_1 gives 184 bytes of overhead.
 
 #### flight_2 {#dtls13f2pskecdhe}
 
