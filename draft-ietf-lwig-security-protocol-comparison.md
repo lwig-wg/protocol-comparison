@@ -121,7 +121,7 @@ EDHOC PSK + ECDHE                  41         45        11         97
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare1 title="Comparison of message sizes in bytes with Connection ID" artwork-align="center"}
 
-{{fig-compare2}} compares of message sizes of EDHOC with the DTLS 1.3 {{I-D.ietf-tls-dtls13}} and TLS 1.3 {{RFC8446}} handshakes without connection ID.
+{{fig-compare2}} compares of message sizes of DTLS 1.3 {{I-D.ietf-tls-dtls13}} and TLS 1.3 {{RFC8446}} handshakes without connection ID.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 =====================================================================
