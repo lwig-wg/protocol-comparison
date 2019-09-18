@@ -16,7 +16,7 @@ pi: # can use array (if all yes) or hash here
 author:
       -
         ins: J. Mattsson
-        name: John Mattsson
+        name: John Preuß Mattsson
         org: Ericsson AB
         email: john.mattsson@ericsson.com
       -
