@@ -35,8 +35,8 @@ informative:
   I-D.ietf-core-oscore-groupcomm:
   I-D.ietf-tls-dtls13:
   I-D.ietf-tls-dtls-connection-id:
-  I-D.ietf-selander-lake-edhoc:
-  I-D.ietf-rescorla-tls-ctls:
+  I-D.selander-lake-edhoc:
+  I-D.rescorla-tls-ctls:
   RFC5246:
   RFC6347:
   RFC7400:
@@ -79,7 +79,7 @@ This document analyzes and compares the sizes of key exchange flights and the pe
 
 # Introduction
 
-This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{I-D.ietf-tls-dtls13}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, EDHOC {{I-D.ietf-selander-lake-edhoc}}, OSCORE {{RFC8613}}, and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}.
+This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{I-D.ietf-tls-dtls13}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, EDHOC {{I-D.selander-lake-edhoc}}, OSCORE {{RFC8613}}, and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}.
 
 The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression. DTLS is anlyzed with and without Connection ID {{I-D.ietf-tls-dtls-connection-id}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as ICV. {{handshake}} compares the overhead of key exchange, while {{record}} covers the overhead for protection of application data.
 
@@ -107,7 +107,7 @@ The EDHOC overhead is dependent on the key identifiers included. The following o
 
 All the overhead are dependent on the tag length. The following overheads apply for tags of the same length.
 
-{{fig-compare1}} compares the message sizes of EDHOC {{I-D.ietf-selander-lake-edhoc}} with the DTLS 1.3 {{I-D.ietf-tls-dtls13}} and TLS 1.3 {{RFC8446}} handshakes with connection ID.
+{{fig-compare1}} compares the message sizes of EDHOC {{I-D.selander-lake-edhoc}} with the DTLS 1.3 {{I-D.ietf-tls-dtls13}} and TLS 1.3 {{RFC8446}} handshakes with connection ID.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 =====================================================================
@@ -675,7 +675,7 @@ Total of 59 bytes
 
 ## TLS 1.3
 
-In this section, the message sizes are calculated for TLS 1.3. The major changes compared to DTLS 1.3 are that the record header is smaller, the handshake headers is smaller, and that Connection ID is not supported.  Recently, additional work has taken shape with the goal to further reduce overhead for TLS 1.3 (see {{I-D.ietf-rescorla-tls-ctls}}).
+In this section, the message sizes are calculated for TLS 1.3. The major changes compared to DTLS 1.3 are that the record header is smaller, the handshake headers is smaller, and that Connection ID is not supported.  Recently, additional work has taken shape with the goal to further reduce overhead for TLS 1.3 (see {{I-D.rescorla-tls-ctls}}).
 
 TLS Assumptions:
 
