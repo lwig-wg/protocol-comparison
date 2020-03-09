@@ -1040,7 +1040,7 @@ TLS 1.3 PSK flight_3 gives 57 bytes of overhead.
 
 ## EDHOC
 
-This section gives an estimate of the message sizes of EDHOC with different authentication methods. Note that the examples in this section are not test vectors, the cryptographic parts are just replaced with byte strings of the same length. All examples are given in CBOR diagnostic notation and hexadecimal.
+This section gives an estimate of the message sizes of EDHOC with different authentication methods. All examples are given in CBOR diagnostic notation and hexadecimal.
 
 ### Message Sizes RPK
 
@@ -1048,87 +1048,50 @@ This section gives an estimate of the message sizes of EDHOC with different auth
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 message_1 = (
-  1,
+  13,
   0,
-  h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d
-    1e1f',
-  h'c3'
+  h'8D3EF56D1B750A4351D68AC250A0E883790EFC80A538A444EE9E2B57E244
+    1A7C',
+  -2
 )
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-message_1 (38 bytes):
-01 00 58 20 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
-10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 41 C3
+message_1 (37 bytes):
+0d 00 58 20 8d 3e f5 6d 1b 75 0a 43 51 d6 8a c2 50 a0 e8 83
+79 0e fc 80  a5 38 a4 44 ee 9e 2b 57 e2 44 1a 7c 21 
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 #### message_2
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-plaintext = <<
-  h'a1',
-  h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d
-    1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b
-    3c3d3e3f'
->>
-~~~~~~~~~~~~~~~~~~~~~~~
-
-The header map { 4 : h'a1' } is encoded as the two bytes h'a1'. The length of plaintext is 68 bytes so assuming a 64-bit MAC value the length of ciphertext is 76 bytes.
-
-~~~~~~~~~~~~~~~~~~~~~~~
 message_2 = (
-  h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d
-    1e1f',
-  h'c4',
-  h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d
-    1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b
-    3c3d3e3f404142434445464748494a4b'
+  h'52FBA0BDC8D953DD86CE1AB2FD7C05A4658C7C30AFDBFC3301047069451B
+    AF35',
+  8,
+  h'DCF6FE9C524C22454DEB'
 )
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-message_2 (114 bytes):
-58 20 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11
-12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 41 C4 58 51 00 01
-02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15
-16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29
-2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D
-3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B
+message_2 (46 bytes):
+58 20 52 fb a0 bd c8 d9 53 dd 86 ce 1a b2 fd 7c 05 a4 65 8c
+7c 30 af db fc 33 01 04 70 69 45 1b af 35 08 4a dc f6 fe 9c
+52 4c 22 45 4d eb 
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 #### message_3
 
-The plaintext and ciphertext in message_3 are assumed to be of equal sizes as in message_2.
-
 ~~~~~~~~~~~~~~~~~~~~~~~
 message_3 = (
-  h'c4',
-  h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d
-    1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b
-    3c3d3e3f404142434445464748494a4b'
+  8,
+  h'53C3991999A5FFB86921E99B607C067770E0'
 )
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-message_3 (80 bytes):
-41 C4 58 51 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
-10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23
-24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37
-38 39 3A 3B 3C 3D 3E 3F 40 41 42 43 44 45 46 47 48 49 4A 4B
-~~~~~~~~~~~~~~~~~~~~~~~
-
-### Message Sizes Certificates
-
-When the certificates are distributed out-of-band and identified with the x5t header parameter and a SHA256/64 hash value, the header map will be 13 bytes (assuming labels in the range -24&hellip;23).
-
-~~~~~~~~~~~~~~~~~~~~~~~
-{ TDB1 : [ TDB6, h'0001020304050607' ] }
-~~~~~~~~~~~~~~~~~~~~~~~
-
-When the certificates are identified with the x5chain header parameter, the message sizes depends on the size of the (truncated) certificate chains. The header map will be 3 bytes + the size of the certificate chain (assuming a label in the range -24&hellip;23).
-
-~~~~~~~~~~~~~~~~~~~~~~~
-{ TDB3 : h'0001020304050607...' }
+message_3 (20 bytes):
+08 52 53 c3 99 19 99 a5 ff b8 69 21 e9 9b 60 7c 06 77 70 e0
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Message Sizes PSK
@@ -1137,55 +1100,51 @@ When the certificates are identified with the x5chain header parameter, the mess
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 message_1 = (
-  4,
+  17,
   0,
-  h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d
-    1e1f',
-  h'c3',
-  h'a2'
+  h'3662C4A71D624E8A4D9DFF879ABC6E2A0E745F82F497F7AFBEBFF3B01A8F
+    AB57',
+  14,
+  -17
 )
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-message_1 (40 bytes):
-04 00 58 20 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
-10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 41 C3 41 A2
+message_1 (38 bytes):
+11 00 58 20 36 62 c4 a7 1d 62 4e 8a 4d 9d ff 87 9a bc 6e 2a
+0e 74 5f 82 f4 97 f7 af be bf f3 b0 1a 8f ab 57 0e 30 
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ### message_2
 
-Assuming a 0 byte plaintext and a 64-bit MAC value the ciphertext is 8 bytes
-
 ~~~~~~~~~~~~~~~~~~~~~~~
 message_2 = (
-  h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d
-    1e1f',
-  h'c4',
-  h'0001020304050607'
+  h'A3967F6CF99B6DDC7E7C219D0D119A383F754001DF33515971EC6C842553
+    B776',
+  -24,
+  h'4F355451E069226F'
 )
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-message_2 (45 bytes):
-58 20 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11
-12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 41 C4 48 61 62 63
-64 65 66 67 68
+message_2 (44 bytes):
+58 20 a3 96 7f 6c f9 9b 6d dc 7e 7c 21 9d 0d 11 9a 38 3f 75
+40 01 df 33 51 59 71 ec 6c 84 25 53 b7 76 37 48 4f 35 54 51
+e0 69 22 6f 
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ### message_3
 
-The plaintext and ciphertext in message_3 are assumed to be of equal sizes as in message_2.
-
 ~~~~~~~~~~~~~~~~~~~~~~~
 message_3 = (
-  h'c4',
-  h'0001020304050607'
+  -24,
+  h'763BD2F3C10F0D45'
 )
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-message_3 (11 bytes):
-41 C4 48 00 01 02 03 04 05 06 07
+message_3 (10 bytes):
+37 48 76 3b d2 f3 c1 0f 0d 45 
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Summary
