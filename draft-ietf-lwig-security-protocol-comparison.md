@@ -24,6 +24,11 @@ author:
         name: Francesca Palombini
         org: Ericsson AB
         email: francesca.palombini@ericsson.com
+      -
+        ins: M. Vucinic
+        name: Malisa Vucinic
+        org: INRIA
+        email: malisa.vucinic@inria.fr
 
 informative:
 
