@@ -1,0 +1,3066 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>Comparison of CoAP Security Protocols</title>
+<meta content="John Preuß Mattsson" name="author">
+<meta content="Francesca Palombini" name="author">
+<meta content="Malisa Vucinic" name="author">
+<meta content="
+       This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP. The analyzed security protocols are DTLS 1.2, DTLS 1.3, TLS 1.2, TLS 1.3, EDHOC, OSCORE, and Group OSCORE. The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression. DTLS is analyzed with and without Connection ID. 
+    " name="description">
+<meta content="xml2rfc 2.40.1" name="generator">
+<meta content="draft-ietf-lwig-security-protocol-comparison-latest" name="ietf.draft">
+<link href="draft-ietf-lwig-security-protocol-comparison.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@import url('https://martinthomson.github.io/i-d-template/fonts.css');
+
+html {
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --small-font-size: 14.5px;
+}
+body {
+  max-width: 624px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+#title, h1, h2, h3, h4, h5, h6 {
+  font-family: "Cabin Condensed", sans-serif;
+  font-weight: 600;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+#title {
+  padding: 1em 0 0.2em;
+  font-size: 32px;
+  line-height: 40px;
+  clear: both;
+}
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 26px;
+}
+h4, h5, h6 {
+  font-size: 18px;
+  line-height: 22px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+}
+#abstract+p, #abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 18px;
+  line-height: 24px;
+}
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div, span {
+  position: relative;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+.alignCenter.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 1em 2em;
+}
+ol ol, ul ul, ol ul, ul ol {
+  margin-left: 1em;
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+.ulCompact li {
+  margin: 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+}
+ul.empty li, .ulEmpty li {
+  margin-top: 0.5em;
+}
+ul.compact, .ulCompact,
+ol.compact, .olCompact {
+  line-height: 100%;
+  margin: 0 0 0 2em;
+}
+
+/* definition lists */
+dl {
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl > dd {
+  margin-bottom: .8em;
+  min-height: 1.3em;
+}
+dl.compact > dd, .dlCompact > dd {
+  margin-bottom: 0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+
+/* links */
+a, a[href].selfRef:hover {
+  text-decoration: none;
+}
+a[href].selfRef {
+  color: var(--text-color);
+}
+a[href] {
+  color: var(--link-color);
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+a[href].selfRef:hover {
+  background-color: var(--highlight-color);
+}
+a.xref {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px 'Oxygen Mono', monospace;
+}
+pre {
+  border: 1px solid var(--line-color);
+  line-height: 17px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+}
+@media screen {
+  pre {
+    display: inline-block;
+    overflow-x: auto;
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  pre + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+  table {
+    display: inline-block;
+    overflow-x: auto;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  margin: 1em 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.5em 0.75em;
+}
+th {
+  text-align: left;
+  background-color: #eee;
+}
+tr:nth-child(2n) > td {
+  background-color: var(--background-color);
+}
+tr:nth-child(2n+1) > td {
+  background-color: var(--highlight-color);
+}
+thead+tbody tr:nth-child(2n) > td {
+  background-color: var(--highlight-color);
+}
+thead+tbody tr:nth-child(2n+1) > td {
+  background-color: var(--background-color);
+}
+table caption {
+  font-style: italic;
+  margin: 0.3em 0;
+  padding: 0;
+  text-align: left;
+}
+table p {
+  /* XXX to avoid bottom margin on table row signifiers. If paragraphs should
+     be allowed within tables more generally, it would be far better to select on a class. */
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  visibility: hidden;
+  user-select: none;
+}
+a.pilcrow[href] { color: #ddd; }
+a.pilcrow[href]:hover { text-decoration: none; }
+@media screen {
+  :hover > a.pilcrow {
+    visibility: visible;
+  }
+  a.pilcrow:hover {
+    background-color: transparent;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+}
+
+.role {
+  font-variant: all-small-caps;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 8em;
+}
+#identifiers dt {
+  width: var(--identifier-width);
+  margin: 0;
+  clear: left;
+  float: left;
+  text-align: right;
+}
+#identifiers dd {
+  margin: 0 0 0 calc(1em + var(--identifier-width));
+  min-width: 5em;
+}
+#identifiers .authors .author {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+#identifiers .authors .org {
+  font-style: italic;
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: left;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+}
+#toc nav ul {
+  margin: 0 0.5em 0 0;
+  padding: 0;
+  list-style: none;
+}
+#toc nav li {
+  line-height: 1.3em;
+  margin: 0.75em 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+#toc a.xref {
+  white-space: normal;
+}
+/* references */
+.references dt {
+  text-align: right;
+  font-weight: bold;
+  min-width: 7em;
+}
+.references dd {
+  margin-left: 8em;
+  overflow: auto;
+}
+
+.refInstance {
+  margin-bottom: 1.25em;
+}
+
+.references .ascii {
+  margin-bottom: 0.25em;
+}
+
+/* index */
+.index ul {
+  margin: 0 0 0 1em;
+  padding: 0;
+  list-style: none;
+}
+.index ul ul {
+  margin: 0;
+}
+.index li {
+  margin: 0;
+  text-indent: -2em;
+  padding-left: 2em;
+  padding-bottom: 5px;
+}
+.indexIndex {
+  margin: 0.5em 0 1em;
+}
+.index a {
+  font-weight: 700;
+}
+/* make the index two-column on all but the smallest screens */
+@media (min-width: 600px) {
+  .index ul {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  .index ul ul {
+    column-count: 1;
+    column-gap: 0;
+  }
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  margin: 1em 0;
+}
+address.vcard .nameRole {
+  font-weight: 700;
+  margin-left: 0;
+}
+address.vcard .label {
+  margin: 0.5em 0;
+}
+address.vcard .type {
+  display: none;
+}
+.alternative-contact {
+  margin: 1.5em 0 1em;
+}
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 600px) {
+  #authors-addresses > section {
+    display: relative;
+    padding: 32px 0 0;
+    column-count: 2;
+    column-gap: 20px;
+  }
+  #name-authors-address {
+    position: absolute;
+    top: 0px;
+    column-span: all;
+  }
+  /* hack for break-inside: avoid-column */
+  #authors-addresses address {
+    display: inline-block;
+    break-inside: avoid-column;
+  }
+}
+
+/* temporary notes */
+.rfcEditorRemove::before {
+  position: absolute;
+  top: 0.2em;
+  right: 0.2em;
+  padding: 0.2em;
+  content: "The RFC Editor will remove this note";
+  color: #b76427;
+  background-color: rgba(249, 232, 105, 0.3);
+}
+.rfcEditorRemove {
+  position: relative;
+  padding-top: 1.8em;
+  background-color: rgba(249, 232, 105, 0.3);
+  border-radius: 3px;
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+/* alternative layout for smaller screens */
+@media screen and (max-width: 953px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+  }
+  #toc.active {
+      opacity: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 2px 0 2px 6px;
+    padding-right: 1em;
+    font-size: 18px;
+    line-height: 24px;
+    min-width: 190px;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+  #toc h2::before { /* css hamburger */
+    float: right;
+    position: relative;
+    width: 1em;
+    height: 1px;
+    left: -164px;
+    margin: 8px 0 0 0;
+    background: white none repeat scroll 0 0;
+    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+    content: "";
+  }
+  #toc nav {
+    display: none;
+    background-color: var(--background-color);
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+  #toc.active nav {
+    display: block;
+  }
+  /* Make the collapsed ToC header render white on gray also when it's a link */
+  #toc h2 a,
+  #toc h2 a:link,
+  #toc h2 a:focus,
+  #toc h2 a:hover,
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+  #toc a.toplink {
+    margin-top: 2px;
+  }
+}
+
+/* alternative layout for wide screens */
+@media screen and (min-width: 954px) {
+  body {
+    padding-right: 380px;
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 2em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  #toc nav > ul  {
+    margin-bottom: 2em;
+  }
+  #toc ul {
+    margin: 0 0 0 4px;
+    font-size: var(--small-font-size);
+  }
+  #toc ul p, #toc ul li {
+    margin: 2px 0;
+    line-height: 22px;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre {
+    page-break-inside: avoid;
+  }
+  figure {
+    overflow: scroll;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  h2+*, h3+*, h4+*, h5+*, h6+* {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Changes introduced to fix issues found during implementation */
+
+/* Separate body from document info even without intervening H1 */
+section {
+  clear: both;
+}
+
+/* Top align author divs, to avoid names without organization dropping level with org names */
+.author {
+  vertical-align: top;
+}
+
+/* Style section numbers with more space between number and title */
+.section-number {
+  padding-right: 0.5em;
+}
+
+/* Add styling for a link in the ToC that points to the top of the document */
+a.toplink {
+  float: right;
+  margin: 8px 0.5em 0;
+}
+
+/* Fix the dl styling to match the RFC 7992 attributes */
+dl > dt,
+dl.dlParallel > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.dlNewline > dt {
+  float: none;
+}
+
+/* Provide styling for table cell text alignment */
+table td.text-left,
+table th.text-left {
+  text-align: left;
+}
+table td.text-center,
+table th.text-center {
+  text-align: center;
+}
+table td.text-right,
+table th.text-right {
+  text-align: right;
+}
+
+/* Make the alternative author contact information look less like just another
+   author, and group it closer with the primary author contact information */
+.alternative-contact {
+  margin: 0.5em 0 0.25em 0;
+}
+address .non-ascii {
+  margin: 0 0 0 2em;
+}
+
+/* With it being possible to set tables with alignment
+  left, center, and right, { width: 100%; } does not make sense */
+table {
+  width: auto;
+}
+
+/* Avoid reference text that sits in a block with very wide left margin,
+   because of a long floating dt label.*/
+.references dd {
+  overflow: visible;
+}
+
+/* Control caption placement */
+caption {
+  caption-side: bottom;
+}
+
+/* Limit the width of the author address vcard, so names in right-to-left
+   script don't end up on the other side of the page. */
+
+address.vcard {
+  max-width: 20em;
+  margin-right: auto;
+}
+
+/* For address alignment dependent on LTR or RTL scripts */
+address div.left {
+  text-align: left;
+}
+address div.right {
+  text-align: right;
+}
+
+/* Provide table alignment support.  We can't use the alignX classes above
+   since they do unwanted things with caption and other styling. */
+table.right {
+ margin-left: auto;
+ margin-right: 0;
+}
+table.center {
+ margin-left: auto;
+ margin-right: auto;
+}
+table.left {
+ margin-left: 0;
+ margin-right: auto;
+}
+
+/* Give the table caption label the same styling as the figcaption */
+
+@media print {
+  .toplink {
+    display: none;
+  }
+
+  /* avoid overwriting the top border line with the ToC header */
+  #toc {
+    padding-top: 1px;
+  }
+
+  /* Avoid page breaks inside dl and author address entries */
+  dd {
+    page-break-before: avoid;
+  }
+  .vcard {
+    page-break-inside: avoid;
+  }
+
+}
+/* Tweak the bcp14 keyword presentation */
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+</style>
+<link href="rfc-local.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">Comparison of CoAP Security Protocols</td>
+<td class="right">March 2020</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Mattsson, et al.</td>
+<td class="center">Expires 10 September 2020</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">LWIG Working Group</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-ietf-lwig-security-protocol-comparison-latest</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2020-03-09" class="published">9 March 2020</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Informational</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2020-09-10">10 September 2020</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">J. Mattsson</div>
+<div class="org">Ericsson AB</div>
+</div>
+<div class="author">
+      <div class="author-name">F. Palombini</div>
+<div class="org">Ericsson AB</div>
+</div>
+<div class="author">
+      <div class="author-name">M. Vucinic</div>
+<div class="org">INRIA</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">Comparison of CoAP Security Protocols</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP. The analyzed security protocols are DTLS 1.2, DTLS 1.3, TLS 1.2, TLS 1.3, EDHOC, OSCORE, and Group OSCORE. The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression. DTLS is analyzed with and without Connection ID.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 10 September 2020.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2020 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Simplified BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Simplified BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="toc ulEmpty">
+<li class="toc ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a><a href="#section-toc.1-1.1.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="xref">2</a>.  <a href="#name-overhead-of-key-exchange-pr" class="xref">Overhead of Key Exchange Protocols</a><a href="#section-toc.1-1.2.1" class="pilcrow">¶</a></p>
+<ul class="toc ulEmpty">
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1"><a href="#section-2.1" class="xref">2.1</a>.  <a href="#name-summary" class="xref">Summary</a><a href="#section-toc.1-1.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.2">
+                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="xref">2.2</a>.  <a href="#name-dtls-13" class="xref">DTLS 1.3</a><a href="#section-toc.1-1.2.2.2.1" class="pilcrow">¶</a></p>
+<ul class="toc ulEmpty">
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.2.2.1">
+                    <p id="section-toc.1-1.2.2.2.2.1.1"><a href="#section-2.2.1" class="xref">2.2.1</a>.  <a href="#name-message-sizes-rpk-ecdhe" class="xref">Message Sizes RPK + ECDHE</a><a href="#section-toc.1-1.2.2.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.2.2.2">
+                    <p id="section-toc.1-1.2.2.2.2.2.1"><a href="#section-2.2.2" class="xref">2.2.2</a>.  <a href="#name-message-sizes-psk-ecdhe" class="xref">Message Sizes PSK + ECDHE</a><a href="#section-toc.1-1.2.2.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.2.2.3">
+                    <p id="section-toc.1-1.2.2.2.2.3.1"><a href="#section-2.2.3" class="xref">2.2.3</a>.  <a href="#name-message-sizes-psk" class="xref">Message Sizes PSK</a><a href="#section-toc.1-1.2.2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.2.2.4">
+                    <p id="section-toc.1-1.2.2.2.2.4.1"><a href="#section-2.2.4" class="xref">2.2.4</a>.  <a href="#name-cached-information" class="xref">Cached Information</a><a href="#section-toc.1-1.2.2.2.2.4.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.2.2.5">
+                    <p id="section-toc.1-1.2.2.2.2.5.1"><a href="#section-2.2.5" class="xref">2.2.5</a>.  <a href="#name-resumption" class="xref">Resumption</a><a href="#section-toc.1-1.2.2.2.2.5.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.2.2.6">
+                    <p id="section-toc.1-1.2.2.2.2.6.1"><a href="#section-2.2.6" class="xref">2.2.6</a>.  <a href="#name-without-connection-id" class="xref">Without Connection ID</a><a href="#section-toc.1-1.2.2.2.2.6.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.2.2.7">
+                    <p id="section-toc.1-1.2.2.2.2.7.1"><a href="#section-2.2.7" class="xref">2.2.7</a>.  <a href="#name-dtls-raw-public-keys" class="xref">DTLS Raw Public Keys</a><a href="#section-toc.1-1.2.2.2.2.7.1" class="pilcrow">¶</a></p>
+</li>
+</ul>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.3">
+                <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="xref">2.3</a>.  <a href="#name-tls-13" class="xref">TLS 1.3</a><a href="#section-toc.1-1.2.2.3.1" class="pilcrow">¶</a></p>
+<ul class="toc ulEmpty">
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.3.2.1">
+                    <p id="section-toc.1-1.2.2.3.2.1.1"><a href="#section-2.3.1" class="xref">2.3.1</a>.  <a href="#name-message-sizes-rpk-ecdhe-2" class="xref">Message Sizes RPK + ECDHE</a><a href="#section-toc.1-1.2.2.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.3.2.2">
+                    <p id="section-toc.1-1.2.2.3.2.2.1"><a href="#section-2.3.2" class="xref">2.3.2</a>.  <a href="#name-message-sizes-psk-ecdhe-2" class="xref">Message Sizes PSK + ECDHE</a><a href="#section-toc.1-1.2.2.3.2.2.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.3.2.3">
+                    <p id="section-toc.1-1.2.2.3.2.3.1"><a href="#section-2.3.3" class="xref">2.3.3</a>.  <a href="#name-message-sizes-psk-2" class="xref">Message Sizes PSK</a><a href="#section-toc.1-1.2.2.3.2.3.1" class="pilcrow">¶</a></p>
+</li>
+</ul>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.4">
+                <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="xref">2.4</a>.  <a href="#name-edhoc" class="xref">EDHOC</a><a href="#section-toc.1-1.2.2.4.1" class="pilcrow">¶</a></p>
+<ul class="toc ulEmpty">
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.4.2.1">
+                    <p id="section-toc.1-1.2.2.4.2.1.1"><a href="#section-2.4.1" class="xref">2.4.1</a>.  <a href="#name-message-sizes-rpk" class="xref">Message Sizes RPK</a><a href="#section-toc.1-1.2.2.4.2.1.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.4.2.2">
+                    <p id="section-toc.1-1.2.2.4.2.2.1"><a href="#section-2.4.2" class="xref">2.4.2</a>.  <a href="#name-message-sizes-psk-3" class="xref">Message Sizes PSK</a><a href="#section-toc.1-1.2.2.4.2.2.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.4.2.3">
+                    <p id="section-toc.1-1.2.2.4.2.3.1"><a href="#section-2.4.3" class="xref">2.4.3</a>.  <a href="#name-message_1-2" class="xref">message_1</a><a href="#section-toc.1-1.2.2.4.2.3.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.4.2.4">
+                    <p id="section-toc.1-1.2.2.4.2.4.1"><a href="#section-2.4.4" class="xref">2.4.4</a>.  <a href="#name-message_2-2" class="xref">message_2</a><a href="#section-toc.1-1.2.2.4.2.4.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.4.2.5">
+                    <p id="section-toc.1-1.2.2.4.2.5.1"><a href="#section-2.4.5" class="xref">2.4.5</a>.  <a href="#name-message_3-2" class="xref">message_3</a><a href="#section-toc.1-1.2.2.4.2.5.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.4.2.6">
+                    <p id="section-toc.1-1.2.2.4.2.6.1"><a href="#section-2.4.6" class="xref">2.4.6</a>.  <a href="#name-summary-2" class="xref">Summary</a><a href="#section-toc.1-1.2.2.4.2.6.1" class="pilcrow">¶</a></p>
+</li>
+</ul>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.5">
+                <p id="section-toc.1-1.2.2.5.1"><a href="#section-2.5" class="xref">2.5</a>.  <a href="#name-conclusion" class="xref">Conclusion</a><a href="#section-toc.1-1.2.2.5.1" class="pilcrow">¶</a></p>
+</li>
+</ul>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-overhead-for-protection-of-" class="xref">Overhead for Protection of Application Data</a><a href="#section-toc.1-1.3.1" class="pilcrow">¶</a></p>
+<ul class="toc ulEmpty">
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-summary-3" class="xref">Summary</a><a href="#section-toc.1-1.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="xref">3.2</a>.  <a href="#name-dtls-12" class="xref">DTLS 1.2</a><a href="#section-toc.1-1.3.2.2.1" class="pilcrow">¶</a></p>
+<ul class="toc ulEmpty">
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.2.2.1">
+                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="xref">3.2.1</a>.  <a href="#name-dtls-12-2" class="xref">DTLS 1.2</a><a href="#section-toc.1-1.3.2.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.2.2.2">
+                    <p id="section-toc.1-1.3.2.2.2.2.1"><a href="#section-3.2.2" class="xref">3.2.2</a>.  <a href="#name-dtls-12-with-6lowpan-ghc" class="xref">DTLS 1.2 with 6LoWPAN-GHC</a><a href="#section-toc.1-1.3.2.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.2.2.3">
+                    <p id="section-toc.1-1.3.2.2.2.3.1"><a href="#section-3.2.3" class="xref">3.2.3</a>.  <a href="#name-dtls-12-with-connection-id" class="xref">DTLS 1.2 with Connection ID</a><a href="#section-toc.1-1.3.2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.2.2.4">
+                    <p id="section-toc.1-1.3.2.2.2.4.1"><a href="#section-3.2.4" class="xref">3.2.4</a>.  <a href="#name-dtls-12-with-connection-id-" class="xref">DTLS 1.2 with Connection ID and 6LoWPAN-GHC</a><a href="#section-toc.1-1.3.2.2.2.4.1" class="pilcrow">¶</a></p>
+</li>
+</ul>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.3">
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="xref">3.3</a>.  <a href="#name-dtls-13-2" class="xref">DTLS 1.3</a><a href="#section-toc.1-1.3.2.3.1" class="pilcrow">¶</a></p>
+<ul class="toc ulEmpty">
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.3.2.1">
+                    <p id="section-toc.1-1.3.2.3.2.1.1"><a href="#section-3.3.1" class="xref">3.3.1</a>.  <a href="#name-dtls-13-3" class="xref">DTLS 1.3</a><a href="#section-toc.1-1.3.2.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.3.2.2">
+                    <p id="section-toc.1-1.3.2.3.2.2.1"><a href="#section-3.3.2" class="xref">3.3.2</a>.  <a href="#name-dtls-13-with-6lowpan-ghc" class="xref">DTLS 1.3 with 6LoWPAN-GHC</a><a href="#section-toc.1-1.3.2.3.2.2.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.3.2.3">
+                    <p id="section-toc.1-1.3.2.3.2.3.1"><a href="#section-3.3.3" class="xref">3.3.3</a>.  <a href="#name-dtls-13-with-connection-id" class="xref">DTLS 1.3 with Connection ID</a><a href="#section-toc.1-1.3.2.3.2.3.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.3.2.4">
+                    <p id="section-toc.1-1.3.2.3.2.4.1"><a href="#section-3.3.4" class="xref">3.3.4</a>.  <a href="#name-dtls-13-with-connection-id-" class="xref">DTLS 1.3 with Connection ID and 6LoWPAN-GHC</a><a href="#section-toc.1-1.3.2.3.2.4.1" class="pilcrow">¶</a></p>
+</li>
+</ul>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.4">
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="xref">3.4</a>.  <a href="#name-tls-12" class="xref">TLS 1.2</a><a href="#section-toc.1-1.3.2.4.1" class="pilcrow">¶</a></p>
+<ul class="toc ulEmpty">
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.4.2.1">
+                    <p id="section-toc.1-1.3.2.4.2.1.1"><a href="#section-3.4.1" class="xref">3.4.1</a>.  <a href="#name-tls-12-2" class="xref">TLS 1.2</a><a href="#section-toc.1-1.3.2.4.2.1.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.4.2.2">
+                    <p id="section-toc.1-1.3.2.4.2.2.1"><a href="#section-3.4.2" class="xref">3.4.2</a>.  <a href="#name-tls-12-with-6lowpan-ghc" class="xref">TLS 1.2 with 6LoWPAN-GHC</a><a href="#section-toc.1-1.3.2.4.2.2.1" class="pilcrow">¶</a></p>
+</li>
+</ul>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.5">
+                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="xref">3.5</a>.  <a href="#name-tls-13-2" class="xref">TLS 1.3</a><a href="#section-toc.1-1.3.2.5.1" class="pilcrow">¶</a></p>
+<ul class="toc ulEmpty">
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.5.2.1">
+                    <p id="section-toc.1-1.3.2.5.2.1.1"><a href="#section-3.5.1" class="xref">3.5.1</a>.  <a href="#name-tls-13-3" class="xref">TLS 1.3</a><a href="#section-toc.1-1.3.2.5.2.1.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.5.2.2">
+                    <p id="section-toc.1-1.3.2.5.2.2.1"><a href="#section-3.5.2" class="xref">3.5.2</a>.  <a href="#name-tls-13-with-6lowpan-ghc" class="xref">TLS 1.3 with 6LoWPAN-GHC</a><a href="#section-toc.1-1.3.2.5.2.2.1" class="pilcrow">¶</a></p>
+</li>
+</ul>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.6">
+                <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="xref">3.6</a>.  <a href="#name-oscore" class="xref">OSCORE</a><a href="#section-toc.1-1.3.2.6.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.7">
+                <p id="section-toc.1-1.3.2.7.1"><a href="#section-3.7" class="xref">3.7</a>.  <a href="#name-group-oscore" class="xref">Group OSCORE</a><a href="#section-toc.1-1.3.2.7.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.8">
+                <p id="section-toc.1-1.3.2.8.1"><a href="#section-3.8" class="xref">3.8</a>.  <a href="#name-conclusion-2" class="xref">Conclusion</a><a href="#section-toc.1-1.3.2.8.1" class="pilcrow">¶</a></p>
+</li>
+</ul>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-security-considerations" class="xref">Security Considerations</a><a href="#section-toc.1-1.4.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-iana-considerations" class="xref">IANA Considerations</a><a href="#section-toc.1-1.5.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-informative-references" class="xref">Informative References</a><a href="#section-toc.1-1.6.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-appendix.a" class="xref"></a><a href="#name-acknowledgments" class="xref">Acknowledgments</a><a href="#section-toc.1-1.7.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-appendix.b" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a><a href="#section-toc.1-1.8.1" class="pilcrow">¶</a></p>
+</li>
+</ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP over UPD <span>[<a href="#RFC7252" class="xref">RFC7252</a>]</span> and TCP <span>[<a href="#RFC8323" class="xref">RFC8323</a>]</span>. The analyzed security protocols are DTLS 1.2 <span>[<a href="#RFC6347" class="xref">RFC6347</a>]</span>, DTLS 1.3 <span>[<a href="#I-D.ietf-tls-dtls13" class="xref">I-D.ietf-tls-dtls13</a>]</span>, TLS 1.2 <span>[<a href="#RFC5246" class="xref">RFC5246</a>]</span>, TLS 1.3 <span>[<a href="#RFC8446" class="xref">RFC8446</a>]</span>, EDHOC <span>[<a href="#I-D.selander-lake-edhoc" class="xref">I-D.selander-lake-edhoc</a>]</span>, OSCORE <span>[<a href="#RFC8613" class="xref">RFC8613</a>]</span>, and Group OSCORE <span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="xref">I-D.ietf-core-oscore-groupcomm</a>]</span>.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression. DTLS is anlyzed with and without Connection ID <span>[<a href="#I-D.ietf-tls-dtls-connection-id" class="xref">I-D.ietf-tls-dtls-connection-id</a>]</span>. Readers are expected to be familiar with some of the terms described in RFC 7925 <span>[<a href="#RFC7925" class="xref">RFC7925</a>]</span>, such as ICV. <a href="#handshake" class="xref">Section 2</a> compares the overhead of key exchange, while <a href="#record" class="xref">Section 3</a> covers the overhead for protection of application data.<a href="#section-1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="handshake">
+<section id="section-2">
+      <h2 id="name-overhead-of-key-exchange-pr">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-overhead-of-key-exchange-pr" class="section-name selfRef">Overhead of Key Exchange Protocols</a>
+      </h2>
+<p id="section-2-1">This section analyzes and compares the sizes of key exchange flights for different protocols.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-2">To enable a fair comparison between protocols, the following assumptions are made:<a href="#section-2-2" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-2-3.1">All the overhead calculations in this section use AES-CCM with a tag length of 8 bytes (e.g.  AES_128_CCM_8 or AES-CCM-16-64-128).<a href="#section-2-3.1" class="pilcrow">¶</a>
+</li>
+<li id="section-2-3.2">A minimum number of algorithms and cipher suites is offered. The algorithm used/offered are Curve25519, ECDSA with P-256, AES-CCM_8, SHA-256.<a href="#section-2-3.2" class="pilcrow">¶</a>
+</li>
+<li id="section-2-3.3">The length of key identifiers are 1 byte.<a href="#section-2-3.3" class="pilcrow">¶</a>
+</li>
+<li id="section-2-3.4">The length of connection identifiers are 1 byte.<a href="#section-2-3.4" class="pilcrow">¶</a>
+</li>
+<li id="section-2-3.5">DTLS RPK makes use of point compression, which saves 32 bytes.<a href="#section-2-3.5" class="pilcrow">¶</a>
+</li>
+<li id="section-2-3.6">DTLS handshake message fragmentation is not considered.<a href="#section-2-3.6" class="pilcrow">¶</a>
+</li>
+<li id="section-2-3.7">Only the DTLS mandatory extensions are considered, except for Connection ID.<a href="#section-2-3.7" class="pilcrow">¶</a>
+</li>
+</ul>
+<p id="section-2-4"><a href="#summ-handshake" class="xref">Section 2.1</a> gives a short summary of the message overhead based on different parameters and some assumptions. The following sections detail the assumptions and the calculations.<a href="#section-2-4" class="pilcrow">¶</a></p>
+<div id="summ-handshake">
+<section id="section-2.1">
+        <h3 id="name-summary">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-summary" class="section-name selfRef">Summary</a>
+        </h3>
+<p id="section-2.1-1">The DTLS overhead is dependent on the parameter Connection ID. The following overheads apply for all Connection IDs of the same length, when Connection ID is used.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1-2">The EDHOC overhead is dependent on the key identifiers included. The following overheads apply for Sender IDs of the same length.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1-3">All the overhead are dependent on the tag length. The following overheads apply for tags of the same length.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.1-4"><a href="#fig-compare1" class="xref">Figure 1</a> compares the message sizes of EDHOC <span>[<a href="#I-D.selander-lake-edhoc" class="xref">I-D.selander-lake-edhoc</a>]</span> with the DTLS 1.3 <span>[<a href="#I-D.ietf-tls-dtls13" class="xref">I-D.ietf-tls-dtls13</a>]</span> and TLS 1.3 <span>[<a href="#RFC8446" class="xref">RFC8446</a>]</span> handshakes with connection ID.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
+<span id="name-comparison-of-message-sizes"></span><div id="fig-compare1">
+<figure id="figure-1">
+          <div class="artwork art-text alignCenter" id="section-2.1-5.1">
+<pre>
+=====================================================================
+Flight                             #1         #2        #3      Total
+---------------------------------------------------------------------
+DTLS 1.3 RPK + ECDHE              150        373       213        736
+DTLS 1.3 Cached X.509/RPK + ECDHE 182        347       213        742
+DTLS 1.3 PSK + ECDHE              184        190        57        431
+DTLS 1.3 PSK                      134        150        57        341
+---------------------------------------------------------------------
+EDHOC RPK + ECDHE                  37         46        20        103
+EDHOC PSK + ECDHE                  38         44        10         92
+=====================================================================
+</pre>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-comparison-of-message-sizes" class="selfRef">Comparison of message sizes in bytes with Connection ID</a>
+          </figcaption></figure>
+</div>
+<p id="section-2.1-6"><a href="#fig-compare2" class="xref">Figure 2</a> compares of message sizes of DTLS 1.3 <span>[<a href="#I-D.ietf-tls-dtls13" class="xref">I-D.ietf-tls-dtls13</a>]</span> and TLS 1.3 <span>[<a href="#RFC8446" class="xref">RFC8446</a>]</span> handshakes without connection ID.<a href="#section-2.1-6" class="pilcrow">¶</a></p>
+<span id="name-comparison-of-message-sizes-"></span><div id="fig-compare2">
+<figure id="figure-2">
+          <div class="artwork art-text alignCenter" id="section-2.1-7.1">
+<pre>
+=====================================================================
+Flight                             #1         #2        #3      Total
+---------------------------------------------------------------------
+DTLS 1.3 RPK + ECDHE              144        364       212        722
+DTLS 1.3 PSK + ECDHE              178        183        56        417
+DTLS 1.3 PSK                      128        143        56        327
+---------------------------------------------------------------------
+TLS 1.3  RPK + ECDHE              129        322       194        645
+TLS 1.3  PSK + ECDHE              163        157        50        370
+TLS 1.3  PSK                      113        117        50        280
+=====================================================================
+</pre>
+</div>
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<a href="#name-comparison-of-message-sizes-" class="selfRef">Comparison of message sizes in bytes without Connection ID</a>
+          </figcaption></figure>
+</div>
+<p id="section-2.1-8">The details of the message size calculations are given in the following sections.<a href="#section-2.1-8" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="dtls-13">
+<section id="section-2.2">
+        <h3 id="name-dtls-13">
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-dtls-13" class="section-name selfRef">DTLS 1.3</a>
+        </h3>
+<p id="section-2.2-1">This section gives an estimate of the message sizes of DTLS 1.3 with different authentication methods. Note that the examples in this section are not test vectors, the cryptographic parts are just replaced with byte strings of the same length, while other fixed length fields are replace with arbitrary strings or omitted, in which case their length is indicated. Values that are not arbitrary are given in hexadecimal.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<div id="size-dtls13rpk">
+<section id="section-2.2.1">
+          <h4 id="name-message-sizes-rpk-ecdhe">
+<a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-message-sizes-rpk-ecdhe" class="section-name selfRef">Message Sizes RPK + ECDHE</a>
+          </h4>
+<p id="section-2.2.1-1">In this section, a Connection ID of 1 byte is used.<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
+<div id="dtls13f1rpk">
+<section id="section-2.2.1.1">
+            <h5 id="name-flight_1">
+<a href="#section-2.2.1.1" class="section-number selfRef">2.2.1.1. </a><a href="#name-flight_1" class="section-name selfRef">flight_1</a>
+            </h5>
+<div class="artwork art-text alignLeft" id="section-2.2.1.1-1">
+<pre>
+Record Header - DTLSPlaintext (13 bytes):
+16 fe fd EE EE SS SS SS SS SS SS LL LL
+
+  Handshake Header - Client Hello (10 bytes):
+  01 LL LL LL SS SS 00 00 00 LL LL LL
+
+    Legacy Version (2 bytes):
+    fe fd
+
+    Client Random (32 bytes):
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
+
+    Legacy Session ID (1 bytes):
+    00
+
+    Legacy Cookie (1 bytes):
+    00
+
+    Cipher Suites (TLS_AES_128_CCM_8_SHA256) (4 bytes):
+    00 02 13 05
+
+    Compression Methods (null) (2 bytes):
+    01 00
+
+    Extensions Length (2 bytes):
+    LL LL
+
+      Extension - Supported Groups (x25519) (8 bytes):
+      00 0a 00 04 00 02 00 1d
+
+      Extension - Signature Algorithms (ecdsa_secp256r1_sha256)
+      (8 bytes):
+      00 0d 00 04 00 02 08 07
+
+      Extension - Key Share (42 bytes):
+      00 33 00 26 00 24 00 1d 00 20
+      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+      16 17 18 19 1a 1b 1c 1d 1e 1f
+
+      Extension - Supported Versions (1.3) (7 bytes):
+      00 2b 00 03 02 03 04
+
+      Extension - Client Certificate Type (Raw Public Key) (6 bytes):
+      00 13 00 01 01 02
+
+      Extension - Server Certificate Type (Raw Public Key) (6 bytes):
+      00 14 00 01 01 02
+
+      Extension - Connection Identifier (43) (6 bytes):
+      XX XX 00 02 01 42
+
+13 + 10 + 2 + 32 + 1 + 1 + 4 + 2 + 2 + 8 + 8 + 42 + 7 + 6 + 6 + 6 = 150
+bytes
+</pre><a href="#section-2.2.1.1-1" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.1.1-2">DTLS 1.3 RPK + ECDHE flight_1 gives 150 bytes of overhead.<a href="#section-2.2.1.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="dtls13f2rpk">
+<section id="section-2.2.1.2">
+            <h5 id="name-flight_2">
+<a href="#section-2.2.1.2" class="section-number selfRef">2.2.1.2. </a><a href="#name-flight_2" class="section-name selfRef">flight_2</a>
+            </h5>
+<div class="artwork art-text alignLeft" id="section-2.2.1.2-1">
+<pre>
+Record Header - DTLSPlaintext (13 bytes):
+16 fe fd EE EE SS SS SS SS SS SS LL LL
+
+  Handshake Header - Server Hello (10 bytes):
+  02 LL LL LL SS SS 00 00 00 LL LL LL
+
+    Legacy Version (2 bytes):
+    fe fd
+
+    Server Random (32 bytes):
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
+
+    Legacy Session ID (1 bytes):
+    00
+
+    Cipher Suite (TLS_AES_128_CCM_8_SHA256) (2 bytes):
+    13 05
+
+    Compression Method (null) (1 bytes):
+    00
+
+    Extensions Length (2 bytes):
+    LL LL
+
+      Extension - Key Share (40 bytes):
+      00 33 00 24 00 1d 00 20
+      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+       16 17 18 19 1a 1b 1c 1d 1e 1f
+
+      Extension - Supported Versions (1.3) (6 bytes):
+      00 2b 00 02 03 04
+
+      Extension - Connection Identifier (43) (6 bytes):
+      XX XX 00 02 01 43
+
+Record Header - DTLSCiphertext, Full (6 bytes):
+HH ES SS 43 LL LL
+
+  Handshake Header - Encrypted Extensions (10 bytes):
+  08 LL LL LL SS SS 00 00 00 LL LL LL
+
+    Extensions Length (2 bytes):
+    LL LL
+
+      Extension - Client Certificate Type (Raw Public Key) (6 bytes):
+      00 13 00 01 01 02
+
+      Extension - Server Certificate Type (Raw Public Key) (6 bytes):
+      00 14 00 01 01 02
+
+  Handshake Header - Certificate Request (10 bytes):
+  0d LL LL LL SS SS 00 00 00 LL LL LL
+
+    Request Context (1 bytes):
+    00
+
+    Extensions Length (2 bytes):
+    LL LL
+
+      Extension - Signature Algorithms (ecdsa_secp256r1_sha256)
+      (8 bytes):
+      00 0d 00 04 00 02 08 07
+
+  Handshake Header - Certificate (10 bytes):
+  0b LL LL LL SS SS 00 00 00 LL LL LL
+
+    Request Context (1 bytes):
+    00
+
+    Certificate List Length (3 bytes):
+    LL LL LL
+
+    Certificate Length (3 bytes):
+    LL LL LL
+
+    Certificate (59 bytes) // Point compression
+    ....
+
+    Certificate Extensions (2 bytes):
+    00 00
+
+  Handshake Header - Certificate Verify (10 bytes):
+  0f LL LL LL SS SS 00 00 00 LL LL LL
+
+    Signature  (68 bytes):
+    ZZ ZZ 00 40 ....
+
+  Handshake Header - Finished (10 bytes):
+  14 LL LL LL SS SS 00 00 00 LL LL LL
+
+    Verify Data (32 bytes):
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
+
+  Record Type (1 byte):
+  16
+
+Auth Tag (8 bytes):
+e0 8b 0e 45 5a 35 0a e5
+
+13 + 102 + 6 + 24 + 21 + 78 + 78 + 42 + 1 + 8 = 373 bytes
+</pre><a href="#section-2.2.1.2-1" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.1.2-2">DTLS 1.3 RPK + ECDHE flight_2 gives 373 bytes of overhead.<a href="#section-2.2.1.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="dtls13f3rpk">
+<section id="section-2.2.1.3">
+            <h5 id="name-flight_3">
+<a href="#section-2.2.1.3" class="section-number selfRef">2.2.1.3. </a><a href="#name-flight_3" class="section-name selfRef">flight_3</a>
+            </h5>
+<div class="artwork art-text alignLeft" id="section-2.2.1.3-1">
+<pre>
+Record Header (6 bytes) // DTLSCiphertext, Full:
+ZZ ES SS 42 LL LL
+
+  Handshake Header - Certificate (10 bytes):
+  0b LL LL LL SS SS XX XX XX LL LL LL
+
+    Request Context (1 bytes):
+    00
+
+    Certificate List Length (3 bytes):
+    LL LL LL
+
+    Certificate Length (3 bytes):
+    LL LL LL
+
+    Certificate (59 bytes) // Point compression
+    ....
+
+    Certificate Extensions (2 bytes):
+    00 00
+
+  Handshake Header - Certificate Verify (10 bytes):
+  0f LL LL LL SS SS 00 00 00 LL LL LL
+
+    Signature  (68 bytes):
+    04 03 LL LL //ecdsa_secp256r1_sha256
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f 00 01 02 03 04 05 06 07 08 09 0a 0b
+     0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+
+  Handshake Header - Finished (10 bytes):
+  14 LL LL LL SS SS 00 00 00 LL LL LL
+
+    Verify Data (32 bytes) // SHA-256:
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
+
+  Record Type (1 byte):
+  16
+
+Auth Tag (8 bytes) // AES-CCM_8:
+00 01 02 03 04 05 06 07
+
+6 + 78 + 78 + 42 + 1 + 8 = 213 bytes
+</pre><a href="#section-2.2.1.3-1" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.1.3-2">DTLS 1.3 RPK + ECDHE flight_2 gives 213 bytes of overhead.<a href="#section-2.2.1.3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="message-sizes-psk-ecdhe">
+<section id="section-2.2.2">
+          <h4 id="name-message-sizes-psk-ecdhe">
+<a href="#section-2.2.2" class="section-number selfRef">2.2.2. </a><a href="#name-message-sizes-psk-ecdhe" class="section-name selfRef">Message Sizes PSK + ECDHE</a>
+          </h4>
+<div id="dtls13f1pskecdhe">
+<section id="section-2.2.2.1">
+            <h5 id="name-flight_1-2">
+<a href="#section-2.2.2.1" class="section-number selfRef">2.2.2.1. </a><a href="#name-flight_1-2" class="section-name selfRef">flight_1</a>
+            </h5>
+<p id="section-2.2.2.1-1">The differences in overhead compared to <a href="#dtls13f1rpk" class="xref">Section 2.2.1.1</a> are:<a href="#section-2.2.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.2.1-2">The following is added:<a href="#section-2.2.2.1-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.2.1-3">
+<pre>
++ Extension - PSK Key Exchange Modes (6 bytes):
+  00 2d 00 02 01 01
+
++ Extension - Pre Shared Key (48 bytes):
+  00 29 00 2F
+  00 0a 00 01 ID 00 00 00 00
+  00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+  14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+</pre><a href="#section-2.2.2.1-3" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.2.1-4">The following is removed:<a href="#section-2.2.2.1-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.2.1-5">
+<pre>
+- Extension - Signature Algorithms (ecdsa_secp256r1_sha256) (8 bytes)
+
+- Extension - Client Certificate Type (Raw Public Key) (6 bytes)
+
+- Extension - Server Certificate Type (Raw Public Key) (6 bytes)
+</pre><a href="#section-2.2.2.1-5" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.2.1-6">In total:<a href="#section-2.2.2.1-6" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.2.1-7">
+<pre>
+150 + 6 + 48 - 8 - 6 - 6 = 184 bytes
+</pre><a href="#section-2.2.2.1-7" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.2.1-8">DTLS 1.3 PSK + ECDHE flight_1 gives 184 bytes of overhead.<a href="#section-2.2.2.1-8" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="dtls13f2pskecdhe">
+<section id="section-2.2.2.2">
+            <h5 id="name-flight_2-2">
+<a href="#section-2.2.2.2" class="section-number selfRef">2.2.2.2. </a><a href="#name-flight_2-2" class="section-name selfRef">flight_2</a>
+            </h5>
+<p id="section-2.2.2.2-1">The differences in overhead compared to <a href="#dtls13f2rpk" class="xref">Section 2.2.1.2</a> are:<a href="#section-2.2.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.2.2-2">The following is added:<a href="#section-2.2.2.2-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.2.2-3">
+<pre>
++ Extension - Pre Shared Key (6 bytes)
+  00 29 00 02 00 00
+</pre><a href="#section-2.2.2.2-3" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.2.2-4">The following is removed:<a href="#section-2.2.2.2-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.2.2-5">
+<pre>
+- Handshake Message Certificate (78 bytes)
+
+- Handshake Message CertificateVerify (78 bytes)
+
+- Handshake Message CertificateRequest (21 bytes)
+
+- Extension - Client Certificate Type (Raw Public Key) (6 bytes)
+
+- Extension - Server Certificate Type (Raw Public Key) (6 bytes)
+</pre><a href="#section-2.2.2.2-5" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.2.2-6">In total:<a href="#section-2.2.2.2-6" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.2.2-7">
+<pre>
+373 - 78 - 78 - 21 - 6 - 6  + 6 = 190 bytes
+</pre><a href="#section-2.2.2.2-7" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.2.2-8">DTLS 1.3 PSK + ECDHE flight_2 gives 190 bytes of overhead.<a href="#section-2.2.2.2-8" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="dtls13f3pskecdhe">
+<section id="section-2.2.2.3">
+            <h5 id="name-flight_3-2">
+<a href="#section-2.2.2.3" class="section-number selfRef">2.2.2.3. </a><a href="#name-flight_3-2" class="section-name selfRef">flight_3</a>
+            </h5>
+<p id="section-2.2.2.3-1">The differences in overhead compared to <a href="#dtls13f3rpk" class="xref">Section 2.2.1.3</a> are:<a href="#section-2.2.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.2.3-2">The following is removed:<a href="#section-2.2.2.3-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.2.3-3">
+<pre>
+- Handshake Message Certificate (78 bytes)
+
+- Handshake Message Certificate Verify (78 bytes)
+</pre><a href="#section-2.2.2.3-3" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.2.3-4">In total:<a href="#section-2.2.2.3-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.2.3-5">
+<pre>
+213 - 78 - 78 = 57 bytes
+</pre><a href="#section-2.2.2.3-5" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.2.3-6">DTLS 1.3 PSK + ECDHE flight_3 gives 57 bytes of overhead.<a href="#section-2.2.2.3-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="message-sizes-psk">
+<section id="section-2.2.3">
+          <h4 id="name-message-sizes-psk">
+<a href="#section-2.2.3" class="section-number selfRef">2.2.3. </a><a href="#name-message-sizes-psk" class="section-name selfRef">Message Sizes PSK</a>
+          </h4>
+<div id="dtls13f1psk">
+<section id="section-2.2.3.1">
+            <h5 id="name-flight_1-3">
+<a href="#section-2.2.3.1" class="section-number selfRef">2.2.3.1. </a><a href="#name-flight_1-3" class="section-name selfRef">flight_1</a>
+            </h5>
+<p id="section-2.2.3.1-1">The differences in overhead compared to <a href="#dtls13f1pskecdhe" class="xref">Section 2.2.2.1</a> are:<a href="#section-2.2.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.3.1-2">The following is removed:<a href="#section-2.2.3.1-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.3.1-3">
+<pre>
+- Extension - Supported Groups (x25519) (8 bytes)
+
+- Extension - Key Share (42 bytes)
+</pre><a href="#section-2.2.3.1-3" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.3.1-4">In total:<a href="#section-2.2.3.1-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.3.1-5">
+<pre>
+184 - 8 - 42 = 134 bytes
+</pre><a href="#section-2.2.3.1-5" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.3.1-6">DTLS 1.3 PSK flight_1 gives 134 bytes of overhead.<a href="#section-2.2.3.1-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="dtls13f2psk">
+<section id="section-2.2.3.2">
+            <h5 id="name-flight_2-3">
+<a href="#section-2.2.3.2" class="section-number selfRef">2.2.3.2. </a><a href="#name-flight_2-3" class="section-name selfRef">flight_2</a>
+            </h5>
+<p id="section-2.2.3.2-1">The differences in overhead compared to <a href="#dtls13f2pskecdhe" class="xref">Section 2.2.2.2</a> are:<a href="#section-2.2.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.3.2-2">The following is removed:<a href="#section-2.2.3.2-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.3.2-3">
+<pre>
+- Extension - Key Share (40 bytes)
+</pre><a href="#section-2.2.3.2-3" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.3.2-4">In total:<a href="#section-2.2.3.2-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.3.2-5">
+<pre>
+190 - 40 = 150 bytes
+</pre><a href="#section-2.2.3.2-5" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.3.2-6">DTLS 1.3 PSK flight_2 gives 150 bytes of overhead.<a href="#section-2.2.3.2-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="dtls13f3psk">
+<section id="section-2.2.3.3">
+            <h5 id="name-flight_3-3">
+<a href="#section-2.2.3.3" class="section-number selfRef">2.2.3.3. </a><a href="#name-flight_3-3" class="section-name selfRef">flight_3</a>
+            </h5>
+<p id="section-2.2.3.3-1">There are no differences in overhead compared to <a href="#dtls13f3pskecdhe" class="xref">Section 2.2.2.3</a>.<a href="#section-2.2.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.3.3-2">DTLS 1.3 PSK flight_3 gives 57 bytes of overhead.<a href="#section-2.2.3.3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="cached-information">
+<section id="section-2.2.4">
+          <h4 id="name-cached-information">
+<a href="#section-2.2.4" class="section-number selfRef">2.2.4. </a><a href="#name-cached-information" class="section-name selfRef">Cached Information</a>
+          </h4>
+<p id="section-2.2.4-1">In this section, we consider the effect of <span>[<a href="#RFC7924" class="xref">RFC7924</a>]</span> on the message size overhead.<a href="#section-2.2.4-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.4-2">Cached information together with server X.509 can be used to move bytes from flight #2 to flight #1 (cached RPK increases the number of bytes compared to cached X.509).<a href="#section-2.2.4-2" class="pilcrow">¶</a></p>
+<p id="section-2.2.4-3">The differences compared to <a href="#size-dtls13rpk" class="xref">Section 2.2.1</a> are the following.<a href="#section-2.2.4-3" class="pilcrow">¶</a></p>
+<p id="section-2.2.4-4">For the flight #1, the following is added:<a href="#section-2.2.4-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.4-5">
+<pre>
++ Extension - Client Cashed Information (39 bytes):
+  00 19 LL LL LL LL
+  01 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+  16 17 18 19 1a 1b 1c 1d 1e 1f
+</pre><a href="#section-2.2.4-5" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.4-6">And the following is removed:<a href="#section-2.2.4-6" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.4-7">
+<pre>
+- Extension - Server Certificate Type (Raw Public Key) (6 bytes)
+</pre><a href="#section-2.2.4-7" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.4-8">Giving a total of:<a href="#section-2.2.4-8" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.4-9">
+<pre>
+150 + 33 = 183 bytes
+</pre><a href="#section-2.2.4-9" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.4-10">For the flight #2, the following is added:<a href="#section-2.2.4-10" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.4-11">
+<pre>
++ Extension - Server Cashed Information (7 bytes):
+  00 19 LL LL LL LL 01
+</pre><a href="#section-2.2.4-11" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.4-12">And the following is removed:<a href="#section-2.2.4-12" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.4-13">
+<pre>
+- Extension - Server Certificate Type (Raw Public Key) (6 bytes)
+
+- Server Certificate (59 bytes -&gt; 32 bytes)
+</pre><a href="#section-2.2.4-13" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.4-14">Giving a total of:<a href="#section-2.2.4-14" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.4-15">
+<pre>
+373 - 26 = 347 bytes
+</pre><a href="#section-2.2.4-15" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.4-16">A summary of the calculation is given in <a href="#fig-compare3" class="xref">Figure 3</a>.<a href="#section-2.2.4-16" class="pilcrow">¶</a></p>
+<span id="name-comparison-of-message-sizes-i"></span><div id="fig-compare3">
+<figure id="figure-3">
+            <div class="artwork art-text alignCenter" id="section-2.2.4-17.1">
+<pre>
+======================================================================
+Flight                             #1         #2        #3      Total
+----------------------------------------------------------------------
+DTLS 1.3 Cached X.509/RPK + ECDHE 183        347       213       743
+DTLS 1.3 RPK + ECDHE              150        373       213       736
+=======================================================================
+</pre>
+</div>
+<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<a href="#name-comparison-of-message-sizes-i" class="selfRef">Comparison of message sizes in bytes for DTLS 1.3 RPK + ECDH with and without cached X.509</a>
+            </figcaption></figure>
+</div>
+</section>
+</div>
+<div id="resumption">
+<section id="section-2.2.5">
+          <h4 id="name-resumption">
+<a href="#section-2.2.5" class="section-number selfRef">2.2.5. </a><a href="#name-resumption" class="section-name selfRef">Resumption</a>
+          </h4>
+<p id="section-2.2.5-1">To enable resumption, a 4th flight (New Session Ticket) is added to the PSK handshake.<a href="#section-2.2.5-1" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.5-2">
+<pre>
+Record Header - DTLSCiphertext, Full (6 bytes):
+HH ES SS 43 LL LL
+
+  Handshake Header - New Session Ticket (10 bytes):
+  04 LL LL LL SS SS 00 00 00 LL LL LL
+
+    Ticket Lifetime (4 bytes):
+    00 01 02 03
+
+    Ticket Age Add (4 bytes):
+    00 01 02 03
+
+    Ticket Nonce (2 bytes):
+    01 00
+
+    Ticket (6 bytes):
+    00 04 ID ID ID ID
+
+    Extensions (2 bytes):
+    00 00
+
+Auth Tag (8 bytes) // AES-CCM_8:
+00 01 02 03 04 05 06 07
+
+6 + 10 + 4 + 4 + 2 + 6 + 2 + 8 = 42 bytes
+</pre><a href="#section-2.2.5-2" class="pilcrow">¶</a>
+</div>
+<p id="section-2.2.5-3">The initial handshake when resumption is enabled is just a PSK handshake with 134 + 150 + 57 + 42 = 383 bytes.<a href="#section-2.2.5-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="without-connection-id">
+<section id="section-2.2.6">
+          <h4 id="name-without-connection-id">
+<a href="#section-2.2.6" class="section-number selfRef">2.2.6. </a><a href="#name-without-connection-id" class="section-name selfRef">Without Connection ID</a>
+          </h4>
+<p id="section-2.2.6-1">Without a Connection ID the DTLS 1.3 flight sizes changes as follows.<a href="#section-2.2.6-1" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.2.6-2">
+<pre>
+DTLS 1.3 Flight #1:   -6 bytes
+DTLS 1.3 Flight #2:   -7 bytes
+DTLS 1.3 Flight #3:   -1 byte
+</pre><a href="#section-2.2.6-2" class="pilcrow">¶</a>
+</div>
+<span id="name-comparison-of-message-sizes-in"></span><div id="fig-compare4">
+<figure id="figure-4">
+            <div class="artwork art-text alignCenter" id="section-2.2.6-3.1">
+<pre>
+=======================================================================
+Flight                                #1         #2       #3    Total
+-----------------------------------------------------------------------
+DTLS 1.3 RPK + ECDHE (no cid)        144        364       212    722
+DTLS 1.3 PSK + ECDHE (no cid)        178        183        56    417
+DTLS 1.3 PSK (no cid)                128        143        56    327
+=======================================================================
+</pre>
+</div>
+<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
+<a href="#name-comparison-of-message-sizes-in" class="selfRef">Comparison of message sizes in bytes for DTLS 1.3 without Connection ID</a>
+            </figcaption></figure>
+</div>
+</section>
+</div>
+<div id="dtls-raw-public-keys">
+<section id="section-2.2.7">
+          <h4 id="name-dtls-raw-public-keys">
+<a href="#section-2.2.7" class="section-number selfRef">2.2.7. </a><a href="#name-dtls-raw-public-keys" class="section-name selfRef">DTLS Raw Public Keys</a>
+          </h4>
+<p id="section-2.2.7-1">TODO<a href="#section-2.2.7-1" class="pilcrow">¶</a></p>
+<div id="subjectpublickeyinfo-without-point-compression">
+<section id="section-2.2.7.1">
+            <h5 id="name-subjectpublickeyinfo-withou">
+<a href="#section-2.2.7.1" class="section-number selfRef">2.2.7.1. </a><a href="#name-subjectpublickeyinfo-withou" class="section-name selfRef">SubjectPublicKeyInfo without point compression</a>
+            </h5>
+<div class="artwork art-text alignLeft" id="section-2.2.7.1-1">
+<pre>
+0x30 // Sequence
+0x59 // Size 89
+
+0x30 // Sequence
+0x13 // Size 19
+0x06 0x07 0x2A 0x86 0x48 0xCE 0x3D 0x02 0x01
+     // OID 1.2.840.10045.2.1 (ecPublicKey)
+0x06 0x08 0x2A 0x86 0x48 0xCE 0x3D 0x03 0x01 0x07
+     // OID 1.2.840.10045.3.1.7 (secp256r1)
+
+0x03 // Bit string
+0x42 // Size 66
+0x00 // Unused bits 0
+0x04 // Uncompressed
+...... 64 bytes X and Y
+
+Total of 91 bytes
+</pre><a href="#section-2.2.7.1-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="subjectpublickeyinfo-with-point-compression">
+<section id="section-2.2.7.2">
+            <h5 id="name-subjectpublickeyinfo-with-p">
+<a href="#section-2.2.7.2" class="section-number selfRef">2.2.7.2. </a><a href="#name-subjectpublickeyinfo-with-p" class="section-name selfRef">SubjectPublicKeyInfo with point compression</a>
+            </h5>
+<div class="artwork art-text alignLeft" id="section-2.2.7.2-1">
+<pre>
+0x30 // Sequence
+0x59 // Size 89
+
+0x30 // Sequence
+0x13 // Size 19
+0x06 0x07 0x2A 0x86 0x48 0xCE 0x3D 0x02 0x01
+     // OID 1.2.840.10045.2.1 (ecPublicKey)
+0x06 0x08 0x2A 0x86 0x48 0xCE 0x3D 0x03 0x01 0x07
+     // OID 1.2.840.10045.3.1.7 (secp256r1)
+
+0x03 // Bit string
+0x42 // Size 66
+0x00 // Unused bits 0
+0x03 // Compressed
+...... 32 bytes X
+
+Total of 59 bytes
+</pre><a href="#section-2.2.7.2-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="tls-13">
+<section id="section-2.3">
+        <h3 id="name-tls-13">
+<a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-tls-13" class="section-name selfRef">TLS 1.3</a>
+        </h3>
+<p id="section-2.3-1">In this section, the message sizes are calculated for TLS 1.3. The major changes compared to DTLS 1.3 are that the record header is smaller, the handshake headers is smaller, and that Connection ID is not supported.  Recently, additional work has taken shape with the goal to further reduce overhead for TLS 1.3 (see <span>[<a href="#I-D.rescorla-tls-ctls" class="xref">I-D.rescorla-tls-ctls</a>]</span>).<a href="#section-2.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.3-2">TLS Assumptions:<a href="#section-2.3-2" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-2.3-3.1">Minimum number of algorithms and cipher suites offered<a href="#section-2.3-3.1" class="pilcrow">¶</a>
+</li>
+<li id="section-2.3-3.2">Curve25519, ECDSA with P-256, AES-CCM_8, SHA-256<a href="#section-2.3-3.2" class="pilcrow">¶</a>
+</li>
+<li id="section-2.3-3.3">Length of key identifiers: 1 bytes<a href="#section-2.3-3.3" class="pilcrow">¶</a>
+</li>
+<li id="section-2.3-3.4">TLS RPK with point compression (saves 32 bytes)<a href="#section-2.3-3.4" class="pilcrow">¶</a>
+</li>
+<li id="section-2.3-3.5">Only mandatory TLS extensions<a href="#section-2.3-3.5" class="pilcrow">¶</a>
+</li>
+</ul>
+<p id="section-2.3-4">For the PSK calculations, <span>[<a href="#Ulfheim-TLS13" class="xref">Ulfheim-TLS13</a>]</span> was a useful resource, while for RPK calculations we followed the work of  <span>[<a href="#IoT-Cert" class="xref">IoT-Cert</a>]</span>.<a href="#section-2.3-4" class="pilcrow">¶</a></p>
+<div id="message-sizes-rpk-ecdhe">
+<section id="section-2.3.1">
+          <h4 id="name-message-sizes-rpk-ecdhe-2">
+<a href="#section-2.3.1" class="section-number selfRef">2.3.1. </a><a href="#name-message-sizes-rpk-ecdhe-2" class="section-name selfRef">Message Sizes RPK + ECDHE</a>
+          </h4>
+<div id="tls13f1rpk">
+<section id="section-2.3.1.1">
+            <h5 id="name-flight_1-4">
+<a href="#section-2.3.1.1" class="section-number selfRef">2.3.1.1. </a><a href="#name-flight_1-4" class="section-name selfRef">flight_1</a>
+            </h5>
+<div class="artwork art-text alignLeft" id="section-2.3.1.1-1">
+<pre>
+Record Header - TLSPlaintext (5 bytes):
+16 03 03 LL LL
+
+  Handshake Header - Client Hello (4 bytes):
+  01 LL LL LL
+
+    Legacy Version (2 bytes):
+    03 03
+
+    Client Random (32 bytes):
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
+
+    Legacy Session ID (1 bytes):
+    00
+
+    Cipher Suites (TLS_AES_128_CCM_8_SHA256) (4 bytes):
+    00 02 13 05
+
+    Compression Methods (null) (2 bytes):
+    01 00
+
+    Extensions Length (2 bytes):
+    LL LL
+
+      Extension - Supported Groups (x25519) (8 bytes):
+      00 0a 00 04 00 02 00 1d
+
+      Extension - Signature Algorithms (ecdsa_secp256r1_sha256) (8 bytes):
+      00 0d 00 04 00 02 08 07
+
+      Extension - Key Share (42 bytes):
+      00 33 00 26 00 24 00 1d 00 20
+      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+      16 17 18 19 1a 1b 1c 1d 1e 1f
+
+      Extension - Supported Versions (1.3) (7 bytes):
+      00 2b 00 03 02 03 04
+
+      Extension - Client Certificate Type (Raw Public Key) (6 bytes):
+      00 13 00 01 01 02
+
+      Extension - Server Certificate Type (Raw Public Key) (6 bytes):
+      00 14 00 01 01 02
+
+5 + 4 + 2 + 32 + 1 + 4 + 2 + 2 + 8 + 8 + 42 + 7 + 6 + 6 = 129 bytes
+</pre><a href="#section-2.3.1.1-1" class="pilcrow">¶</a>
+</div>
+<p id="section-2.3.1.1-2">TLS 1.3 RPK + ECDHE flight_1 gives 129 bytes of overhead.<a href="#section-2.3.1.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="tls13f2rpk">
+<section id="section-2.3.1.2">
+            <h5 id="name-flight_2-4">
+<a href="#section-2.3.1.2" class="section-number selfRef">2.3.1.2. </a><a href="#name-flight_2-4" class="section-name selfRef">flight_2</a>
+            </h5>
+<div class="artwork art-text alignLeft" id="section-2.3.1.2-1">
+<pre>
+Record Header - TLSPlaintext (5 bytes):
+16 03 03 LL LL
+
+  Handshake Header - Server Hello (4 bytes):
+  02 LL LL LL
+
+    Legacy Version (2 bytes):
+    fe fd
+
+    Server Random (32 bytes):
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
+
+    Legacy Session ID (1 bytes):
+    00
+
+    Cipher Suite (TLS_AES_128_CCM_8_SHA256) (2 bytes):
+    13 05
+
+    Compression Method (null) (1 bytes):
+    00
+
+    Extensions Length (2 bytes):
+    LL LL
+
+      Extension - Key Share (40 bytes):
+      00 33 00 24 00 1d 00 20
+      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+      16 17 18 19 1a 1b 1c 1d 1e 1f
+
+      Extension - Supported Versions (1.3) (6 bytes):
+      00 2b 00 02 03 04
+
+Record Header - TLSCiphertext (5 bytes):
+17 03 03 LL LL
+
+  Handshake Header - Encrypted Extensions (4 bytes):
+  08 LL LL LL
+
+    Extensions Length (2 bytes):
+    LL LL
+
+      Extension - Client Certificate Type (Raw Public Key) (6 bytes):
+      00 13 00 01 01 02
+
+      Extension - Server Certificate Type (Raw Public Key) (6 bytes):
+      00 14 00 01 01 02
+
+  Handshake Header - Certificate Request (4 bytes):
+  0d LL LL LL
+
+    Request Context (1 bytes):
+    00
+
+    Extensions Length (2 bytes):
+    LL LL
+
+      Extension - Signature Algorithms (ecdsa_secp256r1_sha256) (8 bytes):
+      00 0d 00 04 00 02 08 07
+
+  Handshake Header - Certificate (4 bytes):
+  0b LL LL LL
+
+    Request Context (1 bytes):
+    00
+
+    Certificate List Length (3 bytes):
+    LL LL LL
+
+    Certificate Length (3 bytes):
+    LL LL LL
+
+    Certificate (59 bytes) // Point compression
+    ....
+
+    Certificate Extensions (2 bytes):
+    00 00
+
+  Handshake Header - Certificate Verify (4 bytes):
+  0f LL LL LL
+
+    Signature  (68 bytes):
+    ZZ ZZ 00 40 ....
+
+  Handshake Header - Finished (4 bytes):
+  14 LL LL LL
+
+    Verify Data (32 bytes):
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
+
+  Record Type (1 byte):
+  16
+
+Auth Tag (8 bytes):
+e0 8b 0e 45 5a 35 0a e5
+
+5 + 90 + 5 + 18 + 15 + 72 + 72 + 36 + 1 + 8 = 322 bytes
+</pre><a href="#section-2.3.1.2-1" class="pilcrow">¶</a>
+</div>
+<p id="section-2.3.1.2-2">TLS 1.3 RPK + ECDHE flight_2 gives 322 bytes of overhead.<a href="#section-2.3.1.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="tls13f3rpk">
+<section id="section-2.3.1.3">
+            <h5 id="name-flight_3-4">
+<a href="#section-2.3.1.3" class="section-number selfRef">2.3.1.3. </a><a href="#name-flight_3-4" class="section-name selfRef">flight_3</a>
+            </h5>
+<div class="artwork art-text alignLeft" id="section-2.3.1.3-1">
+<pre>
+Record Header - TLSCiphertext (5 bytes):
+17 03 03 LL LL
+
+  Handshake Header - Certificate (4 bytes):
+  0b LL LL LL
+
+    Request Context (1 bytes):
+    00
+
+    Certificate List Length (3 bytes):
+    LL LL LL
+
+
+    Certificate Length (3 bytes):
+    LL LL LL
+
+    Certificate (59 bytes) // Point compression
+    ....
+
+    Certificate Extensions (2 bytes):
+    00 00
+
+  Handshake Header - Certificate Verify (4 bytes):
+  0f LL LL LL
+
+    Signature  (68 bytes):
+    04 03 LL LL //ecdsa_secp256r1_sha256
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f 00 01 02 03 04 05 06 07 08 09 0a 0b
+    0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+
+  Handshake Header - Finished (4 bytes):
+  14 LL LL LL
+
+    Verify Data (32 bytes) // SHA-256:
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
+
+  Record Type (1 byte)
+  16
+
+Auth Tag (8 bytes) // AES-CCM_8:
+00 01 02 03 04 05 06 07
+
+5 + 72 + 72 + 36 + 1 + 8 = 194 bytes
+</pre><a href="#section-2.3.1.3-1" class="pilcrow">¶</a>
+</div>
+<p id="section-2.3.1.3-2">TLS 1.3 RPK + ECDHE flight_3 gives 194 bytes of overhead.<a href="#section-2.3.1.3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="message-sizes-psk-ecdhe-1">
+<section id="section-2.3.2">
+          <h4 id="name-message-sizes-psk-ecdhe-2">
+<a href="#section-2.3.2" class="section-number selfRef">2.3.2. </a><a href="#name-message-sizes-psk-ecdhe-2" class="section-name selfRef">Message Sizes PSK + ECDHE</a>
+          </h4>
+<div id="tls13f1pskecdhe">
+<section id="section-2.3.2.1">
+            <h5 id="name-flight_1-5">
+<a href="#section-2.3.2.1" class="section-number selfRef">2.3.2.1. </a><a href="#name-flight_1-5" class="section-name selfRef">flight_1</a>
+            </h5>
+<p id="section-2.3.2.1-1">The differences in overhead compared to <a href="#tls13f3rpk" class="xref">Section 2.3.1.3</a> are:<a href="#section-2.3.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.3.2.1-2">The following is added:<a href="#section-2.3.2.1-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.3.2.1-3">
+<pre>
++ Extension - PSK Key Exchange Modes (6 bytes):
+  00 2d 00 02 01 01
+
++ Extension - Pre Shared Key (48 bytes):
+  00 29 00 2F
+  00 0a 00 01 ID 00 00 00 00
+  00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+  14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+</pre><a href="#section-2.3.2.1-3" class="pilcrow">¶</a>
+</div>
+<p id="section-2.3.2.1-4">The following is removed:<a href="#section-2.3.2.1-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.3.2.1-5">
+<pre>
+- Extension - Signature Algorithms (ecdsa_secp256r1_sha256) (8 bytes)
+
+- Extension - Client Certificate Type (Raw Public Key) (6 bytes)
+
+- Extension - Server Certificate Type (Raw Public Key) (6 bytes)
+</pre><a href="#section-2.3.2.1-5" class="pilcrow">¶</a>
+</div>
+<p id="section-2.3.2.1-6">In total:<a href="#section-2.3.2.1-6" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.3.2.1-7">
+<pre>
+129 + 6 + 48 - 8 - 6 - 6 = 163 bytes
+</pre><a href="#section-2.3.2.1-7" class="pilcrow">¶</a>
+</div>
+<p id="section-2.3.2.1-8">TLS 1.3 PSK + ECDHE flight_1 gives 166 bytes of overhead.<a href="#section-2.3.2.1-8" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="tls13f2pskecdhe">
+<section id="section-2.3.2.2">
+            <h5 id="name-flight_2-5">
+<a href="#section-2.3.2.2" class="section-number selfRef">2.3.2.2. </a><a href="#name-flight_2-5" class="section-name selfRef">flight_2</a>
+            </h5>
+<p id="section-2.3.2.2-1">The differences in overhead compared to <a href="#tls13f2rpk" class="xref">Section 2.3.1.2</a> are:<a href="#section-2.3.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.3.2.2-2">The following is added:<a href="#section-2.3.2.2-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.3.2.2-3">
+<pre>
++ Extension - Pre Shared Key (6 bytes)
+  00 29 00 02 00 00
+</pre><a href="#section-2.3.2.2-3" class="pilcrow">¶</a>
+</div>
+<p id="section-2.3.2.2-4">The following is removed:<a href="#section-2.3.2.2-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.3.2.2-5">
+<pre>
+- Handshake Message Certificate (72 bytes)
+
+- Handshake Message CertificateVerify (72 bytes)
+
+- Handshake Message CertificateRequest (15 bytes)
+
+- Extension - Client Certificate Type (Raw Public Key) (6 bytes)
+
+- Extension - Server Certificate Type (Raw Public Key) (6 bytes)
+</pre><a href="#section-2.3.2.2-5" class="pilcrow">¶</a>
+</div>
+<p id="section-2.3.2.2-6">In total:<a href="#section-2.3.2.2-6" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.3.2.2-7">
+<pre>
+322 - 72 - 72 - 15 - 6 - 6  + 6 = 157 bytes
+</pre><a href="#section-2.3.2.2-7" class="pilcrow">¶</a>
+</div>
+<p id="section-2.3.2.2-8">TLS 1.3 PSK + ECDHE flight_2 gives 157 bytes of overhead.<a href="#section-2.3.2.2-8" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="tls13f3pskecdhe">
+<section id="section-2.3.2.3">
+            <h5 id="name-flight_3-5">
+<a href="#section-2.3.2.3" class="section-number selfRef">2.3.2.3. </a><a href="#name-flight_3-5" class="section-name selfRef">flight_3</a>
+            </h5>
+<p id="section-2.3.2.3-1">The differences in overhead compared to <a href="#tls13f3rpk" class="xref">Section 2.3.1.3</a> are:<a href="#section-2.3.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.3.2.3-2">The following is removed:<a href="#section-2.3.2.3-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.3.2.3-3">
+<pre>
+- Handshake Message Certificate (72 bytes)
+
+- Handshake Message Certificate Verify (72 bytes)
+</pre><a href="#section-2.3.2.3-3" class="pilcrow">¶</a>
+</div>
+<p id="section-2.3.2.3-4">In total:<a href="#section-2.3.2.3-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.3.2.3-5">
+<pre>
+194 - 72 - 72 = 50 bytes
+</pre><a href="#section-2.3.2.3-5" class="pilcrow">¶</a>
+</div>
+<p id="section-2.3.2.3-6">TLS 1.3 PSK + ECDHE flight_3 gives 50 bytes of overhead.<a href="#section-2.3.2.3-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="message-sizes-psk-1">
+<section id="section-2.3.3">
+          <h4 id="name-message-sizes-psk-2">
+<a href="#section-2.3.3" class="section-number selfRef">2.3.3. </a><a href="#name-message-sizes-psk-2" class="section-name selfRef">Message Sizes PSK</a>
+          </h4>
+<div id="tls13f1psk">
+<section id="section-2.3.3.1">
+            <h5 id="name-flight_1-6">
+<a href="#section-2.3.3.1" class="section-number selfRef">2.3.3.1. </a><a href="#name-flight_1-6" class="section-name selfRef">flight_1</a>
+            </h5>
+<p id="section-2.3.3.1-1">The differences in overhead compared to <a href="#tls13f1pskecdhe" class="xref">Section 2.3.2.1</a> are:<a href="#section-2.3.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.3.3.1-2">The following is removed:<a href="#section-2.3.3.1-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.3.3.1-3">
+<pre>
+- Extension - Supported Groups (x25519) (8 bytes)
+
+- Extension - Key Share (42 bytes)
+</pre><a href="#section-2.3.3.1-3" class="pilcrow">¶</a>
+</div>
+<p id="section-2.3.3.1-4">In total:<a href="#section-2.3.3.1-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.3.3.1-5">
+<pre>
+163 - 8 - 42 = 113 bytes
+</pre><a href="#section-2.3.3.1-5" class="pilcrow">¶</a>
+</div>
+<p id="section-2.3.3.1-6">TLS 1.3 PSK flight_1 gives 116 bytes of overhead.<a href="#section-2.3.3.1-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="tls13f2psk">
+<section id="section-2.3.3.2">
+            <h5 id="name-flight_2-6">
+<a href="#section-2.3.3.2" class="section-number selfRef">2.3.3.2. </a><a href="#name-flight_2-6" class="section-name selfRef">flight_2</a>
+            </h5>
+<p id="section-2.3.3.2-1">The differences in overhead compared to <a href="#tls13f2pskecdhe" class="xref">Section 2.3.2.2</a> are:<a href="#section-2.3.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.3.3.2-2">The following is removed:<a href="#section-2.3.3.2-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.3.3.2-3">
+<pre>
+- Extension - Key Share (40 bytes)
+</pre><a href="#section-2.3.3.2-3" class="pilcrow">¶</a>
+</div>
+<p id="section-2.3.3.2-4">In total:<a href="#section-2.3.3.2-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.3.3.2-5">
+<pre>
+157 - 40 = 117 bytes
+</pre><a href="#section-2.3.3.2-5" class="pilcrow">¶</a>
+</div>
+<p id="section-2.3.3.2-6">TLS 1.3 PSK flight_2 gives 117 bytes of overhead.<a href="#section-2.3.3.2-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="tls13f3psk">
+<section id="section-2.3.3.3">
+            <h5 id="name-flight_3-6">
+<a href="#section-2.3.3.3" class="section-number selfRef">2.3.3.3. </a><a href="#name-flight_3-6" class="section-name selfRef">flight_3</a>
+            </h5>
+<p id="section-2.3.3.3-1">There are no differences in overhead compared to <a href="#tls13f3pskecdhe" class="xref">Section 2.3.2.3</a>.<a href="#section-2.3.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.3.3.3-2">TLS 1.3 PSK flight_3 gives 57 bytes of overhead.<a href="#section-2.3.3.3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="edhoc">
+<section id="section-2.4">
+        <h3 id="name-edhoc">
+<a href="#section-2.4" class="section-number selfRef">2.4. </a><a href="#name-edhoc" class="section-name selfRef">EDHOC</a>
+        </h3>
+<p id="section-2.4-1">This section gives an estimate of the message sizes of EDHOC with different authentication methods. All examples are given in CBOR diagnostic notation and hexadecimal.<a href="#section-2.4-1" class="pilcrow">¶</a></p>
+<div id="message-sizes-rpk">
+<section id="section-2.4.1">
+          <h4 id="name-message-sizes-rpk">
+<a href="#section-2.4.1" class="section-number selfRef">2.4.1. </a><a href="#name-message-sizes-rpk" class="section-name selfRef">Message Sizes RPK</a>
+          </h4>
+<div id="message1">
+<section id="section-2.4.1.1">
+            <h5 id="name-message_1">
+<a href="#section-2.4.1.1" class="section-number selfRef">2.4.1.1. </a><a href="#name-message_1" class="section-name selfRef">message_1</a>
+            </h5>
+<div class="artwork art-text alignLeft" id="section-2.4.1.1-1">
+<pre>
+message_1 = (
+  13,
+  0,
+  h'8D3EF56D1B750A4351D68AC250A0E883790EFC80A538A444EE9E2B57E244
+    1A7C',
+  -2
+)
+</pre><a href="#section-2.4.1.1-1" class="pilcrow">¶</a>
+</div>
+<div class="artwork art-text alignLeft" id="section-2.4.1.1-2">
+<pre>
+message_1 (37 bytes):
+0d 00 58 20 8d 3e f5 6d 1b 75 0a 43 51 d6 8a c2 50 a0 e8 83
+79 0e fc 80  a5 38 a4 44 ee 9e 2b 57 e2 44 1a 7c 21
+</pre><a href="#section-2.4.1.1-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="message2">
+<section id="section-2.4.1.2">
+            <h5 id="name-message_2">
+<a href="#section-2.4.1.2" class="section-number selfRef">2.4.1.2. </a><a href="#name-message_2" class="section-name selfRef">message_2</a>
+            </h5>
+<div class="artwork art-text alignLeft" id="section-2.4.1.2-1">
+<pre>
+message_2 = (
+  h'52FBA0BDC8D953DD86CE1AB2FD7C05A4658C7C30AFDBFC3301047069451B
+    AF35',
+  8,
+  h'DCF6FE9C524C22454DEB'
+)
+</pre><a href="#section-2.4.1.2-1" class="pilcrow">¶</a>
+</div>
+<div class="artwork art-text alignLeft" id="section-2.4.1.2-2">
+<pre>
+message_2 (46 bytes):
+58 20 52 fb a0 bd c8 d9 53 dd 86 ce 1a b2 fd 7c 05 a4 65 8c
+7c 30 af db fc 33 01 04 70 69 45 1b af 35 08 4a dc f6 fe 9c
+52 4c 22 45 4d eb
+</pre><a href="#section-2.4.1.2-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="message3">
+<section id="section-2.4.1.3">
+            <h5 id="name-message_3">
+<a href="#section-2.4.1.3" class="section-number selfRef">2.4.1.3. </a><a href="#name-message_3" class="section-name selfRef">message_3</a>
+            </h5>
+<div class="artwork art-text alignLeft" id="section-2.4.1.3-1">
+<pre>
+message_3 = (
+  8,
+  h'53C3991999A5FFB86921E99B607C067770E0'
+)
+</pre><a href="#section-2.4.1.3-1" class="pilcrow">¶</a>
+</div>
+<div class="artwork art-text alignLeft" id="section-2.4.1.3-2">
+<pre>
+message_3 (20 bytes):
+08 52 53 c3 99 19 99 a5 ff b8 69 21 e9 9b 60 7c 06 77 70 e0
+</pre><a href="#section-2.4.1.3-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="message-sizes-psk-2">
+<section id="section-2.4.2">
+          <h4 id="name-message-sizes-psk-3">
+<a href="#section-2.4.2" class="section-number selfRef">2.4.2. </a><a href="#name-message-sizes-psk-3" class="section-name selfRef">Message Sizes PSK</a>
+        </h4>
+</section>
+</div>
+<div id="message1-1">
+<section id="section-2.4.3">
+          <h4 id="name-message_1-2">
+<a href="#section-2.4.3" class="section-number selfRef">2.4.3. </a><a href="#name-message_1-2" class="section-name selfRef">message_1</a>
+          </h4>
+<div class="artwork art-text alignLeft" id="section-2.4.3-1">
+<pre>
+message_1 = (
+  17,
+  0,
+  h'3662C4A71D624E8A4D9DFF879ABC6E2A0E745F82F497F7AFBEBFF3B01A8F
+    AB57',
+  14,
+  -17
+)
+</pre><a href="#section-2.4.3-1" class="pilcrow">¶</a>
+</div>
+<div class="artwork art-text alignLeft" id="section-2.4.3-2">
+<pre>
+message_1 (38 bytes):
+11 00 58 20 36 62 c4 a7 1d 62 4e 8a 4d 9d ff 87 9a bc 6e 2a
+0e 74 5f 82 f4 97 f7 af be bf f3 b0 1a 8f ab 57 0e 30
+</pre><a href="#section-2.4.3-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="message2-1">
+<section id="section-2.4.4">
+          <h4 id="name-message_2-2">
+<a href="#section-2.4.4" class="section-number selfRef">2.4.4. </a><a href="#name-message_2-2" class="section-name selfRef">message_2</a>
+          </h4>
+<div class="artwork art-text alignLeft" id="section-2.4.4-1">
+<pre>
+message_2 = (
+  h'A3967F6CF99B6DDC7E7C219D0D119A383F754001DF33515971EC6C842553
+    B776',
+  -24,
+  h'4F355451E069226F'
+)
+</pre><a href="#section-2.4.4-1" class="pilcrow">¶</a>
+</div>
+<div class="artwork art-text alignLeft" id="section-2.4.4-2">
+<pre>
+message_2 (44 bytes):
+58 20 a3 96 7f 6c f9 9b 6d dc 7e 7c 21 9d 0d 11 9a 38 3f 75
+40 01 df 33 51 59 71 ec 6c 84 25 53 b7 76 37 48 4f 35 54 51
+e0 69 22 6f
+</pre><a href="#section-2.4.4-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="message3-1">
+<section id="section-2.4.5">
+          <h4 id="name-message_3-2">
+<a href="#section-2.4.5" class="section-number selfRef">2.4.5. </a><a href="#name-message_3-2" class="section-name selfRef">message_3</a>
+          </h4>
+<div class="artwork art-text alignLeft" id="section-2.4.5-1">
+<pre>
+message_3 = (
+  -24,
+  h'763BD2F3C10F0D45'
+)
+</pre><a href="#section-2.4.5-1" class="pilcrow">¶</a>
+</div>
+<div class="artwork art-text alignLeft" id="section-2.4.5-2">
+<pre>
+message_3 (10 bytes):
+37 48 76 3b d2 f3 c1 0f 0d 45
+</pre><a href="#section-2.4.5-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="summary">
+<section id="section-2.4.6">
+          <h4 id="name-summary-2">
+<a href="#section-2.4.6" class="section-number selfRef">2.4.6. </a><a href="#name-summary-2" class="section-name selfRef">Summary</a>
+          </h4>
+<p id="section-2.4.6-1">The previous examples of typical message sizes are summarized in <a href="#fig-summary" class="xref">Figure 5</a>.<a href="#section-2.4.6-1" class="pilcrow">¶</a></p>
+<span id="name-typical-message-sizes-in-by"></span><div id="fig-summary">
+<figure id="figure-5">
+            <div class="artwork art-text alignCenter" id="section-2.4.6-2.1">
+<pre>
+=====================================================================
+               PSK       RPK       x5t     x5chain
+---------------------------------------------------------------------
+message_1       38        37        37        37
+message_2       44        46       117       110 + Certificate chain
+message_3       10        20        91        84 + Certificate chain
+---------------------------------------------------------------------
+Total           92       103       245       231 + Certificate chains
+=====================================================================
+</pre>
+</div>
+<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<a href="#name-typical-message-sizes-in-by" class="selfRef">Typical message sizes in bytes</a>
+            </figcaption></figure>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="conclusion">
+<section id="section-2.5">
+        <h3 id="name-conclusion">
+<a href="#section-2.5" class="section-number selfRef">2.5. </a><a href="#name-conclusion" class="section-name selfRef">Conclusion</a>
+        </h3>
+<p id="section-2.5-1">To do a fair comparison, one has to choose a specific deployment and look at the topology, the whole protocol stack, frame sizes (e.g. 51 or 128 bytes), how and where in the protocol stack fragmentation is done, and the expected packet loss. Note that the number of byte in each frame that is available for the key exchange protocol may depend on the underlying protocol layers as well as the number of hops in multi-hop networks. The packet loss depends may depend on how many other devices that are transmitting at the same time, and may increase during network formation.  The total overhead will be larger due to mechanisms for fragmentation, retransmission, and packet ordering.  The overhead of fragmentation is roughly proportional to the number of fragments, while the expected overhead due to retransmission in noisy environments is a superlinear function of the flight sizes.<a href="#section-2.5-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="record">
+<section id="section-3">
+      <h2 id="name-overhead-for-protection-of-">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-overhead-for-protection-of-" class="section-name selfRef">Overhead for Protection of Application Data</a>
+      </h2>
+<p id="section-3-1">To enable comparison, all the overhead calculations in this section use AES-CCM with a tag length of 8 bytes (e.g.  AES_128_CCM_8 or AES-CCM-16-64), a plaintext of 6 bytes, and the sequence number '05'. This follows the example in <span>[<a href="#RFC7400" class="xref">RFC7400</a>]</span>, Figure 16.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">Note that the compressed overhead calculations for DLTS 1.2, DTLS 1.3, TLS 1.2 and TLS 1.3 are dependent on the parameters epoch, sequence number, and length, and all the overhead calculations are dependent on the parameter Connection ID when used. Note that the OSCORE overhead calculations are dependent on the CoAP option numbers, as well as the length of the OSCORE parameters Sender ID and Sequence Number. The following calculations are only examples.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3"><a href="#summ-record" class="xref">Section 3.1</a> gives a short summary of the message overhead based on different parameters and some assumptions. The following sections detail the assumptions and the calculations.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<div id="summ-record">
+<section id="section-3.1">
+        <h3 id="name-summary-3">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-summary-3" class="section-name selfRef">Summary</a>
+        </h3>
+<p id="section-3.1-1">The DTLS overhead is dependent on the parameter Connection ID. The following overheads apply for all Connection IDs with the same length.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">The compression overhead (GHC) is dependent on the parameters epoch, sequence number, Connection ID, and length (where applicable). The following overheads should be representative for sequence numbers and Connection IDs with the same length.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1-3">The OSCORE overhead is dependent on the included CoAP Option numbers as well as the length of the OSCORE parameters Sender ID and sequence number. The following overheads apply for all sequence numbers and Sender IDs with the same length.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<span id="name-overhead-in-bytes-as-a-func"></span><div id="fig-overhead">
+<figure id="figure-6">
+          <div class="artwork art-text alignCenter" id="section-3.1-4.1">
+<pre>
+Sequence Number                '05'       '1005'     '100005'
+-------------------------------------------------------------
+DTLS 1.2                        29          29          29
+DTLS 1.3                        11          12          12
+-------------------------------------------------------------
+DTLS 1.2 (GHC)                  16          16          16
+DTLS 1.3 (GHC)                  12          13          13
+-------------------------------------------------------------
+TLS  1.2                        21          21          21
+TLS  1.3                        14          14          14
+-------------------------------------------------------------
+TLS  1.2 (GHC)                  17          18          19
+TLS  1.3 (GHC)                  15          16          17
+-------------------------------------------------------------
+OSCORE request                  13          14          15
+OSCORE response                 11          11          11
+</pre>
+</div>
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<a href="#name-overhead-in-bytes-as-a-func" class="selfRef">Overhead in bytes as a function of sequence number       (Connection/Sender ID = '')</a>
+          </figcaption></figure>
+</div>
+<span id="name-overhead-in-bytes-as-a-funct"></span><div id="fig-overhead2">
+<figure id="figure-7">
+          <div class="artwork art-text alignCenter" id="section-3.1-5.1">
+<pre>
+Connection/Sender ID            ''         '42'       '4002'
+-------------------------------------------------------------
+DTLS 1.2                        29          30          31
+DTLS 1.3                        11          12          13
+-------------------------------------------------------------
+DTLS 1.2 (GHC)                  16          17          18
+DTLS 1.3 (GHC)                  12          13          14
+-------------------------------------------------------------
+OSCORE request                  13          14          15
+OSCORE response                 11          11          11
+</pre>
+</div>
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<a href="#name-overhead-in-bytes-as-a-funct" class="selfRef">Overhead in bytes as a function of Connection/Sender ID       (Sequence Number = '05')</a>
+          </figcaption></figure>
+</div>
+<span id="name-overhead-excluding-icv-in-b"></span><div id="fig-overhead3">
+<figure id="figure-8">
+          <div class="artwork art-text alignCenter" id="section-3.1-6.1">
+<pre>
+Protocol                     Overhead      Overhead (GHC)
+-------------------------------------------------------------
+DTLS 1.2                        21               8
+DTLS 1.3                         3               4
+-------------------------------------------------------------
+TLS  1.2                        13               9
+TLS  1.3                         6               7
+-------------------------------------------------------------
+OSCORE request                   5
+OSCORE response                  3
+</pre>
+</div>
+<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
+<a href="#name-overhead-excluding-icv-in-b" class="selfRef">Overhead (excluding ICV) in bytes                   (Connection/Sender ID = '', Sequence Number = '05')</a>
+          </figcaption></figure>
+</div>
+</section>
+</div>
+<div id="dtls-12">
+<section id="section-3.2">
+        <h3 id="name-dtls-12">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-dtls-12" class="section-name selfRef">DTLS 1.2</a>
+        </h3>
+<div id="dtls-12-1">
+<section id="section-3.2.1">
+          <h4 id="name-dtls-12-2">
+<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-dtls-12-2" class="section-name selfRef">DTLS 1.2</a>
+          </h4>
+<p id="section-3.2.1-1">This section analyzes the overhead of DTLS 1.2 <span>[<a href="#RFC6347" class="xref">RFC6347</a>]</span>. The nonce follow the strict profiling given in <span>[<a href="#RFC7925" class="xref">RFC7925</a>]</span>.  This example is taken directly from <span>[<a href="#RFC7400" class="xref">RFC7400</a>]</span>, Figure 16.<a href="#section-3.2.1-1" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3.2.1-2">
+<pre>
+DTLS 1.2 record layer (35 bytes, 29 bytes overhead):
+17 fe fd 00 01 00 00 00 00 00 05 00 16 00 01 00
+00 00 00 00 05 ae a0 15 56 67 92 4d ff 8a 24 e4
+cb 35 b9
+
+Content type:
+17
+Version:
+fe fd
+Epoch:
+00 01
+Sequence number:
+00 00 00 00 00 05
+Length:
+00 16
+Nonce:
+00 01 00 00 00 00 00 05
+Ciphertext:
+ae a0 15 56 67 92
+ICV:
+4d ff 8a 24 e4 cb 35 b9
+</pre><a href="#section-3.2.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-3.2.1-3">DTLS 1.2 gives 29 bytes overhead.<a href="#section-3.2.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="dtls-12-with-6lowpan-ghc">
+<section id="section-3.2.2">
+          <h4 id="name-dtls-12-with-6lowpan-ghc">
+<a href="#section-3.2.2" class="section-number selfRef">3.2.2. </a><a href="#name-dtls-12-with-6lowpan-ghc" class="section-name selfRef">DTLS 1.2 with 6LoWPAN-GHC</a>
+          </h4>
+<p id="section-3.2.2-1">This section analyzes the overhead of DTLS 1.2 <span>[<a href="#RFC6347" class="xref">RFC6347</a>]</span> when compressed with 6LoWPAN-GHC <span>[<a href="#RFC7400" class="xref">RFC7400</a>]</span>. The compression was done with <span>[<a href="#OlegHahm-ghc" class="xref">OlegHahm-ghc</a>]</span>.<a href="#section-3.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.2-2">Note that the sequence number '01' used in <span>[<a href="#RFC7400" class="xref">RFC7400</a>]</span>, Figure 15 gives an exceptionally small overhead that is not representative.<a href="#section-3.2.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.2.2-3">Note that this header compression is not available when DTLS is used over transports that do not use 6LoWPAN together with 6LoWPAN-GHC.<a href="#section-3.2.2-3" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3.2.2-4">
+<pre>
+Compressed DTLS 1.2 record layer (22 bytes, 16 bytes overhead):
+b0 c3 03 05 00 16 f2 0e ae a0 15 56 67 92 4d ff
+8a 24 e4 cb 35 b9
+
+Compressed DTLS 1.2 record layer header and nonce:
+b0 c3 03 05 00 16 f2 0e
+Ciphertext:
+ae a0 15 56 67 92
+ICV:
+4d ff 8a 24 e4 cb 35 b9
+</pre><a href="#section-3.2.2-4" class="pilcrow">¶</a>
+</div>
+<p id="section-3.2.2-5">When compressed with 6LoWPAN-GHC, DTLS 1.2 with the above parameters (epoch, sequence number, length) gives 16 bytes overhead.<a href="#section-3.2.2-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="dtls-12-with-connection-id">
+<section id="section-3.2.3">
+          <h4 id="name-dtls-12-with-connection-id">
+<a href="#section-3.2.3" class="section-number selfRef">3.2.3. </a><a href="#name-dtls-12-with-connection-id" class="section-name selfRef">DTLS 1.2 with Connection ID</a>
+          </h4>
+<p id="section-3.2.3-1">This section analyzes the overhead of DTLS 1.2  <span>[<a href="#RFC6347" class="xref">RFC6347</a>]</span> with Connection ID <span>[<a href="#I-D.ietf-tls-dtls-connection-id" class="xref">I-D.ietf-tls-dtls-connection-id</a>]</span>. The overhead calculations in this section uses Connection ID = '42'. DTLS recored layer with a Connection ID = '' (the empty string) is equal to DTLS without Connection ID.<a href="#section-3.2.3-1" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3.2.3-2">
+<pre>
+DTLS 1.2 record layer (36 bytes, 30 bytes overhead):
+17 fe fd 00 01 00 00 00 00 00 05 42 00 16 00 01
+00 00 00 00 00 05 ae a0 15 56 67 92 4d ff 8a 24
+e4 cb 35 b9
+
+Content type:
+17
+Version:
+fe fd
+Epoch:
+00 01
+Sequence number:
+00 00 00 00 00 05
+Connection ID:
+42
+Length:
+00 16
+Nonce:
+00 01 00 00 00 00 00 05
+Ciphertext:
+ae a0 15 56 67 92
+ICV:
+4d ff 8a 24 e4 cb 35 b9
+</pre><a href="#section-3.2.3-2" class="pilcrow">¶</a>
+</div>
+<p id="section-3.2.3-3">DTLS 1.2 with Connection ID gives 30 bytes overhead.<a href="#section-3.2.3-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="dtls-12-with-connection-id-and-6lowpan-ghc">
+<section id="section-3.2.4">
+          <h4 id="name-dtls-12-with-connection-id-">
+<a href="#section-3.2.4" class="section-number selfRef">3.2.4. </a><a href="#name-dtls-12-with-connection-id-" class="section-name selfRef">DTLS 1.2 with Connection ID and 6LoWPAN-GHC</a>
+          </h4>
+<p id="section-3.2.4-1">This section analyzes the overhead of DTLS 1.2 <span>[<a href="#RFC6347" class="xref">RFC6347</a>]</span> with Connection ID <span>[<a href="#I-D.ietf-tls-dtls-connection-id" class="xref">I-D.ietf-tls-dtls-connection-id</a>]</span> when compressed with 6LoWPAN-GHC <span>[<a href="#RFC7400" class="xref">RFC7400</a>]</span> <span>[<a href="#OlegHahm-ghc" class="xref">OlegHahm-ghc</a>]</span>.<a href="#section-3.2.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.4-2">Note that the sequence number '01' used in <span>[<a href="#RFC7400" class="xref">RFC7400</a>]</span>, Figure 15 gives an exceptionally small overhead that is not representative.<a href="#section-3.2.4-2" class="pilcrow">¶</a></p>
+<p id="section-3.2.4-3">Note that this header compression is not available when DTLS is used over transports that do not use 6LoWPAN together with 6LoWPAN-GHC.<a href="#section-3.2.4-3" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3.2.4-4">
+<pre>
+Compressed DTLS 1.2 record layer (23 bytes, 17 bytes overhead):
+b0 c3 04 05 42 00 16 f2 0e ae a0 15 56 67 92 4d
+ff 8a 24 e4 cb 35 b9
+
+Compressed DTLS 1.2 record layer header and nonce:
+b0 c3 04 05 42 00 16 f2 0e
+Ciphertext:
+ae a0 15 56 67 92
+ICV:
+4d ff 8a 24 e4 cb 35 b9
+</pre><a href="#section-3.2.4-4" class="pilcrow">¶</a>
+</div>
+<p id="section-3.2.4-5">When compressed with 6LoWPAN-GHC, DTLS 1.2 with the above parameters (epoch, sequence number, Connection ID, length) gives 17 bytes overhead.<a href="#section-3.2.4-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="dtls-13-1">
+<section id="section-3.3">
+        <h3 id="name-dtls-13-2">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-dtls-13-2" class="section-name selfRef">DTLS 1.3</a>
+        </h3>
+<div id="dtls-13-2">
+<section id="section-3.3.1">
+          <h4 id="name-dtls-13-3">
+<a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-dtls-13-3" class="section-name selfRef">DTLS 1.3</a>
+          </h4>
+<p id="section-3.3.1-1">This section analyzes the overhead of DTLS 1.3 <span>[<a href="#I-D.ietf-tls-dtls13" class="xref">I-D.ietf-tls-dtls13</a>]</span>. The changes compared to DTLS 1.2 are: omission of version number, merging of epoch into the first byte containing signalling bits, optional omission of length, reduction of sequence number into a 1 or 2-bytes field.<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-2">Only the minimal header format for DTLS 1.3 is analyzed (see Figure 4 of <span>[<a href="#I-D.ietf-tls-dtls13" class="xref">I-D.ietf-tls-dtls13</a>]</span>). The minimal header formal omit the length field and only a 1-byte field is used to carry the 8 low order bits of the sequence number<a href="#section-3.3.1-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3.3.1-3">
+<pre>
+DTLS 1.3 record layer (17 bytes, 11 bytes overhead):
+21 05 ae a0 15 56 67 92 ec 4d ff 8a 24 e4 cb 35 b9
+
+First byte (including epoch):
+21
+Sequence number:
+05
+Ciphertext (including encrypted content type):
+ae a0 15 56 67 92 ec
+ICV:
+4d ff 8a 24 e4 cb 35 b9
+</pre><a href="#section-3.3.1-3" class="pilcrow">¶</a>
+</div>
+<p id="section-3.3.1-4">DTLS 1.3 gives 11 bytes overhead.<a href="#section-3.3.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="dtls-13-with-6lowpan-ghc">
+<section id="section-3.3.2">
+          <h4 id="name-dtls-13-with-6lowpan-ghc">
+<a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-dtls-13-with-6lowpan-ghc" class="section-name selfRef">DTLS 1.3 with 6LoWPAN-GHC</a>
+          </h4>
+<p id="section-3.3.2-1">This section analyzes the overhead of DTLS 1.3 <span>[<a href="#I-D.ietf-tls-dtls13" class="xref">I-D.ietf-tls-dtls13</a>]</span> when compressed with 6LoWPAN-GHC <span>[<a href="#RFC7400" class="xref">RFC7400</a>]</span> <span>[<a href="#OlegHahm-ghc" class="xref">OlegHahm-ghc</a>]</span>.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-2">Note that this header compression is not available when DTLS is used over transports that do not use 6LoWPAN together with 6LoWPAN-GHC.<a href="#section-3.3.2-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3.3.2-3">
+<pre>
+Compressed DTLS 1.3 record layer (18 bytes, 12 bytes overhead):
+11 21 05 ae a0 15 56 67 92 ec 4d ff 8a 24 e4 cb
+35 b9
+
+Compressed DTLS 1.3 record layer header and nonce:
+11 21 05
+Ciphertext (including encrypted content type):
+ae a0 15 56 67 92 ec
+ICV:
+4d ff 8a 24 e4 cb 35 b9
+</pre><a href="#section-3.3.2-3" class="pilcrow">¶</a>
+</div>
+<p id="section-3.3.2-4">When compressed with 6LoWPAN-GHC, DTLS 1.3 with the above parameters (epoch, sequence number, no length) gives 12 bytes overhead.<a href="#section-3.3.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="dtls-13-with-connection-id">
+<section id="section-3.3.3">
+          <h4 id="name-dtls-13-with-connection-id">
+<a href="#section-3.3.3" class="section-number selfRef">3.3.3. </a><a href="#name-dtls-13-with-connection-id" class="section-name selfRef">DTLS 1.3 with Connection ID</a>
+          </h4>
+<p id="section-3.3.3-1">This section analyzes the overhead of DTLS 1.3 <span>[<a href="#I-D.ietf-tls-dtls13" class="xref">I-D.ietf-tls-dtls13</a>]</span> with Connection ID <span>[<a href="#I-D.ietf-tls-dtls-connection-id" class="xref">I-D.ietf-tls-dtls-connection-id</a>]</span>.<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.3-2">In this example, the length field is omitted, and the 1-byte field is used for the sequence number. The minimal DTLSCiphertext structure is used (see Figure 4 of <span>[<a href="#I-D.ietf-tls-dtls13" class="xref">I-D.ietf-tls-dtls13</a>]</span>), with the addition of the Connection ID field.<a href="#section-3.3.3-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3.3.3-3">
+<pre>
+DTLS 1.3 record layer (18 bytes, 12 bytes overhead):
+31 42 05 ae a0 15 56 67 92 ec 4d ff 8a 24 e4 cb 35 b9
+
+First byte (including epoch):
+31
+Connection ID:
+42
+Sequence number:
+05
+Ciphertext (including encrypted content type):
+ae a0 15 56 67 92 ec
+ICV:
+4d ff 8a 24 e4 cb 35 b9
+</pre><a href="#section-3.3.3-3" class="pilcrow">¶</a>
+</div>
+<p id="section-3.3.3-4">DTLS 1.3 with Connection ID gives 12 bytes overhead.<a href="#section-3.3.3-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="dtls-13-with-connection-id-and-6lowpan-ghc">
+<section id="section-3.3.4">
+          <h4 id="name-dtls-13-with-connection-id-">
+<a href="#section-3.3.4" class="section-number selfRef">3.3.4. </a><a href="#name-dtls-13-with-connection-id-" class="section-name selfRef">DTLS 1.3 with Connection ID and 6LoWPAN-GHC</a>
+          </h4>
+<p id="section-3.3.4-1">This section analyzes the overhead of DTLS 1.3 <span>[<a href="#I-D.ietf-tls-dtls13" class="xref">I-D.ietf-tls-dtls13</a>]</span> with Connection ID <span>[<a href="#I-D.ietf-tls-dtls-connection-id" class="xref">I-D.ietf-tls-dtls-connection-id</a>]</span> when compressed with 6LoWPAN-GHC <span>[<a href="#RFC7400" class="xref">RFC7400</a>]</span> <span>[<a href="#OlegHahm-ghc" class="xref">OlegHahm-ghc</a>]</span>.<a href="#section-3.3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.4-2">Note that this header compression is not available when DTLS is used over transports that do not use 6LoWPAN together with 6LoWPAN-GHC.<a href="#section-3.3.4-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3.3.4-3">
+<pre>
+Compressed DTLS 1.3 record layer (19 bytes, 13 bytes overhead):
+12 31 05 42 ae a0 15 56 67 92 ec 4d ff 8a 24 e4
+cb 35 b9
+
+Compressed DTLS 1.3 record layer header and nonce:
+12 31 05 42
+Ciphertext (including encrypted content type):
+ae a0 15 56 67 92 ec
+ICV:
+4d ff 8a 24 e4 cb 35 b9
+</pre><a href="#section-3.3.4-3" class="pilcrow">¶</a>
+</div>
+<p id="section-3.3.4-4">When compressed with 6LoWPAN-GHC, DTLS 1.3 with the above parameters (epoch, sequence number, Connection ID, no length) gives 13 bytes overhead.<a href="#section-3.3.4-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="tls-12">
+<section id="section-3.4">
+        <h3 id="name-tls-12">
+<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-tls-12" class="section-name selfRef">TLS 1.2</a>
+        </h3>
+<div id="tls-12-1">
+<section id="section-3.4.1">
+          <h4 id="name-tls-12-2">
+<a href="#section-3.4.1" class="section-number selfRef">3.4.1. </a><a href="#name-tls-12-2" class="section-name selfRef">TLS 1.2</a>
+          </h4>
+<p id="section-3.4.1-1">This section analyzes the overhead of TLS 1.2 <span>[<a href="#RFC5246" class="xref">RFC5246</a>]</span>. The changes compared to DTLS 1.2 is that the TLS 1.2 record layer does not have epoch and sequence number, and that the version is different.<a href="#section-3.4.1-1" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3.4.1-2">
+<pre>
+TLS 1.2 Record Layer (27 bytes, 21 bytes overhead):
+17 03 03 00 16 00 00 00 00 00 00 00 05 ae a0 15
+56 67 92 4d ff 8a 24 e4 cb 35 b9
+
+Content type:
+17
+Version:
+03 03
+Length:
+00 16
+Nonce:
+00 00 00 00 00 00 00 05
+Ciphertext:
+ae a0 15 56 67 92
+ICV:
+4d ff 8a 24 e4 cb 35 b9
+</pre><a href="#section-3.4.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-3.4.1-3">TLS 1.2 gives 21 bytes overhead.<a href="#section-3.4.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="tls-12-with-6lowpan-ghc">
+<section id="section-3.4.2">
+          <h4 id="name-tls-12-with-6lowpan-ghc">
+<a href="#section-3.4.2" class="section-number selfRef">3.4.2. </a><a href="#name-tls-12-with-6lowpan-ghc" class="section-name selfRef">TLS 1.2 with 6LoWPAN-GHC</a>
+          </h4>
+<p id="section-3.4.2-1">This section analyzes the overhead of TLS 1.2 <span>[<a href="#RFC5246" class="xref">RFC5246</a>]</span> when compressed with 6LoWPAN-GHC <span>[<a href="#RFC7400" class="xref">RFC7400</a>]</span> <span>[<a href="#OlegHahm-ghc" class="xref">OlegHahm-ghc</a>]</span>.<a href="#section-3.4.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.4.2-2">Note that this header compression is not available when TLS is used over transports that do not use 6LoWPAN together with 6LoWPAN-GHC.<a href="#section-3.4.2-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3.4.2-3">
+<pre>
+Compressed TLS 1.2 record layer (23 bytes, 17 bytes overhead):
+05 17 03 03 00 16 85 0f 05 ae a0 15 56 67 92 4d
+ff 8a 24 e4 cb 35 b9
+
+Compressed TLS 1.2 record layer header and nonce:
+05 17 03 03 00 16 85 0f 05
+Ciphertext:
+ae a0 15 56 67 92
+ICV:
+4d ff 8a 24 e4 cb 35 b9
+</pre><a href="#section-3.4.2-3" class="pilcrow">¶</a>
+</div>
+<p id="section-3.4.2-4">When compressed with 6LoWPAN-GHC, TLS 1.2 with the above parameters (epoch, sequence number, length) gives 17 bytes overhead.<a href="#section-3.4.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="tls-13-1">
+<section id="section-3.5">
+        <h3 id="name-tls-13-2">
+<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-tls-13-2" class="section-name selfRef">TLS 1.3</a>
+        </h3>
+<div id="tls-13-2">
+<section id="section-3.5.1">
+          <h4 id="name-tls-13-3">
+<a href="#section-3.5.1" class="section-number selfRef">3.5.1. </a><a href="#name-tls-13-3" class="section-name selfRef">TLS 1.3</a>
+          </h4>
+<p id="section-3.5.1-1">This section analyzes the overhead of TLS 1.3 <span>[<a href="#RFC8446" class="xref">RFC8446</a>]</span>. The change compared to TLS 1.2 is that the TLS 1.3 record layer uses a different version.<a href="#section-3.5.1-1" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3.5.1-2">
+<pre>
+TLS 1.3 Record Layer (20 bytes, 14 bytes overhead):
+17 03 03 00 16 ae a0 15 56 67 92 ec 4d ff 8a 24
+e4 cb 35 b9
+
+Content type:
+17
+Legacy version:
+03 03
+Length:
+00 0f
+Ciphertext (including encrypted content type):
+ae a0 15 56 67 92 ec
+ICV:
+4d ff 8a 24 e4 cb 35 b9
+</pre><a href="#section-3.5.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-3.5.1-3">TLS 1.3 gives 14 bytes overhead.<a href="#section-3.5.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="tls-13-with-6lowpan-ghc">
+<section id="section-3.5.2">
+          <h4 id="name-tls-13-with-6lowpan-ghc">
+<a href="#section-3.5.2" class="section-number selfRef">3.5.2. </a><a href="#name-tls-13-with-6lowpan-ghc" class="section-name selfRef">TLS 1.3 with 6LoWPAN-GHC</a>
+          </h4>
+<p id="section-3.5.2-1">This section analyzes the overhead of TLS 1.3 <span>[<a href="#RFC8446" class="xref">RFC8446</a>]</span> when compressed with 6LoWPAN-GHC <span>[<a href="#RFC7400" class="xref">RFC7400</a>]</span> <span>[<a href="#OlegHahm-ghc" class="xref">OlegHahm-ghc</a>]</span>.<a href="#section-3.5.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.5.2-2">Note that this header compression is not available when TLS is used over transports that do not use 6LoWPAN together with 6LoWPAN-GHC.<a href="#section-3.5.2-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3.5.2-3">
+<pre>
+Compressed TLS 1.3 record layer (21 bytes, 15 bytes overhead):
+14 17 03 03 00 0f ae a0 15 56 67 92 ec 4d ff 8a
+24 e4 cb 35 b9
+
+Compressed TLS 1.3 record layer header and nonce:
+14 17 03 03 00 0f
+Ciphertext (including encrypted content type):
+ae a0 15 56 67 92 ec
+ICV:
+4d ff 8a 24 e4 cb 35 b9
+</pre><a href="#section-3.5.2-3" class="pilcrow">¶</a>
+</div>
+<p id="section-3.5.2-4">When compressed with 6LoWPAN-GHC, TLS 1.3 with the above parameters (epoch, sequence number, length) gives 15 bytes overhead.<a href="#section-3.5.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="oscore">
+<section id="section-3.6">
+        <h3 id="name-oscore">
+<a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-oscore" class="section-name selfRef">OSCORE</a>
+        </h3>
+<p id="section-3.6-1">This section analyzes the overhead of OSCORE <span>[<a href="#RFC8613" class="xref">RFC8613</a>]</span>.<a href="#section-3.6-1" class="pilcrow">¶</a></p>
+<p id="section-3.6-2">The below calculation Option Delta = '9', Sender ID = '' (empty string), and Sequence Number = '05', and is only an example. Note that Sender ID = '' (empty string) can only be used by one client per server.<a href="#section-3.6-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3.6-3">
+<pre>
+OSCORE request (19 bytes, 13 bytes overhead):
+92 09 05
+ff ec ae a0 15 56 67 92 4d ff 8a 24 e4 cb 35 b9
+
+CoAP option delta and length:
+92
+Option value (flag byte and sequence number):
+09 05
+Payload marker:
+ff
+Ciphertext (including encrypted code):
+ec ae a0 15 56 67 92
+ICV:
+4d ff 8a 24 e4 cb 35 b9
+</pre><a href="#section-3.6-3" class="pilcrow">¶</a>
+</div>
+<p id="section-3.6-4">The below calculation Option Delta = '9', Sender ID = '42', and Sequence Number = '05', and is only an example.<a href="#section-3.6-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3.6-5">
+<pre>
+OSCORE request (20 bytes, 14 bytes overhead):
+93 09 05 42
+ff ec ae a0 15 56 67 92 4d ff 8a 24 e4 cb 35 b9
+
+CoAP option delta and length:
+93
+Option Value (flag byte, sequence number, and Sender ID):
+09 05 42
+Payload marker:
+ff
+Ciphertext (including encrypted code):
+ec ae a0 15 56 67 92
+ICV:
+4d ff 8a 24 e4 cb 35 b9
+</pre><a href="#section-3.6-5" class="pilcrow">¶</a>
+</div>
+<p id="section-3.6-6">The below calculation uses Option Delta = '9'.<a href="#section-3.6-6" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3.6-7">
+<pre>
+OSCORE response (17 bytes, 11 bytes overhead):
+90
+ff ec ae a0 15 56 67 92 4d ff 8a 24 e4 cb 35 b9
+
+CoAP delta and option length:
+90
+Option value:
+-
+Payload marker:
+ff
+Ciphertext (including encrypted code):
+ec ae a0 15 56 67 92
+ICV:
+4d ff 8a 24 e4 cb 35 b9
+</pre><a href="#section-3.6-7" class="pilcrow">¶</a>
+</div>
+<p id="section-3.6-8">OSCORE with the above parameters gives 13-14 bytes overhead for requests and 11 bytes overhead for responses.<a href="#section-3.6-8" class="pilcrow">¶</a></p>
+<p id="section-3.6-9">Unlike DTLS and TLS, OSCORE has much smaller overhead for responses than requests.<a href="#section-3.6-9" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="group-oscore">
+<section id="section-3.7">
+        <h3 id="name-group-oscore">
+<a href="#section-3.7" class="section-number selfRef">3.7. </a><a href="#name-group-oscore" class="section-name selfRef">Group OSCORE</a>
+        </h3>
+<p id="section-3.7-1">This section analyzes the overhead of Group OSCORE <span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="xref">I-D.ietf-core-oscore-groupcomm</a>]</span>.<a href="#section-3.7-1" class="pilcrow">¶</a></p>
+<p id="section-3.7-2">TODO<a href="#section-3.7-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="conclusion-1">
+<section id="section-3.8">
+        <h3 id="name-conclusion-2">
+<a href="#section-3.8" class="section-number selfRef">3.8. </a><a href="#name-conclusion-2" class="section-name selfRef">Conclusion</a>
+        </h3>
+<p id="section-3.8-1">DTLS 1.2 has quite a large overhead as it uses an explicit sequence number and an explicit nonce. TLS 1.2 has significantly less (but not small) overhead. TLS 1.3 has quite a small overhead. OSCORE and DTLS 1.3 (using the minimal structure) format have very small overhead.<a href="#section-3.8-1" class="pilcrow">¶</a></p>
+<p id="section-3.8-2">The Generic Header Compression (6LoWPAN-GHC) can in addition to DTLS 1.2 handle TLS 1.2, and DTLS 1.2 with Connection ID. The Generic Header Compression (6LoWPAN-GHC) works very well for Connection ID and the overhead seems to increase exactly with the length of the Connection ID (which is optimal). The compression of TLS 1.2 is not as good as the compression of DTLS 1.2 (as the static dictionary only contains the DTLS 1.2 version number). Similar compression levels as for DTLS could be achieved also for TLS 1.2, but this would require different static dictionaries. For TLS 1.3 and DTLS 1.3, GHC increases the overhead. The 6LoWPAN-GHC header compression is not available when (D)TLS is used over transports that do not use 6LoWPAN together with 6LoWPAN-GHC.<a href="#section-3.8-2" class="pilcrow">¶</a></p>
+<p id="section-3.8-3">New security protocols like OSCORE, TLS 1.3, and DTLS 1.3 have much lower overhead than DTLS 1.2 and TLS 1.2. The overhead is even smaller than DTLS 1.2 and TLS 1.2 over 6LoWPAN with compression, and therefore the small overhead is achieved even on deployments without 6LoWPAN or 6LoWPAN without compression. OSCORE is lightweight because it makes use of CoAP, CBOR, and COSE, which were designed to have as low overhead as possible.<a href="#section-3.8-3" class="pilcrow">¶</a></p>
+<p id="section-3.8-4">Note that the compared protocols have slightly different use cases. TLS and DTLS are designed for the transport layer and are terminated in CoAP proxies. OSCORE is designed for the application layer and protects information end-to-end between the CoAP client and the CoAP server. Group OSCORE is designed for group communication and protects information between a CoAP client and any number of CoAP servers.<a href="#section-3.8-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="security-considerations">
+<section id="section-4">
+      <h2 id="name-security-considerations">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-4-1">This document is purely informational.<a href="#section-4-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="section-5">
+      <h2 id="name-iana-considerations">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-5-1">This document has no actions for IANA.<a href="#section-5-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<section id="section-6">
+      <h2 id="name-informative-references">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+      </h2>
+<dl class="references">
+<dt id="I-D.ietf-core-oscore-groupcomm">[I-D.ietf-core-oscore-groupcomm]</dt>
+<dd>
+<span class="refAuthor">Tiloca, M.</span><span class="refAuthor">, Selander, G.</span><span class="refAuthor">, Palombini, F.</span><span class="refAuthor">, and J. Park</span>, <span class="refTitle">"Group OSCORE - Secure Group Communication for CoAP"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-groupcomm-06</span>, <time datetime="2019-11-04">4 November 2019</time>, <span>&lt;<a href="http://www.ietf.org/internet-drafts/draft-ietf-core-oscore-groupcomm-06.txt">http://www.ietf.org/internet-drafts/draft-ietf-core-oscore-groupcomm-06.txt</a>&gt;</span>. </dd>
+<dt id="I-D.ietf-tls-dtls-connection-id">[I-D.ietf-tls-dtls-connection-id]</dt>
+<dd>
+<span class="refAuthor">Rescorla, E.</span><span class="refAuthor">, Tschofenig, H.</span><span class="refAuthor">, and T. Fossati</span>, <span class="refTitle">"Connection Identifiers for DTLS 1.2"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-tls-dtls-connection-id-07</span>, <time datetime="2019-10-21">21 October 2019</time>, <span>&lt;<a href="http://www.ietf.org/internet-drafts/draft-ietf-tls-dtls-connection-id-07.txt">http://www.ietf.org/internet-drafts/draft-ietf-tls-dtls-connection-id-07.txt</a>&gt;</span>. </dd>
+<dt id="I-D.ietf-tls-dtls13">[I-D.ietf-tls-dtls13]</dt>
+<dd>
+<span class="refAuthor">Rescorla, E.</span><span class="refAuthor">, Tschofenig, H.</span><span class="refAuthor">, and N. Modadugu</span>, <span class="refTitle">"The Datagram Transport Layer Security (DTLS) Protocol Version 1.3"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-tls-dtls13-35</span>, <time datetime="2020-03-07">7 March 2020</time>, <span>&lt;<a href="http://www.ietf.org/internet-drafts/draft-ietf-tls-dtls13-35.txt">http://www.ietf.org/internet-drafts/draft-ietf-tls-dtls13-35.txt</a>&gt;</span>. </dd>
+<dt id="I-D.rescorla-tls-ctls">[I-D.rescorla-tls-ctls]</dt>
+<dd>
+<span class="refAuthor">Rescorla, E.</span><span class="refAuthor">, Barnes, R.</span><span class="refAuthor">, and H. Tschofenig</span>, <span class="refTitle">"Compact TLS 1.3"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-rescorla-tls-ctls-03</span>, <time datetime="2019-11-04">4 November 2019</time>, <span>&lt;<a href="http://www.ietf.org/internet-drafts/draft-rescorla-tls-ctls-03.txt">http://www.ietf.org/internet-drafts/draft-rescorla-tls-ctls-03.txt</a>&gt;</span>. </dd>
+<dt id="I-D.selander-lake-edhoc">[I-D.selander-lake-edhoc]</dt>
+<dd>
+<span class="refAuthor">Selander, G.</span><span class="refAuthor">, Mattsson, J.</span><span class="refAuthor">, and F. Palombini</span>, <span class="refTitle">"Ephemeral Diffie-Hellman Over COSE (EDHOC)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-selander-lake-edhoc-00</span>, <time datetime="2019-11-04">4 November 2019</time>, <span>&lt;<a href="http://www.ietf.org/internet-drafts/draft-selander-lake-edhoc-00.txt">http://www.ietf.org/internet-drafts/draft-selander-lake-edhoc-00.txt</a>&gt;</span>. </dd>
+<dt id="IoT-Cert">[IoT-Cert]</dt>
+<dd>
+<span class="refAuthor">Forsby, F.</span>, <span class="refTitle">"Digital Certificates for the Internet of Things"</span>, <time datetime="2017-06">June 2017</time>, <span>&lt;<a href="https://kth.diva-portal.org/smash/get/diva2:1153958/FULLTEXT01.pdf">https://kth.diva-portal.org/smash/get/diva2:1153958/FULLTEXT01.pdf</a>&gt;</span>. </dd>
+<dt id="OlegHahm-ghc">[OlegHahm-ghc]</dt>
+<dd>
+<span class="refAuthor">Hahm, O.</span>, <span class="refTitle">"Generic Header Compression"</span>, <time datetime="2016-07">July 2016</time>, <span>&lt;<a href="https://github.com/OlegHahm/ghc">https://github.com/OlegHahm/ghc</a>&gt;</span>. </dd>
+<dt id="RFC5246">[RFC5246]</dt>
+<dd>
+<span class="refAuthor">Dierks, T.</span><span class="refAuthor"> and E. Rescorla</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.2"</span>, <span class="seriesInfo">RFC 5246</span>, <span class="seriesInfo">DOI 10.17487/RFC5246</span>, <time datetime="2008-08">August 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5246">https://www.rfc-editor.org/info/rfc5246</a>&gt;</span>. </dd>
+<dt id="RFC6347">[RFC6347]</dt>
+<dd>
+<span class="refAuthor">Rescorla, E.</span><span class="refAuthor"> and N. Modadugu</span>, <span class="refTitle">"Datagram Transport Layer Security Version 1.2"</span>, <span class="seriesInfo">RFC 6347</span>, <span class="seriesInfo">DOI 10.17487/RFC6347</span>, <time datetime="2012-01">January 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6347">https://www.rfc-editor.org/info/rfc6347</a>&gt;</span>. </dd>
+<dt id="RFC7252">[RFC7252]</dt>
+<dd>
+<span class="refAuthor">Shelby, Z.</span><span class="refAuthor">, Hartke, K.</span><span class="refAuthor">, and C. Bormann</span>, <span class="refTitle">"The Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 7252</span>, <span class="seriesInfo">DOI 10.17487/RFC7252</span>, <time datetime="2014-06">June 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7252">https://www.rfc-editor.org/info/rfc7252</a>&gt;</span>. </dd>
+<dt id="RFC7400">[RFC7400]</dt>
+<dd>
+<span class="refAuthor">Bormann, C.</span>, <span class="refTitle">"6LoWPAN-GHC: Generic Header Compression for IPv6 over Low-Power Wireless Personal Area Networks (6LoWPANs)"</span>, <span class="seriesInfo">RFC 7400</span>, <span class="seriesInfo">DOI 10.17487/RFC7400</span>, <time datetime="2014-11">November 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7400">https://www.rfc-editor.org/info/rfc7400</a>&gt;</span>. </dd>
+<dt id="RFC7924">[RFC7924]</dt>
+<dd>
+<span class="refAuthor">Santesson, S.</span><span class="refAuthor"> and H. Tschofenig</span>, <span class="refTitle">"Transport Layer Security (TLS) Cached Information Extension"</span>, <span class="seriesInfo">RFC 7924</span>, <span class="seriesInfo">DOI 10.17487/RFC7924</span>, <time datetime="2016-07">July 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7924">https://www.rfc-editor.org/info/rfc7924</a>&gt;</span>. </dd>
+<dt id="RFC7925">[RFC7925]</dt>
+<dd>
+<span class="refAuthor">Tschofenig, H., Ed.</span><span class="refAuthor"> and T. Fossati</span>, <span class="refTitle">"Transport Layer Security (TLS) / Datagram Transport Layer Security (DTLS) Profiles for the Internet of Things"</span>, <span class="seriesInfo">RFC 7925</span>, <span class="seriesInfo">DOI 10.17487/RFC7925</span>, <time datetime="2016-07">July 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7925">https://www.rfc-editor.org/info/rfc7925</a>&gt;</span>. </dd>
+<dt id="RFC8323">[RFC8323]</dt>
+<dd>
+<span class="refAuthor">Bormann, C.</span><span class="refAuthor">, Lemay, S.</span><span class="refAuthor">, Tschofenig, H.</span><span class="refAuthor">, Hartke, K.</span><span class="refAuthor">, Silverajan, B.</span><span class="refAuthor">, and B. Raymor, Ed.</span>, <span class="refTitle">"CoAP (Constrained Application Protocol) over TCP, TLS, and WebSockets"</span>, <span class="seriesInfo">RFC 8323</span>, <span class="seriesInfo">DOI 10.17487/RFC8323</span>, <time datetime="2018-02">February 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8323">https://www.rfc-editor.org/info/rfc8323</a>&gt;</span>. </dd>
+<dt id="RFC8446">[RFC8446]</dt>
+<dd>
+<span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8446">https://www.rfc-editor.org/info/rfc8446</a>&gt;</span>. </dd>
+<dt id="RFC8613">[RFC8613]</dt>
+<dd>
+<span class="refAuthor">Selander, G.</span><span class="refAuthor">, Mattsson, J.</span><span class="refAuthor">, Palombini, F.</span><span class="refAuthor">, and L. Seitz</span>, <span class="refTitle">"Object Security for Constrained RESTful Environments (OSCORE)"</span>, <span class="seriesInfo">RFC 8613</span>, <span class="seriesInfo">DOI 10.17487/RFC8613</span>, <time datetime="2019-07">July 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8613">https://www.rfc-editor.org/info/rfc8613</a>&gt;</span>. </dd>
+<dt id="Ulfheim-TLS13">[Ulfheim-TLS13]</dt>
+<dd>
+<span class="refAuthor">Driscoll, M.</span>, <span class="refTitle">"Every Byte Explained The Illustrated TLS 1.3 Connection"</span>, <time datetime="2018-03">March 2018</time>, <span>&lt;<a href="https://tls13.ulfheim.net">https://tls13.ulfheim.net</a>&gt;</span>. </dd>
+</dl>
+</section>
+<div id="acknowledgments">
+<section id="section-appendix.a">
+      <h2 id="name-acknowledgments">
+<a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+      </h2>
+<p id="section-appendix.a-1">The authors want to thank Ari Keraenen, Carsten Bormann, Goeran Selander, and Hannes Tschofenig for comments and suggestions on previous versions of the draft.<a href="#section-appendix.a-1" class="pilcrow">¶</a></p>
+<p id="section-appendix.a-2">All 6LoWPAN-GHC compression was done with <span>[<a href="#OlegHahm-ghc" class="xref">OlegHahm-ghc</a>]</span>.<a href="#section-appendix.a-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="section-appendix.b">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">John Preuß Mattsson</span></div>
+<div dir="auto" class="left"><span class="org">Ericsson AB</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:john.mattsson@ericsson.com" class="email">john.mattsson@ericsson.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Francesca Palombini</span></div>
+<div dir="auto" class="left"><span class="org">Ericsson AB</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:francesca.palombini@ericsson.com" class="email">francesca.palombini@ericsson.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Malisa Vucinic</span></div>
+<div dir="auto" class="left"><span class="org">INRIA</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:malisa.vucinic@inria.fr" class="email">malisa.vucinic@inria.fr</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
