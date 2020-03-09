@@ -1196,11 +1196,11 @@ The previous examples of typical message sizes are summarized in {{fig-summary}}
 =====================================================================
                PSK       RPK       x5t     x5chain                  
 ---------------------------------------------------------------------
-message_1       40        38        38        38                     
-message_2       45       114       126       116 + Certificate chain 
-message_3       11        80        91        81 + Certificate chain 
+message_1       38        37        37        37                     
+message_2       44        46       117       110 + Certificate chain 
+message_3       10        20        91        84 + Certificate chain 
 ---------------------------------------------------------------------
-Total           96       232       255       235 + Certificate chains
+Total           92       232       245       231 + Certificate chains
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-summary title="Typical message sizes in bytes" artwork-align="center"}
