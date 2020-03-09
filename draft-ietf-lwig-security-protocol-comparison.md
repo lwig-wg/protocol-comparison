@@ -1200,7 +1200,7 @@ message_1       38        37        37        37
 message_2       44        46       117       110 + Certificate chain 
 message_3       10        20        91        84 + Certificate chain 
 ---------------------------------------------------------------------
-Total           92       232       245       231 + Certificate chains
+Total           92       103       245       231 + Certificate chains
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-summary title="Typical message sizes in bytes" artwork-align="center"}
