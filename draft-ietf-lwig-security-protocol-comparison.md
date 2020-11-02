@@ -720,7 +720,7 @@ Record Header - TLSPlaintext (5 bytes):
       Extension - Supported Groups (x25519) (8 bytes):
       00 0a 00 04 00 02 00 1d
 
-      Extension - Signature Algorithms (ecdsa_secp256r1_sha256) (8 bytes):
+      Extension - Signature Algorithms(ecdsa_secp256r1_sha256)(8 bytes):
       00 0d 00 04 00 02 08 07
 
       Extension - Key Share (42 bytes):
@@ -802,7 +802,7 @@ Record Header - TLSCiphertext (5 bytes):
     Extensions Length (2 bytes):
     LL LL
 
-      Extension - Signature Algorithms (ecdsa_secp256r1_sha256) (8 bytes):
+      Extension - Signature Algorithms(ecdsa_secp256r1_sha256)(8 bytes):
       00 0d 00 04 00 02 08 07
 
   Handshake Header - Certificate (4 bytes):
