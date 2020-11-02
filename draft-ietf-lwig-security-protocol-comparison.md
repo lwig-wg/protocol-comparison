@@ -35,7 +35,7 @@ informative:
   I-D.ietf-core-oscore-groupcomm:
   I-D.ietf-tls-dtls13:
   I-D.ietf-tls-dtls-connection-id:
-  I-D.selander-lake-edhoc:
+  I-D.ietf-lake-edhoc:
   I-D.rescorla-tls-ctls:
   RFC5246:
   RFC6347:
@@ -79,7 +79,7 @@ This document analyzes and compares the sizes of key exchange flights and the pe
 
 # Introduction
 
-This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{I-D.ietf-tls-dtls13}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, EDHOC {{I-D.selander-lake-edhoc}}, OSCORE {{RFC8613}}, and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}.
+This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{I-D.ietf-tls-dtls13}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, EDHOC {{I-D.ietf-lake-edhoc}}, OSCORE {{RFC8613}}, and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}.
 
 The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression. DTLS is anlyzed with and without Connection ID {{I-D.ietf-tls-dtls-connection-id}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as ICV. {{handshake}} compares the overhead of key exchange, while {{record}} covers the overhead for protection of application data.
 
@@ -107,7 +107,7 @@ The EDHOC overhead is dependent on the key identifiers included. The following o
 
 All the overhead are dependent on the tag length. The following overheads apply for tags of the same length.
 
-{{fig-compare1}} compares the message sizes of EDHOC {{I-D.selander-lake-edhoc}} with the DTLS 1.3 {{I-D.ietf-tls-dtls13}} and TLS 1.3 {{RFC8446}} handshakes with connection ID.
+{{fig-compare1}} compares the message sizes of EDHOC {{I-D.ietf-lake-edhoc}} with the DTLS 1.3 {{I-D.ietf-tls-dtls13}} and TLS 1.3 {{RFC8446}} handshakes with connection ID.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 =====================================================================
@@ -119,7 +119,7 @@ DTLS 1.3 PSK + ECDHE              184        190        57        431
 DTLS 1.3 PSK                      134        150        57        341
 ---------------------------------------------------------------------
 EDHOC RPK + ECDHE                  37         46        20        103
-EDHOC PSK + ECDHE                  38         44        10         92
+EDHOC X.509 + ECDHE                37        117        91        245
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare1 title="Comparison of message sizes in bytes with Connection ID" artwork-align="center"}
@@ -1040,7 +1040,7 @@ TLS 1.3 PSK flight_3 gives 57 bytes of overhead.
 
 ## EDHOC
 
-This section gives an estimate of the message sizes of EDHOC with different authentication methods. All examples are given in CBOR diagnostic notation and hexadecimal.
+This section gives an estimate of the message sizes of EDHOC with authenticated with static Diffie-Hellman keys. All examples are given in CBOR diagnostic notation and hexadecimal, and are based on the test vectors in Appendix B.2 of {{I-D.ietf-lake-edhoc}}.
 
 ### Message Sizes RPK
 
@@ -1094,79 +1094,26 @@ message_3 (20 bytes):
 08 52 53 c3 99 19 99 a5 ff b8 69 21 e9 9b 60 7c 06 77 70 e0
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-### Message Sizes PSK
-
-### message_1
-
-~~~~~~~~~~~~~~~~~~~~~~~
-message_1 = (
-  17,
-  0,
-  h'3662C4A71D624E8A4D9DFF879ABC6E2A0E745F82F497F7AFBEBFF3B01A8F
-    AB57',
-  14,
-  -17
-)
-~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~
-message_1 (38 bytes):
-11 00 58 20 36 62 c4 a7 1d 62 4e 8a 4d 9d ff 87 9a bc 6e 2a
-0e 74 5f 82 f4 97 f7 af be bf f3 b0 1a 8f ab 57 0e 30 
-~~~~~~~~~~~~~~~~~~~~~~~
-
-### message_2
-
-~~~~~~~~~~~~~~~~~~~~~~~
-message_2 = (
-  h'A3967F6CF99B6DDC7E7C219D0D119A383F754001DF33515971EC6C842553
-    B776',
-  -24,
-  h'4F355451E069226F'
-)
-~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~
-message_2 (44 bytes):
-58 20 a3 96 7f 6c f9 9b 6d dc 7e 7c 21 9d 0d 11 9a 38 3f 75
-40 01 df 33 51 59 71 ec 6c 84 25 53 b7 76 37 48 4f 35 54 51
-e0 69 22 6f 
-~~~~~~~~~~~~~~~~~~~~~~~
-
-### message_3
-
-~~~~~~~~~~~~~~~~~~~~~~~
-message_3 = (
-  -24,
-  h'763BD2F3C10F0D45'
-)
-~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~
-message_3 (10 bytes):
-37 48 76 3b d2 f3 c1 0f 0d 45 
-~~~~~~~~~~~~~~~~~~~~~~~
-
 ### Summary
 
-The previous examples of typical message sizes are summarized in {{fig-summary}}.
+The typical message sizes for the previous example and for an example of EDHOC authenticated with signature keys and X.509 certificates based on Appendix B.1 of {{I-D.ietf-lake-edhoc}} are summarized in {{fig-summary}}.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-=====================================================================
-               PSK       RPK       x5t     x5chain                  
----------------------------------------------------------------------
-message_1       38        37        37        37                     
-message_2       44        46       117       110 + Certificate chain 
-message_3       10        20        91        84 + Certificate chain 
----------------------------------------------------------------------
-Total           92       103       245       231 + Certificate chains
-=====================================================================
+===============================
+               RPK       x5t   
+-------------------------------
+message_1       37        37   
+message_2       46       117   
+message_3       20        91   
+-------------------------------
+Total          103       245   
+===============================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-summary title="Typical message sizes in bytes" artwork-align="center"}
 
 ## Conclusion
 
-To do a fair comparison, one has to choose a specific deployment and look at the topology, the whole protocol stack, frame sizes (e.g. 51 or 128 bytes), how and where in the protocol stack fragmentation is done, and the expected packet loss. Note that the number of byte in each frame that is available for the key exchange protocol may depend on the underlying protocol layers as well as the number of hops in multi-hop networks. The packet loss depends may depend on how many other devices that are transmitting at the same time, and may increase during network formation.  The total overhead will be larger due to mechanisms for fragmentation, retransmission, and packet ordering.  The overhead of fragmentation is roughly proportional to the number of fragments, while the expected overhead due to retransmission in noisy environments is a superlinear function of the flight sizes.
+To do a fair comparison, one has to choose a specific deployment and look at the topology, the whole protocol stack, frame sizes (e.g. 51 or 128 bytes), how and where in the protocol stack fragmentation is done, and the expected packet loss. Note that the number of bytes in each frame that is available for the key exchange protocol may depend on the underlying protocol layers as well as on the number of hops in multi-hop networks. The packet loss may depend on how many other devices are transmitting at the same time, and may increase during network formation.  The total overhead will be larger due to mechanisms for fragmentation, retransmission, and packet ordering.  The overhead of fragmentation is roughly proportional to the number of fragments, while the expected overhead due to retransmission in noisy environments is a superlinear function of the flight sizes.
 
 # Overhead for Protection of Application Data {#record}
 
