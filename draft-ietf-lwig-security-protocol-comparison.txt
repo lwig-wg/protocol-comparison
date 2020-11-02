@@ -5,9 +5,9 @@
 LWIG Working Group                                           J. Mattsson
 Internet-Draft                                              F. Palombini
 Intended status: Informational                               Ericsson AB
-Expires: 10 September 2020                                    M. Vucinic
+Expires: 6 May 2021                                           M. Vucinic
                                                                    INRIA
-                                                            9 March 2020
+                                                         2 November 2020
 
 
                  Comparison of CoAP Security Protocols
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 September 2020.
+   This Internet-Draft will expire on 6 May 2021.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Mattsson, et al.        Expires 10 September 2020               [Page 1]
+Mattsson, et al.           Expires 6 May 2021                   [Page 1]
 
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
 
 
    extracted from this document must include Simplified BSD License text
@@ -81,44 +81,40 @@ Table of Contents
        2.3.3.  Message Sizes PSK . . . . . . . . . . . . . . . . . .  23
      2.4.  EDHOC . . . . . . . . . . . . . . . . . . . . . . . . . .  24
        2.4.1.  Message Sizes RPK . . . . . . . . . . . . . . . . . .  24
-       2.4.2.  Message Sizes PSK . . . . . . . . . . . . . . . . . .  25
-       2.4.3.  message_1 . . . . . . . . . . . . . . . . . . . . . .  25
-       2.4.4.  message_2 . . . . . . . . . . . . . . . . . . . . . .  25
-       2.4.5.  message_3 . . . . . . . . . . . . . . . . . . . . . .  26
-       2.4.6.  Summary . . . . . . . . . . . . . . . . . . . . . . .  26
+       2.4.2.  Summary . . . . . . . . . . . . . . . . . . . . . . .  25
      2.5.  Conclusion  . . . . . . . . . . . . . . . . . . . . . . .  26
-   3.  Overhead for Protection of Application Data . . . . . . . . .  27
-     3.1.  Summary . . . . . . . . . . . . . . . . . . . . . . . . .  27
-     3.2.  DTLS 1.2  . . . . . . . . . . . . . . . . . . . . . . . .  29
-       3.2.1.  DTLS 1.2  . . . . . . . . . . . . . . . . . . . . . .  29
+   3.  Overhead for Protection of Application Data . . . . . . . . .  26
+     3.1.  Summary . . . . . . . . . . . . . . . . . . . . . . . . .  26
+     3.2.  DTLS 1.2  . . . . . . . . . . . . . . . . . . . . . . . .  28
+       3.2.1.  DTLS 1.2  . . . . . . . . . . . . . . . . . . . . . .  28
        3.2.2.  DTLS 1.2 with 6LoWPAN-GHC . . . . . . . . . . . . . .  29
-       3.2.3.  DTLS 1.2 with Connection ID . . . . . . . . . . . . .  30
-       3.2.4.  DTLS 1.2 with Connection ID and 6LoWPAN-GHC . . . . .  31
+       3.2.3.  DTLS 1.2 with Connection ID . . . . . . . . . . . . .  29
+       3.2.4.  DTLS 1.2 with Connection ID and 6LoWPAN-GHC . . . . .  30
      3.3.  DTLS 1.3  . . . . . . . . . . . . . . . . . . . . . . . .  31
        3.3.1.  DTLS 1.3  . . . . . . . . . . . . . . . . . . . . . .  31
-       3.3.2.  DTLS 1.3 with 6LoWPAN-GHC . . . . . . . . . . . . . .  32
+       3.3.2.  DTLS 1.3 with 6LoWPAN-GHC . . . . . . . . . . . . . .  31
        3.3.3.  DTLS 1.3 with Connection ID . . . . . . . . . . . . .  32
-       3.3.4.  DTLS 1.3 with Connection ID and 6LoWPAN-GHC . . . . .  33
+       3.3.4.  DTLS 1.3 with Connection ID and 6LoWPAN-GHC . . . . .  32
      3.4.  TLS 1.2 . . . . . . . . . . . . . . . . . . . . . . . . .  33
        3.4.1.  TLS 1.2 . . . . . . . . . . . . . . . . . . . . . . .  33
-       3.4.2.  TLS 1.2 with 6LoWPAN-GHC  . . . . . . . . . . . . . .  34
+       3.4.2.  TLS 1.2 with 6LoWPAN-GHC  . . . . . . . . . . . . . .  33
      3.5.  TLS 1.3 . . . . . . . . . . . . . . . . . . . . . . . . .  34
        3.5.1.  TLS 1.3 . . . . . . . . . . . . . . . . . . . . . . .  34
-       3.5.2.  TLS 1.3 with 6LoWPAN-GHC  . . . . . . . . . . . . . .  35
+       3.5.2.  TLS 1.3 with 6LoWPAN-GHC  . . . . . . . . . . . . . .  34
      3.6.  OSCORE  . . . . . . . . . . . . . . . . . . . . . . . . .  35
-
-
-
-Mattsson, et al.        Expires 10 September 2020               [Page 2]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
-
-     3.7.  Group OSCORE  . . . . . . . . . . . . . . . . . . . . . .  37
+     3.7.  Group OSCORE  . . . . . . . . . . . . . . . . . . . . . .  36
      3.8.  Conclusion  . . . . . . . . . . . . . . . . . . . . . . .  37
-   4.  Security Considerations . . . . . . . . . . . . . . . . . . .  38
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  38
-   6.  Informative References  . . . . . . . . . . . . . . . . . . .  38
+   4.  Security Considerations . . . . . . . . . . . . . . . . . . .  37
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  37
+
+
+
+Mattsson, et al.           Expires 6 May 2021                   [Page 2]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
+
+   6.  Informative References  . . . . . . . . . . . . . . . . . . .  37
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  40
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  40
 
@@ -129,7 +125,7 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    security protocols to secure CoAP over UPD [RFC7252] and TCP
    [RFC8323].  The analyzed security protocols are DTLS 1.2 [RFC6347],
    DTLS 1.3 [I-D.ietf-tls-dtls13], TLS 1.2 [RFC5246], TLS 1.3 [RFC8446],
-   EDHOC [I-D.selander-lake-edhoc], OSCORE [RFC8613], and Group OSCORE
+   EDHOC [I-D.ietf-lake-edhoc], OSCORE [RFC8613], and Group OSCORE
    [I-D.ietf-core-oscore-groupcomm].
 
    The DTLS and TLS record layers are analyzed with and without 6LoWPAN-
@@ -162,16 +158,17 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
    *  DTLS handshake message fragmentation is not considered.
 
-
-
-
-Mattsson, et al.        Expires 10 September 2020               [Page 3]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
-
    *  Only the DTLS mandatory extensions are considered, except for
       Connection ID.
+
+
+
+
+
+Mattsson, et al.           Expires 6 May 2021                   [Page 3]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
 
    Section 2.1 gives a short summary of the message overhead based on
    different parameters and some assumptions.  The following sections
@@ -189,9 +186,9 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    All the overhead are dependent on the tag length.  The following
    overheads apply for tags of the same length.
 
-   Figure 1 compares the message sizes of EDHOC
-   [I-D.selander-lake-edhoc] with the DTLS 1.3 [I-D.ietf-tls-dtls13] and
-   TLS 1.3 [RFC8446] handshakes with connection ID.
+   Figure 1 compares the message sizes of EDHOC [I-D.ietf-lake-edhoc]
+   with the DTLS 1.3 [I-D.ietf-tls-dtls13] and TLS 1.3 [RFC8446]
+   handshakes with connection ID.
 
    =====================================================================
    Flight                             #1         #2        #3      Total
@@ -202,29 +199,13 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    DTLS 1.3 PSK                      134        150        57        341
    ---------------------------------------------------------------------
    EDHOC RPK + ECDHE                  37         46        20        103
-   EDHOC PSK + ECDHE                  38         44        10         92
+   EDHOC X.509 + ECDHE                37        117        91        245
    =====================================================================
 
      Figure 1: Comparison of message sizes in bytes with Connection ID
 
    Figure 2 compares of message sizes of DTLS 1.3 [I-D.ietf-tls-dtls13]
    and TLS 1.3 [RFC8446] handshakes without connection ID.
-
-
-
-
-
-
-
-
-
-
-
-
-Mattsson, et al.        Expires 10 September 2020               [Page 4]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
 
    =====================================================================
    Flight                             #1         #2        #3      Total
@@ -237,6 +218,13 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    TLS 1.3  PSK + ECDHE              163        157        50        370
    TLS 1.3  PSK                      113        117        50        280
    =====================================================================
+
+
+
+Mattsson, et al.           Expires 6 May 2021                   [Page 4]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
 
     Figure 2: Comparison of message sizes in bytes without Connection ID
 
@@ -259,200 +247,208 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
 2.2.1.1.  flight_1
 
-   Record Header - DTLSPlaintext (13 bytes):
-   16 fe fd EE EE SS SS SS SS SS SS LL LL
+ Record Header - DTLSPlaintext (13 bytes):
+ 16 fe fd EE EE SS SS SS SS SS SS LL LL
 
-     Handshake Header - Client Hello (10 bytes):
-     01 LL LL LL SS SS 00 00 00 LL LL LL
+   Handshake Header - Client Hello (10 bytes):
+   01 LL LL LL SS SS 00 00 00 LL LL LL
 
-       Legacy Version (2 bytes):
-       fe fd
+     Legacy Version (2 bytes):
+     fe fd
 
-       Client Random (32 bytes):
+     Client Random (32 bytes):
+     00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+     16 17 18 19 1a 1b 1c 1d 1e 1f
+
+     Legacy Session ID (1 bytes):
+     00
+
+     Legacy Cookie (1 bytes):
+     00
+
+     Cipher Suites (TLS_AES_128_CCM_8_SHA256) (4 bytes):
+     00 02 13 05
+
+     Compression Methods (null) (2 bytes):
+     01 00
+
+     Extensions Length (2 bytes):
+     LL LL
+
+
+
+Mattsson, et al.           Expires 6 May 2021                   [Page 5]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
+
+       Extension - Supported Groups (x25519) (8 bytes):
+       00 0a 00 04 00 02 00 1d
+
+       Extension - Signature Algorithms (ecdsa_secp256r1_sha256)
+       (8 bytes):
+       00 0d 00 04 00 02 08 07
+
+       Extension - Key Share (42 bytes):
+       00 33 00 26 00 24 00 1d 00 20
        00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
        16 17 18 19 1a 1b 1c 1d 1e 1f
 
-       Legacy Session ID (1 bytes):
-       00
+       Extension - Supported Versions (1.3) (7 bytes):
+       00 2b 00 03 02 03 04
 
+       Extension - Client Certificate Type (Raw Public Key) (6 bytes):
+       00 13 00 01 01 02
 
+       Extension - Server Certificate Type (Raw Public Key) (6 bytes):
+       00 14 00 01 01 02
 
-Mattsson, et al.        Expires 10 September 2020               [Page 5]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+       Extension - Connection Identifier (43) (6 bytes):
+       XX XX 00 02 01 42
 
-
-       Legacy Cookie (1 bytes):
-       00
-
-       Cipher Suites (TLS_AES_128_CCM_8_SHA256) (4 bytes):
-       00 02 13 05
-
-       Compression Methods (null) (2 bytes):
-       01 00
-
-       Extensions Length (2 bytes):
-       LL LL
-
-         Extension - Supported Groups (x25519) (8 bytes):
-         00 0a 00 04 00 02 00 1d
-
-         Extension - Signature Algorithms (ecdsa_secp256r1_sha256)
-         (8 bytes):
-         00 0d 00 04 00 02 08 07
-
-         Extension - Key Share (42 bytes):
-         00 33 00 26 00 24 00 1d 00 20
-         00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-         16 17 18 19 1a 1b 1c 1d 1e 1f
-
-         Extension - Supported Versions (1.3) (7 bytes):
-         00 2b 00 03 02 03 04
-
-         Extension - Client Certificate Type (Raw Public Key) (6 bytes):
-         00 13 00 01 01 02
-
-         Extension - Server Certificate Type (Raw Public Key) (6 bytes):
-         00 14 00 01 01 02
-
-         Extension - Connection Identifier (43) (6 bytes):
-         XX XX 00 02 01 42
-
-   13 + 10 + 2 + 32 + 1 + 1 + 4 + 2 + 2 + 8 + 8 + 42 + 7 + 6 + 6 + 6 = 150
-   bytes
+ 13 + 10 + 2 + 32 + 1 + 1 + 4 + 2 + 2 + 8 + 8 + 42 + 7 + 6 + 6 + 6 = 150
+ bytes
 
    DTLS 1.3 RPK + ECDHE flight_1 gives 150 bytes of overhead.
 
 2.2.1.2.  flight_2
 
-   Record Header - DTLSPlaintext (13 bytes):
-   16 fe fd EE EE SS SS SS SS SS SS LL LL
+ Record Header - DTLSPlaintext (13 bytes):
+ 16 fe fd EE EE SS SS SS SS SS SS LL LL
 
-     Handshake Header - Server Hello (10 bytes):
-     02 LL LL LL SS SS 00 00 00 LL LL LL
+   Handshake Header - Server Hello (10 bytes):
+   02 LL LL LL SS SS 00 00 00 LL LL LL
+
+     Legacy Version (2 bytes):
+     fe fd
+
+     Server Random (32 bytes):
+     00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+     16 17 18 19 1a 1b 1c 1d 1e 1f
+
+     Legacy Session ID (1 bytes):
+     00
+
+     Cipher Suite (TLS_AES_128_CCM_8_SHA256) (2 bytes):
 
 
 
-Mattsson, et al.        Expires 10 September 2020               [Page 6]
+Mattsson, et al.           Expires 6 May 2021                   [Page 6]
 
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
 
 
-       Legacy Version (2 bytes):
-       fe fd
+     13 05
 
-       Server Random (32 bytes):
+     Compression Method (null) (1 bytes):
+     00
+
+     Extensions Length (2 bytes):
+     LL LL
+
+       Extension - Key Share (40 bytes):
+       00 33 00 24 00 1d 00 20
        00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-       16 17 18 19 1a 1b 1c 1d 1e 1f
+        16 17 18 19 1a 1b 1c 1d 1e 1f
 
-       Legacy Session ID (1 bytes):
-       00
+       Extension - Supported Versions (1.3) (6 bytes):
+       00 2b 00 02 03 04
 
-       Cipher Suite (TLS_AES_128_CCM_8_SHA256) (2 bytes):
-       13 05
+       Extension - Connection Identifier (43) (6 bytes):
+       XX XX 00 02 01 43
 
-       Compression Method (null) (1 bytes):
-       00
+ Record Header - DTLSCiphertext, Full (6 bytes):
+ HH ES SS 43 LL LL
 
-       Extensions Length (2 bytes):
-       LL LL
+   Handshake Header - Encrypted Extensions (10 bytes):
+   08 LL LL LL SS SS 00 00 00 LL LL LL
 
-         Extension - Key Share (40 bytes):
-         00 33 00 24 00 1d 00 20
-         00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-          16 17 18 19 1a 1b 1c 1d 1e 1f
+     Extensions Length (2 bytes):
+     LL LL
 
-         Extension - Supported Versions (1.3) (6 bytes):
-         00 2b 00 02 03 04
+       Extension - Client Certificate Type (Raw Public Key) (6 bytes):
+       00 13 00 01 01 02
 
-         Extension - Connection Identifier (43) (6 bytes):
-         XX XX 00 02 01 43
+       Extension - Server Certificate Type (Raw Public Key) (6 bytes):
+       00 14 00 01 01 02
 
-   Record Header - DTLSCiphertext, Full (6 bytes):
-   HH ES SS 43 LL LL
+   Handshake Header - Certificate Request (10 bytes):
+   0d LL LL LL SS SS 00 00 00 LL LL LL
 
-     Handshake Header - Encrypted Extensions (10 bytes):
-     08 LL LL LL SS SS 00 00 00 LL LL LL
+     Request Context (1 bytes):
+     00
 
-       Extensions Length (2 bytes):
-       LL LL
+     Extensions Length (2 bytes):
+     LL LL
 
-         Extension - Client Certificate Type (Raw Public Key) (6 bytes):
-         00 13 00 01 01 02
+       Extension - Signature Algorithms (ecdsa_secp256r1_sha256)
+       (8 bytes):
+       00 0d 00 04 00 02 08 07
 
-         Extension - Server Certificate Type (Raw Public Key) (6 bytes):
-         00 14 00 01 01 02
-
-     Handshake Header - Certificate Request (10 bytes):
-     0d LL LL LL SS SS 00 00 00 LL LL LL
+   Handshake Header - Certificate (10 bytes):
 
 
 
-
-Mattsson, et al.        Expires 10 September 2020               [Page 7]
+Mattsson, et al.           Expires 6 May 2021                   [Page 7]
 
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
 
 
-       Request Context (1 bytes):
-       00
+   0b LL LL LL SS SS 00 00 00 LL LL LL
 
-       Extensions Length (2 bytes):
-       LL LL
+     Request Context (1 bytes):
+     00
 
-         Extension - Signature Algorithms (ecdsa_secp256r1_sha256)
-         (8 bytes):
-         00 0d 00 04 00 02 08 07
+     Certificate List Length (3 bytes):
+     LL LL LL
 
-     Handshake Header - Certificate (10 bytes):
-     0b LL LL LL SS SS 00 00 00 LL LL LL
+     Certificate Length (3 bytes):
+     LL LL LL
 
-       Request Context (1 bytes):
-       00
+     Certificate (59 bytes) // Point compression
+     ....
 
-       Certificate List Length (3 bytes):
-       LL LL LL
+     Certificate Extensions (2 bytes):
+     00 00
 
-       Certificate Length (3 bytes):
-       LL LL LL
+   Handshake Header - Certificate Verify (10 bytes):
+   0f LL LL LL SS SS 00 00 00 LL LL LL
 
-       Certificate (59 bytes) // Point compression
-       ....
+     Signature  (68 bytes):
+     ZZ ZZ 00 40 ....
 
-       Certificate Extensions (2 bytes):
-       00 00
+   Handshake Header - Finished (10 bytes):
+   14 LL LL LL SS SS 00 00 00 LL LL LL
 
-     Handshake Header - Certificate Verify (10 bytes):
-     0f LL LL LL SS SS 00 00 00 LL LL LL
+     Verify Data (32 bytes):
+     00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+     16 17 18 19 1a 1b 1c 1d 1e 1f
 
-       Signature  (68 bytes):
-       ZZ ZZ 00 40 ....
+   Record Type (1 byte):
+   16
 
-     Handshake Header - Finished (10 bytes):
-     14 LL LL LL SS SS 00 00 00 LL LL LL
+ Auth Tag (8 bytes):
+ e0 8b 0e 45 5a 35 0a e5
 
-       Verify Data (32 bytes):
-       00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-       16 17 18 19 1a 1b 1c 1d 1e 1f
-
-     Record Type (1 byte):
-     16
-
-   Auth Tag (8 bytes):
-   e0 8b 0e 45 5a 35 0a e5
-
-   13 + 102 + 6 + 24 + 21 + 78 + 78 + 42 + 1 + 8 = 373 bytes
-
-
-
-Mattsson, et al.        Expires 10 September 2020               [Page 8]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
+ 13 + 102 + 6 + 24 + 21 + 78 + 78 + 42 + 1 + 8 = 373 bytes
 
    DTLS 1.3 RPK + ECDHE flight_2 gives 373 bytes of overhead.
 
 2.2.1.3.  flight_3
+
+
+
+
+
+
+
+
+
+
+Mattsson, et al.           Expires 6 May 2021                   [Page 8]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
 
    Record Header (6 bytes) // DTLSCiphertext, Full:
    ZZ ES SS 42 LL LL
@@ -499,14 +495,16 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
    6 + 78 + 78 + 42 + 1 + 8 = 213 bytes
 
-
-
-Mattsson, et al.        Expires 10 September 2020               [Page 9]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
-
    DTLS 1.3 RPK + ECDHE flight_2 gives 213 bytes of overhead.
+
+
+
+
+
+Mattsson, et al.           Expires 6 May 2021                   [Page 9]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
 
 2.2.2.  Message Sizes PSK + ECDHE
 
@@ -516,14 +514,14 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
    The following is added:
 
-   + Extension - PSK Key Exchange Modes (6 bytes):
-     00 2d 00 02 01 01
+  + Extension - PSK Key Exchange Modes (6 bytes):
+    00 2d 00 02 01 01
 
-   + Extension - Pre Shared Key (48 bytes):
-     00 29 00 2F
-     00 0a 00 01 ID 00 00 00 00
-     00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
-     14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+  + Extension - Pre Shared Key (48 bytes):
+    00 29 00 2F
+    00 0a 00 01 ID 00 00 00 00
+    00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+    14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
    The following is removed:
 
@@ -557,9 +555,11 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
 
 
-Mattsson, et al.        Expires 10 September 2020              [Page 10]
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 10]
 
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
 
 
    - Handshake Message Certificate (78 bytes)
@@ -613,9 +613,9 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
 
 
-Mattsson, et al.        Expires 10 September 2020              [Page 11]
+Mattsson, et al.           Expires 6 May 2021                  [Page 11]
 
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
 
 
    DTLS 1.3 PSK flight_1 gives 134 bytes of overhead.
@@ -653,10 +653,10 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
    For the flight #1, the following is added:
 
-   + Extension - Client Cashed Information (39 bytes):
-     00 19 LL LL LL LL
-     01 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-     16 17 18 19 1a 1b 1c 1d 1e 1f
+  + Extension - Client Cashed Information (39 bytes):
+    00 19 LL LL LL LL
+    01 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
 
    And the following is removed:
 
@@ -669,9 +669,9 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
 
 
-Mattsson, et al.        Expires 10 September 2020              [Page 12]
+Mattsson, et al.           Expires 6 May 2021                  [Page 12]
 
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
 
 
    For the flight #2, the following is added:
@@ -691,15 +691,15 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
    A summary of the calculation is given in Figure 3.
 
-   ======================================================================
-   Flight                             #1         #2        #3      Total
-   ----------------------------------------------------------------------
-   DTLS 1.3 Cached X.509/RPK + ECDHE 183        347       213       743
-   DTLS 1.3 RPK + ECDHE              150        373       213       736
-   =======================================================================
+ ======================================================================
+ Flight                             #1         #2        #3      Total
+ ----------------------------------------------------------------------
+ DTLS 1.3 Cached X.509/RPK + ECDHE 183        347       213       743
+ DTLS 1.3 RPK + ECDHE              150        373       213       736
+ =======================================================================
 
-     Figure 3: Comparison of message sizes in bytes for DTLS 1.3 RPK +
-                     ECDH with and without cached X.509
+   Figure 3: Comparison of message sizes in bytes for DTLS 1.3 RPK +
+                   ECDH with and without cached X.509
 
 2.2.5.  Resumption
 
@@ -725,9 +725,9 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
 
 
-Mattsson, et al.        Expires 10 September 2020              [Page 13]
+Mattsson, et al.           Expires 6 May 2021                  [Page 13]
 
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
 
 
    Record Header - DTLSCiphertext, Full (6 bytes):
@@ -767,23 +767,23 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    DTLS 1.3 Flight #2:   -7 bytes
    DTLS 1.3 Flight #3:   -1 byte
 
-   =======================================================================
-   Flight                                #1         #2       #3    Total
-   -----------------------------------------------------------------------
-   DTLS 1.3 RPK + ECDHE (no cid)        144        364       212    722
-   DTLS 1.3 PSK + ECDHE (no cid)        178        183        56    417
-   DTLS 1.3 PSK (no cid)                128        143        56    327
-   =======================================================================
+ =======================================================================
+ Flight                                #1         #2       #3    Total
+ -----------------------------------------------------------------------
+ DTLS 1.3 RPK + ECDHE (no cid)        144        364       212    722
+ DTLS 1.3 PSK + ECDHE (no cid)        178        183        56    417
+ DTLS 1.3 PSK (no cid)                128        143        56    327
+ =======================================================================
 
-        Figure 4: Comparison of message sizes in bytes for DTLS 1.3
-                           without Connection ID
-
-
+      Figure 4: Comparison of message sizes in bytes for DTLS 1.3
+                         without Connection ID
 
 
-Mattsson, et al.        Expires 10 September 2020              [Page 14]
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 14]
 
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
 
 
 2.2.7.  DTLS Raw Public Keys
@@ -837,9 +837,9 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
 
 
-Mattsson, et al.        Expires 10 September 2020              [Page 15]
+Mattsson, et al.           Expires 6 May 2021                  [Page 15]
 
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
 
 
 2.3.  TLS 1.3
@@ -893,183 +893,183 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
 
 
-Mattsson, et al.        Expires 10 September 2020              [Page 16]
+Mattsson, et al.           Expires 6 May 2021                  [Page 16]
 
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
 
 
-   Record Header - TLSPlaintext (5 bytes):
-   16 03 03 LL LL
+Record Header - TLSPlaintext (5 bytes):
+16 03 03 LL LL
 
-     Handshake Header - Client Hello (4 bytes):
-     01 LL LL LL
+  Handshake Header - Client Hello (4 bytes):
+  01 LL LL LL
 
-       Legacy Version (2 bytes):
-       03 03
+    Legacy Version (2 bytes):
+    03 03
 
-       Client Random (32 bytes):
-       00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-       16 17 18 19 1a 1b 1c 1d 1e 1f
+    Client Random (32 bytes):
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
 
-       Legacy Session ID (1 bytes):
-       00
+    Legacy Session ID (1 bytes):
+    00
 
-       Cipher Suites (TLS_AES_128_CCM_8_SHA256) (4 bytes):
-       00 02 13 05
+    Cipher Suites (TLS_AES_128_CCM_8_SHA256) (4 bytes):
+    00 02 13 05
 
-       Compression Methods (null) (2 bytes):
-       01 00
+    Compression Methods (null) (2 bytes):
+    01 00
 
-       Extensions Length (2 bytes):
-       LL LL
+    Extensions Length (2 bytes):
+    LL LL
 
-         Extension - Supported Groups (x25519) (8 bytes):
-         00 0a 00 04 00 02 00 1d
+      Extension - Supported Groups (x25519) (8 bytes):
+      00 0a 00 04 00 02 00 1d
 
-         Extension - Signature Algorithms (ecdsa_secp256r1_sha256) (8 bytes):
-         00 0d 00 04 00 02 08 07
+      Extension - Signature Algorithms(ecdsa_secp256r1_sha256)(8 bytes):
+      00 0d 00 04 00 02 08 07
 
-         Extension - Key Share (42 bytes):
-         00 33 00 26 00 24 00 1d 00 20
-         00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-         16 17 18 19 1a 1b 1c 1d 1e 1f
+      Extension - Key Share (42 bytes):
+      00 33 00 26 00 24 00 1d 00 20
+      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+      16 17 18 19 1a 1b 1c 1d 1e 1f
 
-         Extension - Supported Versions (1.3) (7 bytes):
-         00 2b 00 03 02 03 04
+      Extension - Supported Versions (1.3) (7 bytes):
+      00 2b 00 03 02 03 04
 
-         Extension - Client Certificate Type (Raw Public Key) (6 bytes):
-         00 13 00 01 01 02
+      Extension - Client Certificate Type (Raw Public Key) (6 bytes):
+      00 13 00 01 01 02
 
-         Extension - Server Certificate Type (Raw Public Key) (6 bytes):
-         00 14 00 01 01 02
+      Extension - Server Certificate Type (Raw Public Key) (6 bytes):
+      00 14 00 01 01 02
 
-   5 + 4 + 2 + 32 + 1 + 4 + 2 + 2 + 8 + 8 + 42 + 7 + 6 + 6 = 129 bytes
+5 + 4 + 2 + 32 + 1 + 4 + 2 + 2 + 8 + 8 + 42 + 7 + 6 + 6 = 129 bytes
 
    TLS 1.3 RPK + ECDHE flight_1 gives 129 bytes of overhead.
 
 
 
-Mattsson, et al.        Expires 10 September 2020              [Page 17]
+Mattsson, et al.           Expires 6 May 2021                  [Page 17]
 
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
 
 
 2.3.1.2.  flight_2
 
-   Record Header - TLSPlaintext (5 bytes):
-   16 03 03 LL LL
+Record Header - TLSPlaintext (5 bytes):
+16 03 03 LL LL
 
-     Handshake Header - Server Hello (4 bytes):
-     02 LL LL LL
+  Handshake Header - Server Hello (4 bytes):
+  02 LL LL LL
 
-       Legacy Version (2 bytes):
-       fe fd
+    Legacy Version (2 bytes):
+    fe fd
 
-       Server Random (32 bytes):
-       00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-       16 17 18 19 1a 1b 1c 1d 1e 1f
+    Server Random (32 bytes):
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
 
-       Legacy Session ID (1 bytes):
-       00
+    Legacy Session ID (1 bytes):
+    00
 
-       Cipher Suite (TLS_AES_128_CCM_8_SHA256) (2 bytes):
-       13 05
+    Cipher Suite (TLS_AES_128_CCM_8_SHA256) (2 bytes):
+    13 05
 
-       Compression Method (null) (1 bytes):
-       00
+    Compression Method (null) (1 bytes):
+    00
 
-       Extensions Length (2 bytes):
-       LL LL
+    Extensions Length (2 bytes):
+    LL LL
 
-         Extension - Key Share (40 bytes):
-         00 33 00 24 00 1d 00 20
-         00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-         16 17 18 19 1a 1b 1c 1d 1e 1f
+      Extension - Key Share (40 bytes):
+      00 33 00 24 00 1d 00 20
+      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+      16 17 18 19 1a 1b 1c 1d 1e 1f
 
-         Extension - Supported Versions (1.3) (6 bytes):
-         00 2b 00 02 03 04
+      Extension - Supported Versions (1.3) (6 bytes):
+      00 2b 00 02 03 04
 
-   Record Header - TLSCiphertext (5 bytes):
-   17 03 03 LL LL
+Record Header - TLSCiphertext (5 bytes):
+17 03 03 LL LL
 
-     Handshake Header - Encrypted Extensions (4 bytes):
-     08 LL LL LL
+  Handshake Header - Encrypted Extensions (4 bytes):
+  08 LL LL LL
 
-       Extensions Length (2 bytes):
-       LL LL
+    Extensions Length (2 bytes):
+    LL LL
 
-         Extension - Client Certificate Type (Raw Public Key) (6 bytes):
-         00 13 00 01 01 02
+      Extension - Client Certificate Type (Raw Public Key) (6 bytes):
+      00 13 00 01 01 02
 
-         Extension - Server Certificate Type (Raw Public Key) (6 bytes):
+      Extension - Server Certificate Type (Raw Public Key) (6 bytes):
 
 
 
-Mattsson, et al.        Expires 10 September 2020              [Page 18]
+Mattsson, et al.           Expires 6 May 2021                  [Page 18]
 
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
 
 
-         00 14 00 01 01 02
+      00 14 00 01 01 02
 
-     Handshake Header - Certificate Request (4 bytes):
-     0d LL LL LL
+  Handshake Header - Certificate Request (4 bytes):
+  0d LL LL LL
 
-       Request Context (1 bytes):
-       00
+    Request Context (1 bytes):
+    00
 
-       Extensions Length (2 bytes):
-       LL LL
+    Extensions Length (2 bytes):
+    LL LL
 
-         Extension - Signature Algorithms (ecdsa_secp256r1_sha256) (8 bytes):
-         00 0d 00 04 00 02 08 07
+      Extension - Signature Algorithms(ecdsa_secp256r1_sha256)(8 bytes):
+      00 0d 00 04 00 02 08 07
 
-     Handshake Header - Certificate (4 bytes):
-     0b LL LL LL
+  Handshake Header - Certificate (4 bytes):
+  0b LL LL LL
 
-       Request Context (1 bytes):
-       00
+    Request Context (1 bytes):
+    00
 
-       Certificate List Length (3 bytes):
-       LL LL LL
+    Certificate List Length (3 bytes):
+    LL LL LL
 
-       Certificate Length (3 bytes):
-       LL LL LL
+    Certificate Length (3 bytes):
+    LL LL LL
 
-       Certificate (59 bytes) // Point compression
-       ....
+    Certificate (59 bytes) // Point compression
+    ....
 
-       Certificate Extensions (2 bytes):
-       00 00
+    Certificate Extensions (2 bytes):
+    00 00
 
-     Handshake Header - Certificate Verify (4 bytes):
-     0f LL LL LL
+  Handshake Header - Certificate Verify (4 bytes):
+  0f LL LL LL
 
-       Signature  (68 bytes):
-       ZZ ZZ 00 40 ....
+    Signature  (68 bytes):
+    ZZ ZZ 00 40 ....
 
-     Handshake Header - Finished (4 bytes):
-     14 LL LL LL
+  Handshake Header - Finished (4 bytes):
+  14 LL LL LL
 
-       Verify Data (32 bytes):
-       00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-       16 17 18 19 1a 1b 1c 1d 1e 1f
+    Verify Data (32 bytes):
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
+    16 17 18 19 1a 1b 1c 1d 1e 1f
 
-     Record Type (1 byte):
-     16
-
-
+  Record Type (1 byte):
+  16
 
 
-Mattsson, et al.        Expires 10 September 2020              [Page 19]
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 19]
 
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
 
 
-   Auth Tag (8 bytes):
-   e0 8b 0e 45 5a 35 0a e5
+Auth Tag (8 bytes):
+e0 8b 0e 45 5a 35 0a e5
 
-   5 + 90 + 5 + 18 + 15 + 72 + 72 + 36 + 1 + 8 = 322 bytes
+5 + 90 + 5 + 18 + 15 + 72 + 72 + 36 + 1 + 8 = 322 bytes
 
    TLS 1.3 RPK + ECDHE flight_2 gives 322 bytes of overhead.
 
@@ -1117,9 +1117,9 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
 
 
-Mattsson, et al.        Expires 10 September 2020              [Page 20]
+Mattsson, et al.           Expires 6 May 2021                  [Page 20]
 
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
 
 
    Record Header - TLSCiphertext (5 bytes):
@@ -1173,9 +1173,9 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
 
 
-Mattsson, et al.        Expires 10 September 2020              [Page 21]
+Mattsson, et al.           Expires 6 May 2021                  [Page 21]
 
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
 
 
 2.3.2.  Message Sizes PSK + ECDHE
@@ -1186,14 +1186,14 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
    The following is added:
 
-   + Extension - PSK Key Exchange Modes (6 bytes):
-     00 2d 00 02 01 01
+  + Extension - PSK Key Exchange Modes (6 bytes):
+    00 2d 00 02 01 01
 
-   + Extension - Pre Shared Key (48 bytes):
-     00 29 00 2F
-     00 0a 00 01 ID 00 00 00 00
-     00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
-     14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+  + Extension - Pre Shared Key (48 bytes):
+    00 29 00 2F
+    00 0a 00 01 ID 00 00 00 00
+    00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+    14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
    The following is removed:
 
@@ -1229,9 +1229,9 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
 
 
-Mattsson, et al.        Expires 10 September 2020              [Page 22]
+Mattsson, et al.           Expires 6 May 2021                  [Page 22]
 
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
 
 
    - Handshake Message Certificate (72 bytes)
@@ -1285,9 +1285,9 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
 
 
-Mattsson, et al.        Expires 10 September 2020              [Page 23]
+Mattsson, et al.           Expires 6 May 2021                  [Page 23]
 
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
 
 
    TLS 1.3 PSK flight_1 gives 116 bytes of overhead.
@@ -1315,8 +1315,9 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 2.4.  EDHOC
 
    This section gives an estimate of the message sizes of EDHOC with
-   different authentication methods.  All examples are given in CBOR
-   diagnostic notation and hexadecimal.
+   authenticated with static Diffie-Hellman keys.  All examples are
+   given in CBOR diagnostic notation and hexadecimal, and are based on
+   the test vectors in Appendix B.2 of [I-D.ietf-lake-edhoc].
 
 2.4.1.  Message Sizes RPK
 
@@ -1340,10 +1341,9 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
 
 
-
-Mattsson, et al.        Expires 10 September 2020              [Page 24]
+Mattsson, et al.           Expires 6 May 2021                  [Page 24]
 
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
 
 
    message_2 = (
@@ -1368,95 +1368,55 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    message_3 (20 bytes):
    08 52 53 c3 99 19 99 a5 ff b8 69 21 e9 9b 60 7c 06 77 70 e0
 
-2.4.2.  Message Sizes PSK
+2.4.2.  Summary
 
-2.4.3.  message_1
-
-   message_1 = (
-     17,
-     0,
-     h'3662C4A71D624E8A4D9DFF879ABC6E2A0E745F82F497F7AFBEBFF3B01A8F
-       AB57',
-     14,
-     -17
-   )
-
-   message_1 (38 bytes):
-   11 00 58 20 36 62 c4 a7 1d 62 4e 8a 4d 9d ff 87 9a bc 6e 2a
-   0e 74 5f 82 f4 97 f7 af be bf f3 b0 1a 8f ab 57 0e 30
-
-2.4.4.  message_2
-
-   message_2 = (
-     h'A3967F6CF99B6DDC7E7C219D0D119A383F754001DF33515971EC6C842553
-       B776',
-     -24,
-     h'4F355451E069226F'
-   )
-
-
-
-
-Mattsson, et al.        Expires 10 September 2020              [Page 25]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
-
-   message_2 (44 bytes):
-   58 20 a3 96 7f 6c f9 9b 6d dc 7e 7c 21 9d 0d 11 9a 38 3f 75
-   40 01 df 33 51 59 71 ec 6c 84 25 53 b7 76 37 48 4f 35 54 51
-   e0 69 22 6f
-
-2.4.5.  message_3
-
-   message_3 = (
-     -24,
-     h'763BD2F3C10F0D45'
-   )
-
-   message_3 (10 bytes):
-   37 48 76 3b d2 f3 c1 0f 0d 45
-
-2.4.6.  Summary
-
-   The previous examples of typical message sizes are summarized in
+   The typical message sizes for the previous example and for an example
+   of EDHOC authenticated with signature keys and X.509 certificates
+   based on Appendix B.1 of [I-D.ietf-lake-edhoc] are summarized in
    Figure 5.
 
-   =====================================================================
-                  PSK       RPK       x5t     x5chain
-   ---------------------------------------------------------------------
-   message_1       38        37        37        37
-   message_2       44        46       117       110 + Certificate chain
-   message_3       10        20        91        84 + Certificate chain
-   ---------------------------------------------------------------------
-   Total           92       103       245       231 + Certificate chains
-   =====================================================================
+                      ===============================
+                                     RPK       x5t
+                      -------------------------------
+                      message_1       37        37
+                      message_2       46       117
+                      message_3       20        91
+                      -------------------------------
+                      Total          103       245
+                      ===============================
 
                   Figure 5: Typical message sizes in bytes
+
+
+
+
+
+
+
+
+
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 25]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
 
 2.5.  Conclusion
 
    To do a fair comparison, one has to choose a specific deployment and
    look at the topology, the whole protocol stack, frame sizes (e.g. 51
    or 128 bytes), how and where in the protocol stack fragmentation is
-   done, and the expected packet loss.  Note that the number of byte in
+   done, and the expected packet loss.  Note that the number of bytes in
    each frame that is available for the key exchange protocol may depend
-   on the underlying protocol layers as well as the number of hops in
-   multi-hop networks.  The packet loss depends may depend on how many
-   other devices that are transmitting at the same time, and may
-   increase during network formation.  The total overhead will be larger
-   due to mechanisms for fragmentation, retransmission, and packet
-   ordering.  The overhead of fragmentation is roughly proportional to
-   the number of fragments, while the expected overhead due to
-   retransmission in noisy environments is a superlinear function of the
-   flight sizes.
-
-
-
-Mattsson, et al.        Expires 10 September 2020              [Page 26]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
+   on the underlying protocol layers as well as on the number of hops in
+   multi-hop networks.  The packet loss may depend on how many other
+   devices are transmitting at the same time, and may increase during
+   network formation.  The total overhead will be larger due to
+   mechanisms for fragmentation, retransmission, and packet ordering.
+   The overhead of fragmentation is roughly proportional to the number
+   of fragments, while the expected overhead due to retransmission in
+   noisy environments is a superlinear function of the flight sizes.
 
 3.  Overhead for Protection of Application Data
 
@@ -1488,31 +1448,20 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    following overheads should be representative for sequence numbers and
    Connection IDs with the same length.
 
+
+
+
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 26]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
+
    The OSCORE overhead is dependent on the included CoAP Option numbers
    as well as the length of the OSCORE parameters Sender ID and sequence
    number.  The following overheads apply for all sequence numbers and
    Sender IDs with the same length.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Mattsson, et al.        Expires 10 September 2020              [Page 27]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
 
        Sequence Number                '05'       '1005'     '100005'
        -------------------------------------------------------------
@@ -1548,6 +1497,23 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
        Figure 7: Overhead in bytes as a function of Connection/Sender
                      ID       (Sequence Number = '05')
 
+
+
+
+
+
+
+
+
+
+
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 27]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
+
        Protocol                     Overhead      Overhead (GHC)
        -------------------------------------------------------------
        DTLS 1.2                        21               8
@@ -1562,13 +1528,6 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
                    Figure 8: Overhead (excluding ICV) in
        bytes                   (Connection/ Sender ID = '', Sequence
                                Number = '05')
-
-
-
-Mattsson, et al.        Expires 10 September 2020              [Page 28]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
 
 3.2.  DTLS 1.2
 
@@ -1602,6 +1561,15 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
    DTLS 1.2 gives 29 bytes overhead.
 
+
+
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 28]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
+
 3.2.2.  DTLS 1.2 with 6LoWPAN-GHC
 
    This section analyzes the overhead of DTLS 1.2 [RFC6347] when
@@ -1613,18 +1581,6 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
    Note that this header compression is not available when DTLS is used
    over transports that do not use 6LoWPAN together with 6LoWPAN-GHC.
-
-
-
-
-
-
-
-
-Mattsson, et al.        Expires 10 September 2020              [Page 29]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
 
    Compressed DTLS 1.2 record layer (22 bytes, 16 bytes overhead):
    b0 c3 03 05 00 16 f2 0e ae a0 15 56 67 92 4d ff
@@ -1647,6 +1603,28 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    calculations in this section uses Connection ID = '42'.  DTLS recored
    layer with a Connection ID = '' (the empty string) is equal to DTLS
    without Connection ID.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 29]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
 
    DTLS 1.2 record layer (36 bytes, 30 bytes overhead):
    17 fe fd 00 01 00 00 00 00 00 05 42 00 16 00 01
@@ -1674,14 +1652,6 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
    DTLS 1.2 with Connection ID gives 30 bytes overhead.
 
-
-
-
-Mattsson, et al.        Expires 10 September 2020              [Page 30]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
-
 3.2.4.  DTLS 1.2 with Connection ID and 6LoWPAN-GHC
 
    This section analyzes the overhead of DTLS 1.2 [RFC6347] with
@@ -1705,6 +1675,13 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    ICV:
    4d ff 8a 24 e4 cb 35 b9
 
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 30]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
+
    When compressed with 6LoWPAN-GHC, DTLS 1.2 with the above parameters
    (epoch, sequence number, Connection ID, length) gives 17 bytes
    overhead.
@@ -1723,20 +1700,6 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    of [I-D.ietf-tls-dtls13]).  The minimal header formal omit the length
    field and only a 1-byte field is used to carry the 8 low order bits
    of the sequence number
-
-
-
-
-
-
-
-
-
-
-Mattsson, et al.        Expires 10 September 2020              [Page 31]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
 
    DTLS 1.3 record layer (17 bytes, 11 bytes overhead):
    21 05 ae a0 15 56 67 92 ec 4d ff 8a 24 e4 cb 35 b9
@@ -1759,6 +1722,21 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
    Note that this header compression is not available when DTLS is used
    over transports that do not use 6LoWPAN together with 6LoWPAN-GHC.
+
+
+
+
+
+
+
+
+
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 31]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
 
    Compressed DTLS 1.3 record layer (18 bytes, 12 bytes overhead):
    11 21 05 ae a0 15 56 67 92 ec 4d ff 8a 24 e4 cb
@@ -1783,16 +1761,6 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    used for the sequence number.  The minimal DTLSCiphertext structure
    is used (see Figure 4 of [I-D.ietf-tls-dtls13]), with the addition of
    the Connection ID field.
-
-
-
-
-
-
-Mattsson, et al.        Expires 10 September 2020              [Page 32]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
 
    DTLS 1.3 record layer (18 bytes, 12 bytes overhead):
    31 42 05 ae a0 15 56 67 92 ec 4d ff 8a 24 e4 cb 35 b9
@@ -1819,6 +1787,13 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    Note that this header compression is not available when DTLS is used
    over transports that do not use 6LoWPAN together with 6LoWPAN-GHC.
 
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 32]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
+
    Compressed DTLS 1.3 record layer (19 bytes, 13 bytes overhead):
    12 31 05 42 ae a0 15 56 67 92 ec 4d ff 8a 24 e4
    cb 35 b9
@@ -1841,14 +1816,6 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    This section analyzes the overhead of TLS 1.2 [RFC5246].  The changes
    compared to DTLS 1.2 is that the TLS 1.2 record layer does not have
    epoch and sequence number, and that the version is different.
-
-
-
-
-Mattsson, et al.        Expires 10 September 2020              [Page 33]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
 
    TLS 1.2 Record Layer (27 bytes, 21 bytes overhead):
    17 03 03 00 16 00 00 00 00 00 00 00 05 ae a0 15
@@ -1873,6 +1840,15 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
    This section analyzes the overhead of TLS 1.2 [RFC5246] when
    compressed with 6LoWPAN-GHC [RFC7400] [OlegHahm-ghc].
+
+
+
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 33]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
 
    Note that this header compression is not available when TLS is used
    over transports that do not use 6LoWPAN together with 6LoWPAN-GHC.
@@ -1899,13 +1875,6 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    compared to TLS 1.2 is that the TLS 1.3 record layer uses a different
    version.
 
-
-
-Mattsson, et al.        Expires 10 September 2020              [Page 34]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
-
    TLS 1.3 Record Layer (20 bytes, 14 bytes overhead):
    17 03 03 00 16 ae a0 15 56 67 92 ec 4d ff 8a 24
    e4 cb 35 b9
@@ -1927,6 +1896,15 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
    This section analyzes the overhead of TLS 1.3 [RFC8446] when
    compressed with 6LoWPAN-GHC [RFC7400] [OlegHahm-ghc].
+
+
+
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 34]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
 
    Note that this header compression is not available when TLS is used
    over transports that do not use 6LoWPAN together with 6LoWPAN-GHC.
@@ -1954,14 +1932,6 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    that Sender ID = '' (empty string) can only be used by one client per
    server.
 
-
-
-
-Mattsson, et al.        Expires 10 September 2020              [Page 35]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
-
    OSCORE request (19 bytes, 13 bytes overhead):
    92 09 05
    ff ec ae a0 15 56 67 92 4d ff 8a 24 e4 cb 35 b9
@@ -1980,6 +1950,18 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    The below calculation Option Delta = '9', Sender ID = '42', and
    Sequence Number = '05', and is only an example.
 
+
+
+
+
+
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 35]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
+
    OSCORE request (20 bytes, 14 bytes overhead):
    93 09 05 42
    ff ec ae a0 15 56 67 92 4d ff 8a 24 e4 cb 35 b9
@@ -1996,27 +1978,6 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    4d ff 8a 24 e4 cb 35 b9
 
    The below calculation uses Option Delta = '9'.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Mattsson, et al.        Expires 10 September 2020              [Page 36]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
 
    OSCORE response (17 bytes, 11 bytes overhead):
    90
@@ -2046,6 +2007,17 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
    TODO
 
+
+
+
+
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 36]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
+
 3.8.  Conclusion
 
    DTLS 1.2 has quite a large overhead as it uses an explicit sequence
@@ -2066,13 +2038,6 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    increases the overhead.  The 6LoWPAN-GHC header compression is not
    available when (D)TLS is used over transports that do not use 6LoWPAN
    together with 6LoWPAN-GHC.
-
-
-
-Mattsson, et al.        Expires 10 September 2020              [Page 37]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
 
    New security protocols like OSCORE, TLS 1.3, and DTLS 1.3 have much
    lower overhead than DTLS 1.2 and TLS 1.2.  The overhead is even
@@ -2100,12 +2065,28 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
 
 6.  Informative References
 
+
+
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 37]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
+
    [I-D.ietf-core-oscore-groupcomm]
               Tiloca, M., Selander, G., Palombini, F., and J. Park,
               "Group OSCORE - Secure Group Communication for CoAP", Work
               in Progress, Internet-Draft, draft-ietf-core-oscore-
-              groupcomm-06, 4 November 2019, <http://www.ietf.org/
-              internet-drafts/draft-ietf-core-oscore-groupcomm-06.txt>.
+              groupcomm-09, 23 June 2020, <http://www.ietf.org/internet-
+              drafts/draft-ietf-core-oscore-groupcomm-09.txt>.
+
+   [I-D.ietf-lake-edhoc]
+              Selander, G., Mattsson, J., and F. Palombini, "Ephemeral
+              Diffie-Hellman Over COSE (EDHOC)", Work in Progress,
+              Internet-Draft, draft-ietf-lake-edhoc-01, 2 August 2020,
+              <http://www.ietf.org/internet-drafts/draft-ietf-lake-
+              edhoc-01.txt>.
 
    [I-D.ietf-tls-dtls-connection-id]
               Rescorla, E., Tschofenig, H., and T. Fossati, "Connection
@@ -2118,30 +2099,14 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
               Rescorla, E., Tschofenig, H., and N. Modadugu, "The
               Datagram Transport Layer Security (DTLS) Protocol Version
               1.3", Work in Progress, Internet-Draft, draft-ietf-tls-
-              dtls13-35, 7 March 2020, <http://www.ietf.org/internet-
-              drafts/draft-ietf-tls-dtls13-35.txt>.
-
-
-
-
-
-Mattsson, et al.        Expires 10 September 2020              [Page 38]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
+              dtls13-38, 29 May 2020, <http://www.ietf.org/internet-
+              drafts/draft-ietf-tls-dtls13-38.txt>.
 
    [I-D.rescorla-tls-ctls]
               Rescorla, E., Barnes, R., and H. Tschofenig, "Compact TLS
               1.3", Work in Progress, Internet-Draft, draft-rescorla-
-              tls-ctls-03, 4 November 2019, <http://www.ietf.org/
-              internet-drafts/draft-rescorla-tls-ctls-03.txt>.
-
-   [I-D.selander-lake-edhoc]
-              Selander, G., Mattsson, J., and F. Palombini, "Ephemeral
-              Diffie-Hellman Over COSE (EDHOC)", Work in Progress,
-              Internet-Draft, draft-selander-lake-edhoc-00, 4 November
-              2019, <http://www.ietf.org/internet-drafts/draft-selander-
-              lake-edhoc-00.txt>.
+              tls-ctls-04, 9 March 2020, <http://www.ietf.org/internet-
+              drafts/draft-rescorla-tls-ctls-04.txt>.
 
    [IoT-Cert] Forsby, F., "Digital Certificates for the Internet of
               Things", June 2017, <https://kth.diva-
@@ -2155,6 +2120,15 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
               (TLS) Protocol Version 1.2", RFC 5246,
               DOI 10.17487/RFC5246, August 2008,
               <https://www.rfc-editor.org/info/rfc5246>.
+
+
+
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 38]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
 
    [RFC6347]  Rescorla, E. and N. Modadugu, "Datagram Transport Layer
               Security Version 1.2", RFC 6347, DOI 10.17487/RFC6347,
@@ -2178,14 +2152,6 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    [RFC7925]  Tschofenig, H., Ed. and T. Fossati, "Transport Layer
               Security (TLS) / Datagram Transport Layer Security (DTLS)
               Profiles for the Internet of Things", RFC 7925,
-
-
-
-Mattsson, et al.        Expires 10 September 2020              [Page 39]
-
-Internet-Draft    Comparison of CoAP Security Protocols       March 2020
-
-
               DOI 10.17487/RFC7925, July 2016,
               <https://www.rfc-editor.org/info/rfc7925>.
 
@@ -2207,6 +2173,18 @@ Internet-Draft    Comparison of CoAP Security Protocols       March 2020
    [Ulfheim-TLS13]
               Driscoll, M., "Every Byte Explained The Illustrated TLS
               1.3 Connection", March 2018, <https://tls13.ulfheim.net>.
+
+
+
+
+
+
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 39]
+
+Internet-Draft    Comparison of CoAP Security Protocols    November 2020
+
 
 Acknowledgments
 
@@ -2237,4 +2215,26 @@ Authors' Addresses
 
 
 
-Mattsson, et al.        Expires 10 September 2020              [Page 40]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mattsson, et al.           Expires 6 May 2021                  [Page 40]
