@@ -1133,7 +1133,7 @@ To do a fair comparison, one has to choose a specific deployment and look at the
 
 To enable comparison, all the overhead calculations in this section use AES-CCM with a tag length of 8 bytes (e.g.,  AES_128_CCM_8 or AES-CCM-16-64), a plaintext of 6 bytes, and the sequence number ‘05’. This follows the example in {{RFC7400}}, Figure 16.
 
-Note that the compressed overhead calculations for DLTS 1.2, DTLS 1.3, TLS 1.2 and TLS 1.3 are dependent on the parameters epoch, sequence number, and length, and all the overhead calculations are dependent on the parameter Connection ID when used. Note that the OSCORE overhead calculations are dependent on the CoAP option numbers, as well as the length of the OSCORE parameters Sender ID and Sequence Number. The following calculations are only examples.
+Note that the compressed overhead calculations for DLTS 1.2, DTLS 1.3, TLS 1.2 and TLS 1.3 are dependent on the parameters epoch, sequence number, and length (where applicable), and all the overhead calculations are dependent on the parameter Connection ID when used. Note that the OSCORE overhead calculations are dependent on the CoAP option numbers, as well as the length of the OSCORE parameters Sender ID and Sequence Number. The following calculations are only examples.
 
 {{summ-record}} gives a short summary of the message overhead based on different parameters and some assumptions. The following sections detail the assumptions and the calculations.
 
@@ -1312,7 +1312,7 @@ When compressed with 6LoWPAN-GHC, DTLS 1.2 with the above parameters (epoch, seq
 
 This section analyzes the overhead of DTLS 1.3 {{RFC9147}}. The changes compared to DTLS 1.2 are: omission of version number, merging of epoch into the first byte containing signalling bits, optional omission of length, reduction of sequence number into a 1 or 2-bytes field.
 
-Only the minimal header format for DTLS 1.3 is analyzed (see Figure 4 of {{RFC9147}}). The minimal header formal omit the length field and only a 1-byte field is used to carry the 8 low order bits of the sequence number
+DTLS 1.3 is only analyzed with an omitted length field and with an 8-bit sequence number (see Figure 4 of {{RFC9147}}).
 
 ~~~~~~~~~~~
 DTLS 1.3 record layer (17 bytes, 11 bytes overhead):
