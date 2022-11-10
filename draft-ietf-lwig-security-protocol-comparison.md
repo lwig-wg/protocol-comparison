@@ -32,9 +32,6 @@ author:
 
 informative:
 
-  I-D.ietf-core-oscore-groupcomm:
-  I-D.ietf-lake-edhoc:
-  I-D.ietf-tls-ctls:
   RFC5246:
   RFC6347:
   RFC7400:
@@ -46,6 +43,9 @@ informative:
   RFC8613:
   RFC9146:
   RFC9147:
+  I-D.ietf-cose-cbor-encoded-cert:
+  I-D.ietf-lake-edhoc:
+  I-D.ietf-tls-ctls:
 
   OlegHahm-ghc:
     target: https://github.com/OlegHahm/ghc
@@ -62,6 +62,13 @@ informative:
       -
         ins: F. Forsby
     date: June 2017
+
+  Illustrated-TLS12:
+    target: https://tls12.xargs.org/
+    title: The Illustrated TLS 1.2 Connection
+    author:
+      -
+        ins: M. Driscoll
 
   Illustrated-TLS13:
     target: https://tls13.xargs.org/
