@@ -64,12 +64,12 @@ informative:
     date: June 2017
 
   Ulfheim-TLS13:
-    target: https://tls13.ulfheim.net
-    title: Every Byte Explained The Illustrated TLS 1.3 Connection
+    target: https://tls13.xargs.org/
+    title: The Illustrated TLS 1.3 Connection
     author:
       -
         ins: M. Driscoll
-    date: March 2018
+    date: April 2022
 
 --- abstract
 
