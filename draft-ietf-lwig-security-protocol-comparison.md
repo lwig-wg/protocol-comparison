@@ -63,13 +63,19 @@ informative:
         ins: F. Forsby
     date: June 2017
 
-  Ulfheim-TLS13:
+  Illustrated-TLS13:
     target: https://tls13.xargs.org/
     title: The Illustrated TLS 1.3 Connection
     author:
       -
         ins: M. Driscoll
-    date: April 2022
+
+  Illustrated-DTLS13:
+    target: https://dtls.xargs.org/
+    title: The Illustrated DTLS 1.3 Connection
+    author:
+      -
+        ins: M. Driscoll
 
 --- abstract
 
