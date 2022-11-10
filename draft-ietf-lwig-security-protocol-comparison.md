@@ -33,19 +33,19 @@ author:
 informative:
 
   I-D.ietf-core-oscore-groupcomm:
-  I-D.ietf-tls-dtls13:
-  I-D.ietf-tls-dtls-connection-id:
   I-D.ietf-lake-edhoc:
-  I-D.rescorla-tls-ctls:
+  I-D.ietf-tls-ctls:
   RFC5246:
   RFC6347:
   RFC7400:
   RFC7252:
+  RFC7924:
   RFC7925:
   RFC8323:
   RFC8446:
   RFC8613:
-  RFC7924:
+  RFC9146:
+  RFC9147:
 
   OlegHahm-ghc:
     target: https://github.com/OlegHahm/ghc
@@ -79,9 +79,9 @@ This document analyzes and compares the sizes of key exchange flights and the pe
 
 # Introduction
 
-This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{I-D.ietf-tls-dtls13}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, EDHOC {{I-D.ietf-lake-edhoc}}, OSCORE {{RFC8613}}, and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}.
+This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, EDHOC {{I-D.ietf-lake-edhoc}}, OSCORE {{RFC8613}}, and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}.
 
-The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression. DTLS is anlyzed with and without Connection ID {{I-D.ietf-tls-dtls-connection-id}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as ICV. {{handshake}} compares the overhead of key exchange, while {{record}} covers the overhead for protection of application data.
+The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression. DTLS is anlyzed with and without Connection ID {{RFC9146}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as ICV. {{handshake}} compares the overhead of key exchange, while {{record}} covers the overhead for protection of application data.
 
 # Overhead of Key Exchange Protocols {#handshake}
 
@@ -107,7 +107,7 @@ The EDHOC overhead is dependent on the key identifiers included. The following o
 
 All the overhead are dependent on the tag length. The following overheads apply for tags of the same length.
 
-{{fig-compare1}} compares the message sizes of EDHOC {{I-D.ietf-lake-edhoc}} with the DTLS 1.3 {{I-D.ietf-tls-dtls13}} and TLS 1.3 {{RFC8446}} handshakes with connection ID.
+{{fig-compare1}} compares the message sizes of EDHOC {{I-D.ietf-lake-edhoc}} with the DTLS 1.3 {{RFC9147}} and TLS 1.3 {{RFC8446}} handshakes with connection ID.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 =====================================================================
@@ -124,7 +124,7 @@ EDHOC X.509 + ECDHE                37        117        91        245
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare1 title="Comparison of message sizes in bytes with Connection ID" artwork-align="center"}
 
-{{fig-compare2}} compares of message sizes of DTLS 1.3 {{I-D.ietf-tls-dtls13}} and TLS 1.3 {{RFC8446}} handshakes without connection ID.
+{{fig-compare2}} compares of message sizes of DTLS 1.3 {{RFC9147}} and TLS 1.3 {{RFC8446}} handshakes without connection ID.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 =====================================================================
@@ -675,7 +675,7 @@ Total of 59 bytes
 
 ## TLS 1.3
 
-In this section, the message sizes are calculated for TLS 1.3. The major changes compared to DTLS 1.3 are that the record header is smaller, the handshake headers is smaller, and that Connection ID is not supported.  Recently, additional work has taken shape with the goal to further reduce overhead for TLS 1.3 (see {{I-D.rescorla-tls-ctls}}).
+In this section, the message sizes are calculated for TLS 1.3. The major changes compared to DTLS 1.3 are that the record header is smaller, the handshake headers is smaller, and that Connection ID is not supported.  Recently, additional work has taken shape with the goal to further reduce overhead for TLS 1.3 (see {{I-D.ietf-tls-ctls}}).
 
 TLS Assumptions:
 
@@ -1239,7 +1239,7 @@ When compressed with 6LoWPAN-GHC, DTLS 1.2 with the above parameters (epoch, seq
 
 ### DTLS 1.2 with Connection ID
 
-This section analyzes the overhead of DTLS 1.2  {{RFC6347}} with Connection ID {{I-D.ietf-tls-dtls-connection-id}}. The overhead calculations in this section uses Connection ID = '42'. DTLS recored layer with a Connection ID = '' (the empty string) is equal to DTLS without Connection ID.
+This section analyzes the overhead of DTLS 1.2  {{RFC6347}} with Connection ID {{RFC9146}}. The overhead calculations in this section uses Connection ID = '42'. DTLS recored layer with a Connection ID = '' (the empty string) is equal to DTLS without Connection ID.
 
 ~~~~~~~~~~~
 DTLS 1.2 record layer (36 bytes, 30 bytes overhead):
@@ -1271,7 +1271,7 @@ DTLS 1.2 with Connection ID gives 30 bytes overhead.
 
 ### DTLS 1.2 with Connection ID and 6LoWPAN-GHC
 
-This section analyzes the overhead of DTLS 1.2 {{RFC6347}} with Connection ID {{I-D.ietf-tls-dtls-connection-id}} when compressed with 6LoWPAN-GHC {{RFC7400}} {{OlegHahm-ghc}}.
+This section analyzes the overhead of DTLS 1.2 {{RFC6347}} with Connection ID {{RFC9146}} when compressed with 6LoWPAN-GHC {{RFC7400}} {{OlegHahm-ghc}}.
 
 Note that the sequence number ‘01’ used in {{RFC7400}}, Figure 15 gives an exceptionally small overhead that is not representative.
 
@@ -1296,9 +1296,9 @@ When compressed with 6LoWPAN-GHC, DTLS 1.2 with the above parameters (epoch, seq
 
 ### DTLS 1.3
 
-This section analyzes the overhead of DTLS 1.3 {{I-D.ietf-tls-dtls13}}. The changes compared to DTLS 1.2 are: omission of version number, merging of epoch into the first byte containing signalling bits, optional omission of length, reduction of sequence number into a 1 or 2-bytes field.
+This section analyzes the overhead of DTLS 1.3 {{RFC9147}}. The changes compared to DTLS 1.2 are: omission of version number, merging of epoch into the first byte containing signalling bits, optional omission of length, reduction of sequence number into a 1 or 2-bytes field.
 
-Only the minimal header format for DTLS 1.3 is analyzed (see Figure 4 of {{I-D.ietf-tls-dtls13}}). The minimal header formal omit the length field and only a 1-byte field is used to carry the 8 low order bits of the sequence number
+Only the minimal header format for DTLS 1.3 is analyzed (see Figure 4 of {{RFC9147}}). The minimal header formal omit the length field and only a 1-byte field is used to carry the 8 low order bits of the sequence number
 
 ~~~~~~~~~~~
 DTLS 1.3 record layer (17 bytes, 11 bytes overhead):
@@ -1318,7 +1318,7 @@ DTLS 1.3 gives 11 bytes overhead.
 
 ### DTLS 1.3 with 6LoWPAN-GHC
 
-This section analyzes the overhead of DTLS 1.3 {{I-D.ietf-tls-dtls13}} when compressed with 6LoWPAN-GHC {{RFC7400}} {{OlegHahm-ghc}}.
+This section analyzes the overhead of DTLS 1.3 {{RFC9147}} when compressed with 6LoWPAN-GHC {{RFC7400}} {{OlegHahm-ghc}}.
 
 Note that this header compression is not available when DTLS is used over transports that do not use 6LoWPAN together with 6LoWPAN-GHC.
 
@@ -1339,9 +1339,9 @@ When compressed with 6LoWPAN-GHC, DTLS 1.3 with the above parameters (epoch, seq
 
 ### DTLS 1.3 with Connection ID
 
-This section analyzes the overhead of DTLS 1.3 {{I-D.ietf-tls-dtls13}} with Connection ID {{I-D.ietf-tls-dtls-connection-id}}.
+This section analyzes the overhead of DTLS 1.3 {{RFC9147}} with Connection ID {{RFC9146}}.
 
-In this example, the length field is omitted, and the 1-byte field is used for the sequence number. The minimal DTLSCiphertext structure is used (see Figure 4 of {{I-D.ietf-tls-dtls13}}), with the addition of the Connection ID field.
+In this example, the length field is omitted, and the 1-byte field is used for the sequence number. The minimal DTLSCiphertext structure is used (see Figure 4 of {{RFC9147}}), with the addition of the Connection ID field.
 
 ~~~~~~~~~~~
 DTLS 1.3 record layer (18 bytes, 12 bytes overhead):
@@ -1363,7 +1363,7 @@ DTLS 1.3 with Connection ID gives 12 bytes overhead.
 
 ### DTLS 1.3 with Connection ID and 6LoWPAN-GHC
 
-This section analyzes the overhead of DTLS 1.3 {{I-D.ietf-tls-dtls13}} with Connection ID {{I-D.ietf-tls-dtls-connection-id}} when compressed with 6LoWPAN-GHC {{RFC7400}} {{OlegHahm-ghc}}.
+This section analyzes the overhead of DTLS 1.3 {{RFC9147}} with Connection ID {{RFC9146}} when compressed with 6LoWPAN-GHC {{RFC7400}} {{OlegHahm-ghc}}.
 
 Note that this header compression is not available when DTLS is used over transports that do not use 6LoWPAN together with 6LoWPAN-GHC.
 
