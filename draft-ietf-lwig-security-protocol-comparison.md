@@ -14,21 +14,21 @@ pi: # can use array (if all yes) or hash here
   tocdepth: 3
 
 author:
-      -
-        ins: J. Mattsson
-        name: John Preuß Mattsson
-        org: Ericsson AB
-        email: john.mattsson@ericsson.com
-      -
-        ins: F. Palombini
-        name: Francesca Palombini
-        org: Ericsson AB
-        email: francesca.palombini@ericsson.com
-      -
-        ins: M. Vucinic
-        name: Malisa Vucinic
-        org: INRIA
-        email: malisa.vucinic@inria.fr
+- name: John Preuß Mattsson
+  initials: J
+  surname: Preuß Mattsson
+  org: Ericsson AB
+  abbrev: Ericsson
+  email: john.mattsson@ericsson.com
+- name: Francesca Palombini
+  surname: Palombini
+  org: Ericsson AB
+  abbrev: Ericsson
+  email: francesca.palombini@ericsson.com
+- name: Mališa Vučinić
+  surname: Vučinić
+  org: INRIA
+  email: malisa.vucinic@inria.fr
 
 informative:
 
@@ -1570,7 +1570,13 @@ This document has no actions for IANA.
 # Acknowledgments
 {: numbered="no"}
 
-The authors want to thank Ari Keränen, Carsten Bormann, Göran Selander, and Hannes Tschofenig for comments and suggestions on previous versions of the draft.
+The authors want to thank
+{{{Ari Keränen}}},
+{{{Carsten Bormann}}},
+{{{Göran Selander}}},
+and
+{{{Hannes Tschofenig}}}
+for comments and suggestions on previous versions of the draft.
 
 All 6LoWPAN-GHC compression was done with {{OlegHahm-ghc}}.
 
