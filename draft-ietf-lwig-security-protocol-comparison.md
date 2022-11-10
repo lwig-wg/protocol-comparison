@@ -46,6 +46,7 @@ informative:
   RFC9175:
   I-D.ietf-cose-cbor-encoded-cert:
   I-D.ietf-lake-edhoc:
+  I-D.ietf-lake-traces:
   I-D.ietf-tls-ctls:
 
   OlegHahm-ghc:
@@ -1054,7 +1055,7 @@ TLS 1.3 PSK flight_3 gives 57 bytes of overhead.
 
 ## EDHOC
 
-This section gives an estimate of the message sizes of EDHOC with authenticated with static Diffie-Hellman keys. All examples are given in CBOR diagnostic notation and hexadecimal, and are based on the test vectors in Appendix B.2 of {{I-D.ietf-lake-edhoc}}.
+This section gives an estimate of the message sizes of EDHOC with authenticated with static Diffie-Hellman keys. All examples are given in CBOR diagnostic notation and hexadecimal, and are based on the test vectors in Section 4 of {{I-D.ietf-lake-traces}}.
 
 ### Message Sizes RPK
 
@@ -1062,18 +1063,18 @@ This section gives an estimate of the message sizes of EDHOC with authenticated 
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 message_1 = (
-  13,
-  0,
-  h'8D3EF56D1B750A4351D68AC250A0E883790EFC80A538A444EE9E2B57E244
-    1A7C',
-  -2
+  3,
+  2,
+  h'8af6f430ebe18d34184017a9a11bf511c8dff8f834730b96c1b7c8dbca2f
+    c3b6',
+  -24
 )
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 message_1 (37 bytes):
-0d 00 58 20 8d 3e f5 6d 1b 75 0a 43 51 d6 8a c2 50 a0 e8 83
-79 0e fc 80  a5 38 a4 44 ee 9e 2b 57 e2 44 1a 7c 21 
+03 02 58 20 8a f6 f4 30 eb e1 8d 34 18 40 17 a9 a1 1b f5 11 c8
+df f8 f8 34 73 0b 96 c1 b7 c8 db ca 2f c3 b6 37
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 #### message_2
