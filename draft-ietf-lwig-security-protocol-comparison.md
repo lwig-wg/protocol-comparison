@@ -43,6 +43,7 @@ informative:
   RFC8613:
   RFC9146:
   RFC9147:
+  RFC9175:
   I-D.ietf-cose-cbor-encoded-cert:
   I-D.ietf-lake-edhoc:
   I-D.ietf-tls-ctls:
