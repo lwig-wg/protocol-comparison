@@ -691,7 +691,7 @@ TLS Assumptions:
 * TLS RPK with point compression (saves 32 bytes)
 * Only mandatory TLS extensions
 
-For the PSK calculations, {{Ulfheim-TLS13}} was a useful resource, while for RPK calculations we followed the work of  {{IoT-Cert}}.
+For the PSK calculations, {{Illustrated-TLS13}} was a useful resource, while for RPK calculations we followed the work of  {{IoT-Cert}}.
 
 ### Message Sizes RPK + ECDHE
 
