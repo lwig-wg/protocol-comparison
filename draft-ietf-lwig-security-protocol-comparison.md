@@ -132,8 +132,8 @@ DTLS 1.3 Cached X.509/RPK + ECDHE 182        347       213        742
 DTLS 1.3 PSK + ECDHE              184        190        57        431
 DTLS 1.3 PSK                      134        150        57        341
 ---------------------------------------------------------------------
-EDHOC RPK + ECDHE                  37         46        20        103
-EDHOC X.509 + ECDHE                37        117        91        245
+EDHOC RPK + ECDHE                  37         45        19        101
+EDHOC X.509 + ECDHE                37        115        90        242
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare1 title="Comparison of message sizes in bytes with Connection ID" artwork-align="center"}
@@ -1117,10 +1117,10 @@ The typical message sizes for the previous example and for an example of EDHOC a
                RPK       x5t   
 -------------------------------
 message_1       37        37   
-message_2       46       117   
-message_3       20        91   
+message_2       45       115   
+message_3       19        90   
 -------------------------------
-Total          103       245   
+Total          101       242   
 ===============================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-summary title="Typical message sizes in bytes" artwork-align="center"}
