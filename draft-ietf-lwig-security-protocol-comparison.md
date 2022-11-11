@@ -1593,6 +1593,7 @@ This document has no actions for IANA.
 The authors want to thank
 {{{Ari Keränen}}},
 {{{Carsten Bormann}}},
+{{{Stephan Koch}}},
 {{{Göran Selander}}},
 and
 {{{Hannes Tschofenig}}}
