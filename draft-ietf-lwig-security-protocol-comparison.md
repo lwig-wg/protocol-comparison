@@ -1055,7 +1055,7 @@ TLS 1.3 PSK flight_3 gives 57 bytes of overhead.
 
 ## EDHOC
 
-This section gives an estimate of the message sizes of EDHOC with authenticated with static Diffie-Hellman keys. All examples are given in CBOR diagnostic notation and hexadecimal, and are based on the test vectors in Section 4 of {{I-D.ietf-lake-traces}}.
+This section gives an estimate of the message sizes of EDHOC authenticated with static Diffie-Hellman keys and where the static Diffie-Hellman are identified with a key identifier (kid). All examples are given in CBOR diagnostic notation and hexadecimal, and are based on the test vectors in Section 4 of {{I-D.ietf-lake-traces}}.
 
 ### Message Sizes RPK
 
@@ -1081,32 +1081,30 @@ df f8 f8 34 73 0b 96 c1 b7 c8 db ca 2f c3 b6 37
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 message_2 = (
-  h'52FBA0BDC8D953DD86CE1AB2FD7C05A4658C7C30AFDBFC3301047069451B
-    AF35',
-  8,
-  h'DCF6FE9C524C22454DEB'
+  h'419701D7F00A26C2DC587A36DD752549F33763C893422C8EA0F955A13A4F
+    F5D5042459E2DA6C75143F35',
+  -8
 )
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-message_2 (46 bytes):
-58 20 52 fb a0 bd c8 d9 53 dd 86 ce 1a b2 fd 7c 05 a4 65 8c
-7c 30 af db fc 33 01 04 70 69 45 1b af 35 08 4a dc f6 fe 9c
-52 4c 22 45 4d eb 
+message_2 (45 bytes):
+ 58 2a 41 97 01 d7 f0 0a 26 c2 dc 58 7a 36 dd 75 25 49 f3 37
+ 63 c8 93 42 2c 8e a0 f9 55 a1 3a 4f f5 d5 04 24 59 e2 da 6c
+ 75 14 3f 35 27
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 #### message_3
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 message_3 = (
-  8,
-  h'53C3991999A5FFB86921E99B607C067770E0'
+  h'C2B62835DC9B1F53419C1D3A2261EEED3505'
 )
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-message_3 (20 bytes):
-08 52 53 c3 99 19 99 a5 ff b8 69 21 e9 9b 60 7c 06 77 70 e0
+message_3 (19 bytes):
+52 c2 b6 28 35 dc 9b 1f 53 41 9c 1d 3a 22 61 ee ed 35 05
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Summary
@@ -1114,15 +1112,17 @@ message_3 (20 bytes):
 The typical message sizes for the previous example and for an example of EDHOC authenticated with signature keys and X.509 certificates based on Appendix B.1 of {{I-D.ietf-lake-edhoc}} are summarized in {{fig-summary}}.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-===============================
-               RPK       x5t   
--------------------------------
-message_1       37        37   
-message_2       45       115   
-message_3       19        90   
--------------------------------
-Total          101       242   
-===============================
+========================================================
+                    Static DH Keys        Signature Keys
+                    --------------        --------------
+                    kid        x5t        kid        x5t
+--------------------------------------------------------
+message_1            37         37         37         37
+message_2            45         58        102        115
+message_3            19         33         77         90
+--------------------------------------------------------
+Total               101        128        216        242
+========================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-summary title="Typical message sizes in bytes" artwork-align="center"}
 
