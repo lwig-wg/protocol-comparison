@@ -5,6 +5,7 @@ docname: draft-ietf-lwig-security-protocol-comparison-latest
 ipr: trust200902
 wg: LWIG Working Group
 cat: info
+submissiontype: IETF
 
 coding: utf-8
 pi: # can use array (if all yes) or hash here
