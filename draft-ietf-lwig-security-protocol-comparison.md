@@ -1055,7 +1055,7 @@ TLS 1.3 PSK flight_3 gives 57 bytes of overhead.
 
 ## EDHOC
 
-This section gives an estimate of the message sizes of EDHOC authenticated with static Diffie-Hellman keys and where the static Diffie-Hellman are identified with a key identifier (kid). All examples are given in CBOR diagnostic notation and hexadecimal, and are based on the test vectors in Section 4 of {{I-D.ietf-lake-traces}}.
+This section gives an estimate of the message sizes of EDHOC {{I-D.ietf-lake-edhoc}} authenticated with static Diffie-Hellman keys and where the static Diffie-Hellman are identified with a key identifier (kid). All examples are given in CBOR diagnostic notation and hexadecimal, and are based on the test vectors in Section 4 of {{I-D.ietf-lake-traces}}.
 
 ### Message Sizes RPK
 
@@ -1109,7 +1109,7 @@ message_3 (19 bytes):
 
 ### Summary
 
-The typical message sizes for the previous example and for an example of EDHOC authenticated with signature keys and X.509 certificates based on Appendix B.1 of {{I-D.ietf-lake-edhoc}} are summarized in {{fig-summary}}.
+Based on the example above it is relatively easy to calculate numbers also for EDHOC authenticated with signature keys and for authentication keys identified with a SHA-256/64 hash (x5t). The typical message sizes for the previous example and for the other combinations are summarized in {{fig-summary}}. Note that EDHOC treats authentication keys stored in RPK and X.509 in the same way. More detailed examples can be found in {{I-D.ietf-lake-traces}}.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 ========================================================
