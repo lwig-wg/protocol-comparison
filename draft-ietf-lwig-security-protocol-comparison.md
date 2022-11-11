@@ -1136,7 +1136,7 @@ To do a fair comparison, one has to choose a specific deployment and look at the
 
 To enable comparison, all the overhead calculations in this section use AES-CCM with a tag length of 8 bytes (e.g.,  AES_128_CCM_8 or AES-CCM-16-64), a plaintext of 6 bytes, and the sequence number ‘05’. This follows the example in {{RFC7400}}, Figure 16.
 
-Note that the compressed overhead calculations for DLTS 1.2, DTLS 1.3, TLS 1.2 and TLS 1.3 are dependent on the parameters epoch, sequence number, and length (where applicable), and all the overhead calculations are dependent on the parameter Connection ID when used. Note that the OSCORE overhead calculations are dependent on the CoAP option numbers, as well as the length of the OSCORE parameters Sender ID and Sequence Number. The following calculations are only examples.
+Note that the compressed overhead calculations for DLTS 1.2, DTLS 1.3, TLS 1.2 and TLS 1.3 are dependent on the parameters epoch, sequence number, and length (where applicable), and all the overhead calculations are dependent on the parameter Connection ID when used. Note that the OSCORE overhead calculations are dependent on the CoAP option numbers, as well as the length of the OSCORE parameters Sender ID, ID Context, and Sequence Number (where applicable). The following calculations are only examples.
 
 {{summ-record}} gives a short summary of the message overhead based on different parameters and some assumptions. The following sections detail the assumptions and the calculations.
 
@@ -1166,7 +1166,7 @@ TLS  1.3 (GHC)                    15         16         17
 OSCORE request                    13         14         15
 OSCORE response                   11         11         11
 -------------------------------------------------------------
-Group OSCORE pairwise request     14         15         16
+Group OSCORE pairwise request     15         16         17
 Group OSCORE pairwise response    12         12         12
 ~~~~~~~~~~~
 {: #fig-overhead title="Overhead in bytes as a function of sequence number &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Connection/Sender ID = '')"}
@@ -1184,7 +1184,7 @@ DTLS 1.3 (GHC)                    12         13         14
 OSCORE request                    13         14         15
 OSCORE response                   11         11         11
 -------------------------------------------------------------
-Group OSCORE pairwise request     14         15         16
+Group OSCORE pairwise request     15         16         17
 Group OSCORE pairwise response    12         12         12
 ~~~~~~~~~~~
 {: #fig-overhead2 title="Overhead in bytes as a function of Connection/Sender ID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Sequence Number = '05')"}
@@ -1202,7 +1202,7 @@ TLS  1.3                           6               7
 OSCORE request                     5
 OSCORE response                    3
 -------------------------------------------------------------
-Group OSCORE pairwise request      6
+Group OSCORE pairwise request      7
 Group OSCORE pairwise response     4
 ~~~~~~~~~~~
 {: #fig-overhead3 title="Overhead (excluding ICV) in bytes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Connection/Sender ID = '', Sequence Number = '05')"}
@@ -1322,7 +1322,7 @@ When compressed with 6LoWPAN-GHC, DTLS 1.2 with the above parameters (epoch, seq
 
 ### DTLS 1.3
 
-This section analyzes the overhead of DTLS 1.3 {{RFC9147}}. The changes compared to DTLS 1.2 are: omission of version number, merging of epoch into the first byte containing signalling bits, optional omission of length, reduction of sequence number into a 1 or 2-bytes field.
+This section analyzes the overhead of DTLS 1.3 {{RFC9147}}. The changes compared to DTLS 1.2 are: omission of version number, merging of epoch into the first byte containing signaling bits, optional omission of length, reduction of sequence number into a 1 or 2-bytes field.
 
 DTLS 1.3 is only analyzed with an omitted length field and with an 8-bit sequence number (see Figure 4 of {{RFC9147}}).
 
@@ -1566,6 +1566,10 @@ ICV:
 OSCORE with the above parameters gives 13-14 bytes overhead for requests and 11 bytes overhead for responses.
 
 Unlike DTLS and TLS, OSCORE has much smaller overhead for responses than requests.
+
+## Group OSCORE
+
+Group OSCORE defines a pairwise mode where each member of the group can efficiently derive a symmetric pairwise key with any other member of the group for pairwise OSCORE communication. Additional requirements compared to {{RFC8613}} is that ID Context is always included in requests and that Sender ID is always included in responses. Assuming 1 byte ID Context and Sender ID this adds 2 bytes to requests and 1 byte to responses.
 
 ## Conclusion
 
