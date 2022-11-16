@@ -1134,7 +1134,7 @@ To do a fair comparison, one has to choose a specific deployment and look at the
 
 # Overhead for Protection of Application Data {#record}
 
-To enable comparison, all the overhead calculations in this section use AES-CCM with a tag length of 8 bytes (e.g.,  AES_128_CCM_8 or AES-CCM-16-64), a plaintext of 6 bytes, and the sequence number ‘05’. This follows the example in {{RFC7400}}, Figure 16.
+To enable comparison, all the overhead calculations in this section use AES-CCM with a tag length of 8 bytes (e.g., AES_128_CCM_8 or AES-CCM-16-64), a plaintext of 6 bytes, and the sequence number ‘05’. This follows the example in {{RFC7400}}, Figure 16.
 
 Note that the compressed overhead calculations for DLTS 1.2, DTLS 1.3, TLS 1.2 and TLS 1.3 are dependent on the parameters epoch, sequence number, and length (where applicable), and all the overhead calculations are dependent on the parameter Connection ID when used. Note that the OSCORE overhead calculations are dependent on the CoAP option numbers, as well as the length of the OSCORE parameters Sender ID, ID Context, and Sequence Number (where applicable). The following calculations are only examples.
 
@@ -1265,7 +1265,7 @@ When compressed with 6LoWPAN-GHC, DTLS 1.2 with the above parameters (epoch, seq
 
 ### DTLS 1.2 with Connection ID
 
-This section analyzes the overhead of DTLS 1.2  {{RFC6347}} with Connection ID {{RFC9146}}. The overhead calculations in this section uses Connection ID = '42'. DTLS recored layer with a Connection ID = '' (the empty string) is equal to DTLS without Connection ID.
+This section analyzes the overhead of DTLS 1.2 {{RFC6347}} with Connection ID {{RFC9146}}. The overhead calculations in this section uses Connection ID = '42'. DTLS recored layer with a Connection ID = '' (the empty string) is equal to DTLS without Connection ID.
 
 ~~~~~~~~~~~
 DTLS 1.2 record layer (36 bytes, 30 bytes overhead):
