@@ -45,6 +45,7 @@ informative:
   RFC9146:
   RFC9147:
   RFC9175:
+  I-D.ietf-core-attacks-on-coap:
   I-D.ietf-core-oscore-groupcomm:
   I-D.ietf-cose-cbor-encoded-cert:
   I-D.ietf-lake-edhoc:
@@ -1207,6 +1208,8 @@ Group OSCORE pairwise response     4
 ~~~~~~~~~~~
 {: #fig-overhead3 title="Overhead (excluding ICV) in bytes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Connection/Sender ID = '', Sequence Number = '05')"}
 {: artwork-align="center"}
+
+The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{{{fig-overhead3}}}} does not consider the different Token processing requirements for clients {{RFC9174}} required for secure operation as motivated by {{I-D.ietf-core-attacks-on-coap}}. As reuse of Tokens is easier in OSCORE than DTLS, OSCORE might have slightly lower overhead than DTLS 1.3 for long connection even if DTLS 1.3 has slightly lower overhead than OSCORE for short connections.
 
 ## DTLS 1.2
 
