@@ -1167,8 +1167,8 @@ TLS  1.3 (GHC)                    15         16         17
 OSCORE request                    13         14         15
 OSCORE response                   11         11         11
 -------------------------------------------------------------
-Group OSCORE pairwise request     15         16         17
-Group OSCORE pairwise response    12         12         12
+Group OSCORE pairwise request     14         15         16
+Group OSCORE pairwise response    11         11         11
 ~~~~~~~~~~~
 {: #fig-overhead title="Overhead in bytes as a function of sequence number &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Connection/Sender ID = '')"}
 {: artwork-align="center"}
@@ -1185,8 +1185,8 @@ DTLS 1.3 (GHC)                    12         13         14
 OSCORE request                    13         14         15
 OSCORE response                   11         11         11
 -------------------------------------------------------------
-Group OSCORE pairwise request     15         16         17
-Group OSCORE pairwise response    12         12         12
+Group OSCORE pairwise request     14         15         16
+Group OSCORE pairwise response    11         13         14
 ~~~~~~~~~~~
 {: #fig-overhead2 title="Overhead in bytes as a function of Connection/Sender ID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Sequence Number = '05')"}
 {: artwork-align="center"}
@@ -1572,7 +1572,47 @@ Unlike DTLS and TLS, OSCORE has much smaller overhead for responses than request
 
 ## Group OSCORE
 
-Group OSCORE defines a pairwise mode where each member of the group can efficiently derive a symmetric pairwise key with any other member of the group for pairwise OSCORE communication. Additional requirements compared to {{RFC8613}} is that ID Context is always included in requests and that Sender ID is always included in responses. Assuming 1 byte ID Context and Sender ID this adds 2 bytes to requests and 1 byte to responses.
+This section analyzes the overhead of Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}. Group OSCORE defines a pairwise mode where each member of the group can efficiently derive a symmetric pairwise key with any other member of the group for pairwise OSCORE communication. Additional requirements compared to {{RFC8613}} is that ID Context is always included in requests and that Sender ID is always included in responses. Assuming 1 byte ID Context and Sender ID this adds 2 bytes to requests and 1 byte to responses.
+
+The below calculation Option Delta = ‘9’, ID Context = ‘’, Sender ID = ‘42’, and Sequence Number = ‘05’, and is only an example. ID Context = ‘’ would be the standard for local deployments only having a single group.
+
+~~~~~~~~~~~
+OSCORE request (21 bytes, 15 bytes overhead):
+93 09 05 42
+ff ec ae a0 15 56 67 92 4d ff 8a 24 e4 cb 35 b9
+
+CoAP option delta and length:
+93
+Option Value (flag byte, ID Context length, sequence number, and Sender ID):
+19 00 05 42
+Payload marker:
+ff
+Ciphertext (including encrypted code):
+ec ae a0 15 56 67 92
+ICV:
+4d ff 8a 24 e4 cb 35 b9
+~~~~~~~~~~~
+
+The below calculation uses Option Delta = ‘9’ and Sender ID = ‘69’, and is only an example.
+
+~~~~~~~~~~~
+OSCORE response (18 bytes, 12 bytes overhead):
+90
+ff ec ae a0 15 56 67 92 4d ff 8a 24 e4 cb 35 b9
+
+CoAP delta and option length:
+90
+Option value:
+08 69
+Payload marker:
+ff
+Ciphertext (including encrypted code):
+ec ae a0 15 56 67 92
+ICV:
+4d ff 8a 24 e4 cb 35 b9
+~~~~~~~~~~~
+
+The pairwise mode OSCORE with the above parameters gives 15 bytes overhead for requests and 12 bytes overhead for responses.
 
 ## Conclusion
 
@@ -1580,7 +1620,7 @@ DTLS 1.2 has quite a large overhead as it uses an explicit sequence number and a
 
 The Generic Header Compression (6LoWPAN-GHC) can in addition to DTLS 1.2 handle TLS 1.2, and DTLS 1.2 with Connection ID. The Generic Header Compression (6LoWPAN-GHC) works very well for Connection ID and the overhead seems to increase exactly with the length of the Connection ID (which is optimal). The compression of TLS 1.2 is not as good as the compression of DTLS 1.2 (as the static dictionary only contains the DTLS 1.2 version number). Similar compression levels as for DTLS could be achieved also for TLS 1.2, but this would require different static dictionaries. For TLS 1.3 and DTLS 1.3, GHC increases the overhead. The 6LoWPAN-GHC header compression is not available when (D)TLS is used over transports that do not use 6LoWPAN together with 6LoWPAN-GHC.
 
-New security protocols like OSCORE, TLS 1.3, and DTLS 1.3 have much lower overhead than DTLS 1.2 and TLS 1.2. The overhead is even smaller than DTLS 1.2 and TLS 1.2 over 6LoWPAN with compression, and therefore the small overhead is achieved even on deployments without 6LoWPAN or 6LoWPAN without compression. OSCORE is lightweight because it makes use of CoAP, CBOR, and COSE, which were designed to have as low overhead as possible. As can be seen in {{fig-overhead3}}, Group OSCORE for pairwise communication increases the overhead of OSCORE requests with 40% and OSCORE responses with 33%.
+New security protocols like OSCORE, TLS 1.3, and DTLS 1.3 have much lower overhead than DTLS 1.2 and TLS 1.2. The overhead is even smaller than DTLS 1.2 and TLS 1.2 over 6LoWPAN with compression, and therefore the small overhead is achieved even on deployments without 6LoWPAN or 6LoWPAN without compression. OSCORE is lightweight because it makes use of CoAP, CBOR, and COSE, which were designed to have as low overhead as possible. As can be seen in {{fig-overhead3}}, Group OSCORE for pairwise communication increases the overhead of OSCORE requests with 20% and OSCORE responses with 33%.
 
 Note that the compared protocols have slightly different use cases. TLS and DTLS are designed for the transport layer and are terminated in CoAP proxies. OSCORE is designed for the application layer and protects information end-to-end between the CoAP client and the CoAP server. Group OSCORE is designed for communication in a group.
 
