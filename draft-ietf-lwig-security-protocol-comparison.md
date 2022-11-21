@@ -654,11 +654,11 @@ DTLS 1.3 PSK (no cid)                128        143        56    327
 
 
 
-### TLS Raw Public Keys
+### Raw Public Keys {#rpkformat}
 
-This sections illustrates the format of (D)TLS P-256 (secp256r1) Raw Public Keys with and without point compression. Point compression in SubjectPublicKeyInfo is standardized in {{RFC5480}} and is therefore theoretically possible to use in PRKs and X.509 certificates used in DTLS but does not seems to be supported by any TLS implementations.
+This sections illustrates the format of P-256 (secp256r1) SubjectPublicKeyInfo {{RFC5480}} with and without point compression. Point compression in SubjectPublicKeyInfo is standardized in {{RFC5480}} and is therefore theoretically possible to use in PRKs and X.509 certificates used in (D)TLS but does not seems to be supported by implementations.
 
-#### SubjectPublicKeyInfo without point compression
+#### SubjectPublicKeyInfo Without Point Compression
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 0x30 // Sequence
@@ -680,7 +680,7 @@ This sections illustrates the format of (D)TLS P-256 (secp256r1) Raw Public Keys
 Total of 91 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-#### SubjectPublicKeyInfo with point compression
+#### SubjectPublicKeyInfo With Point Compression
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 0x30 // Sequence
