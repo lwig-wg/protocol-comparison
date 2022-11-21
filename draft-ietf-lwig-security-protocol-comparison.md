@@ -175,7 +175,7 @@ In this section, a Connection ID of 1 byte is used.
 Record Header - DTLSPlaintext (13 bytes):
 16 fe fd EE EE SS SS SS SS SS SS LL LL
 
-  Handshake Header - Client Hello (10 bytes):
+  Handshake Header - Client Hello (12 bytes):
   01 LL LL LL SS SS 00 00 00 LL LL LL
 
     Legacy Version (2 bytes):
@@ -236,7 +236,7 @@ DTLS 1.3 RPK + ECDHE flight_1 gives 150 bytes of overhead.
 Record Header - DTLSPlaintext (13 bytes):
 16 fe fd EE EE SS SS SS SS SS SS LL LL
 
-  Handshake Header - Server Hello (10 bytes):
+  Handshake Header - Server Hello (12 bytes):
   02 LL LL LL SS SS 00 00 00 LL LL LL
 
     Legacy Version (2 bytes):
@@ -272,7 +272,7 @@ Record Header - DTLSPlaintext (13 bytes):
 Record Header - DTLSCiphertext, Full (6 bytes):
 HH ES SS 43 LL LL
 
-  Handshake Header - Encrypted Extensions (10 bytes):
+  Handshake Header - Encrypted Extensions (12 bytes):
   08 LL LL LL SS SS 00 00 00 LL LL LL
 
     Extensions Length (2 bytes):
@@ -284,7 +284,7 @@ HH ES SS 43 LL LL
       Extension - Server Certificate Type (Raw Public Key) (6 bytes):
       00 14 00 01 01 02
 
-  Handshake Header - Certificate Request (10 bytes):
+  Handshake Header - Certificate Request (12 bytes):
   0d LL LL LL SS SS 00 00 00 LL LL LL
 
     Request Context (1 bytes):
@@ -297,7 +297,7 @@ HH ES SS 43 LL LL
       (8 bytes):
       00 0d 00 04 00 02 08 07
 
-  Handshake Header - Certificate (10 bytes):
+  Handshake Header - Certificate (12 bytes):
   0b LL LL LL SS SS 00 00 00 LL LL LL
 
     Request Context (1 bytes):
@@ -315,13 +315,13 @@ HH ES SS 43 LL LL
     Certificate Extensions (2 bytes):
     00 00
 
-  Handshake Header - Certificate Verify (10 bytes):
+  Handshake Header - Certificate Verify (12 bytes):
   0f LL LL LL SS SS 00 00 00 LL LL LL
 
     Signature  (68 bytes):
     ZZ ZZ 00 40 ....
 
-  Handshake Header - Finished (10 bytes):
+  Handshake Header - Finished (12 bytes):
   14 LL LL LL SS SS 00 00 00 LL LL LL
 
     Verify Data (32 bytes):
@@ -345,7 +345,7 @@ DTLS 1.3 RPK + ECDHE flight_2 gives 373 bytes of overhead.
 Record Header (6 bytes) // DTLSCiphertext, Full:
 ZZ ES SS 42 LL LL
 
-  Handshake Header - Certificate (10 bytes):
+  Handshake Header - Certificate (12 bytes):
   0b LL LL LL SS SS XX XX XX LL LL LL
 
     Request Context (1 bytes):
@@ -363,7 +363,7 @@ ZZ ES SS 42 LL LL
     Certificate Extensions (2 bytes):
     00 00
 
-  Handshake Header - Certificate Verify (10 bytes):
+  Handshake Header - Certificate Verify (12 bytes):
   0f LL LL LL SS SS 00 00 00 LL LL LL
 
     Signature  (68 bytes):
@@ -372,7 +372,7 @@ ZZ ES SS 42 LL LL
     16 17 18 19 1a 1b 1c 1d 1e 1f 00 01 02 03 04 05 06 07 08 09 0a 0b
      0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
-  Handshake Header - Finished (10 bytes):
+  Handshake Header - Finished (12 bytes):
   14 LL LL LL SS SS 00 00 00 LL LL LL
 
     Verify Data (32 bytes) // SHA-256:
@@ -596,7 +596,7 @@ To enable resumption, a 4th flight (New Session Ticket) is added to the PSK hand
 Record Header - DTLSCiphertext, Full (6 bytes):
 HH ES SS 43 LL LL
 
-  Handshake Header - New Session Ticket (10 bytes):
+  Handshake Header - New Session Ticket (12 bytes):
   04 LL LL LL SS SS 00 00 00 LL LL LL
 
     Ticket Lifetime (4 bytes):
