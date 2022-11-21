@@ -133,7 +133,7 @@ Flight                             #1         #2        #3      Total
 ---------------------------------------------------------------------
 DTLS 1.3 RPK + ECDHE              152        385       219        756
 DTLS 1.3 Cached X.509/RPK + ECDHE 182        347       213        742
-DTLS 1.3 PSK + ECDHE              184        190        57        431
+DTLS 1.3 PSK + ECDHE              186        196        57        431
 DTLS 1.3 PSK                      134        150        57        341
 ---------------------------------------------------------------------
 EDHOC RPK + ECDHE                  37         45        19        101
@@ -390,6 +390,8 @@ Auth Tag (8 bytes) // AES-CCM_8:
 
 DTLS 1.3 RPK + ECDHE flight_2 gives 219 bytes of overhead.
 
+
+
 ### Message Sizes PSK + ECDHE
 
 #### flight_1 {#dtls13f1pskecdhe}
@@ -422,10 +424,10 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-150 + 6 + 48 - 8 - 6 - 6 = 184 bytes
+152 + 6 + 48 - 8 - 6 - 6 = 186 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 PSK + ECDHE flight_1 gives 184 bytes of overhead.
+DTLS 1.3 PSK + ECDHE flight_1 gives 186 bytes of overhead.
 
 #### flight_2 {#dtls13f2pskecdhe}
 
@@ -441,11 +443,11 @@ The following is added:
 The following is removed:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-- Handshake Message Certificate (78 bytes)
+- Handshake Message Certificate (80 bytes)
 
-- Handshake Message CertificateVerify (78 bytes)
+- Handshake Message CertificateVerify (80 bytes)
 
-- Handshake Message CertificateRequest (21 bytes)
+- Handshake Message CertificateRequest (23 bytes)
 
 - Extension - Client Certificate Type (Raw Public Key) (6 bytes)
 
@@ -455,10 +457,10 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-373 - 78 - 78 - 21 - 6 - 6  + 6 = 190 bytes
+385 - 80 - 80 - 23 - 6 - 6  + 6 = 196 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 PSK + ECDHE flight_2 gives 190 bytes of overhead.
+DTLS 1.3 PSK + ECDHE flight_2 gives 196 bytes of overhead.
 
 #### flight_3 {#dtls13f3pskecdhe}
 
