@@ -34,6 +34,7 @@ author:
 informative:
 
   RFC5246:
+  RFC5480:
   RFC6347:
   RFC7400:
   RFC7252:
@@ -652,9 +653,9 @@ DTLS 1.3 PSK (no cid)                128        143        56    327
 
 
 
-### DTLS Raw Public Keys
+### TLS Raw Public Keys
 
-This sections illustrates the format of DTLS P-256 (secp256r1) Raw Public Keys with and without point compression
+This sections illustrates the format of (D)TLS P-256 (secp256r1) Raw Public Keys with and without point compression. Point compression in SubjectPublicKeyInfo is standardized in {{RFC5480}} and is therefore theoretically possible to use in PRKs and X.509 certificates used in DTLS but does not seems to be supported by any TLS implementations.
 
 #### SubjectPublicKeyInfo without point compression
 
