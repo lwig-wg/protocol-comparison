@@ -100,7 +100,7 @@ This document analyzes and compares the sizes of key exchange flights and the pe
 
 This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, cTLS {{I-D.ietf-tls-ctls}}, EDHOC {{I-D.ietf-lake-edhoc}}, OSCORE {{RFC8613}}, and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}.
 
-The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression. DTLS is anlyzed with and without Connection ID {{RFC9146}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as ICV. {{handshake}} compares the overhead of key exchange, while {{record}} covers the overhead for protection of application data.
+The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression. DTLS is analyzed with and without Connection ID {{RFC9146}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as ICV. {{handshake}} compares the overhead of key exchange, while {{record}} covers the overhead for protection of application data.
 
 # Overhead of Key Exchange Protocols {#handshake}
 
@@ -112,9 +112,8 @@ To enable a fair comparison between protocols, the following assumptions are mad
 * A minimum number of algorithms and cipher suites is offered. The algorithm used/offered are Curve25519 or P-256, ECDSA with P-256, AES-CCM_8, and SHA-256.
 * The length of key identifiers are 1 byte.
 * The length of connection identifiers are 1 byte.
-* DTLS RPK makes use of point compression, which saves 32 bytes.
 * DTLS handshake message fragmentation is not considered.
-* Only the DTLS mandatory extensions are considered, except for Connection ID.
+* Only mandatory (D)TLS extensions are included.
 
 {{summ-handshake}} gives a short summary of the message overhead based on different parameters and some assumptions. The following sections detail the assumptions and the calculations.
 
@@ -126,7 +125,7 @@ The EDHOC overhead is dependent on the key identifiers included. The following o
 
 All the overhead are dependent on the tag length. The following overheads apply for tags of the same length.
 
-{{fig-compare1}} compares the message sizes of EDHOC {{I-D.ietf-lake-edhoc}} with the DTLS 1.3 {{RFC9147}} and TLS 1.3 {{RFC8446}} handshakes with connection ID.
+{{fig-compare1}} compares the message sizes of DTLS 1.3 {{RFC9147}} and EDHOC {{I-D.ietf-lake-edhoc}} handshakes with connection ID.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 =====================================================================
@@ -311,7 +310,7 @@ HH ES SS 43 LL LL
     Certificate Length (3 bytes):
     LL LL LL
 
-    Certificate (59 bytes) // Point compression
+    Certificate (91 bytes)
     ....
 
     Certificate Extensions (2 bytes):
@@ -336,7 +335,7 @@ HH ES SS 43 LL LL
 Auth Tag (8 bytes):
 e0 8b 0e 45 5a 35 0a e5
 
-13 + 104 + 6 + 26 + 23 + 80 + 80 + 44 + 1 + 8 = 385 bytes
+13 + 104 + 6 + 26 + 23 + 112 + 80 + 44 + 1 + 8 = 417 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 DTLS 1.3 RPK + ECDHE flight_2 gives 385 bytes of overhead.
@@ -359,7 +358,7 @@ ZZ ES SS 42 LL LL
     Certificate Length (3 bytes):
     LL LL LL
 
-    Certificate (59 bytes) // Point compression
+    Certificate (91 bytes)
     ....
 
     Certificate Extensions (2 bytes):
@@ -387,10 +386,10 @@ ZZ ES SS 42 LL LL
 Auth Tag (8 bytes) // AES-CCM_8:
 00 01 02 03 04 05 06 07
 
-6 + 80 + 80 + 44 + 1 + 8 = 219 bytes
+6 + 112 + 80 + 44 + 1 + 8 = 251 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 RPK + ECDHE flight_2 gives 219 bytes of overhead.
+DTLS 1.3 RPK + ECDHE flight_2 gives 251 bytes of overhead.
 
 
 
