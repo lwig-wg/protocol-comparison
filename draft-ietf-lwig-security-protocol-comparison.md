@@ -559,7 +559,7 @@ And the following is removed:
 Giving a total of:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-150 + 33 = 183 bytes
+152 + 33 - 6 = 179 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 For the flight #2, the following is added:
@@ -569,7 +569,7 @@ For the flight #2, the following is added:
   00 19 LL LL LL LL 01
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-And the following is removed:
+And the following is removed or reduced:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 - Extension - Server Certificate Type (Raw Public Key) (6 bytes)
@@ -580,7 +580,7 @@ And the following is removed:
 Giving a total of:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-373 - 26 = 347 bytes
+385 - 26 = 347 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 A summary of the calculation is given in {{fig-compare3}}.
@@ -590,7 +590,7 @@ A summary of the calculation is given in {{fig-compare3}}.
 Flight                             #1         #2        #3      Total
 ----------------------------------------------------------------------
 DTLS 1.3 Cached X.509/RPK + ECDHE 183        347       213       743
-DTLS 1.3 RPK + ECDHE              150        373       213       736
+DTLS 1.3 RPK + ECDHE              152        385       219       756
 =======================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare3 title="Comparison of message sizes in bytes for DTLS 1.3 RPK + ECDH with and without cached X.509" artwork-align="center"}
