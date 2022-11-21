@@ -130,15 +130,16 @@ All the overhead are dependent on the tag length. The following overheads apply 
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 =====================================================================
-Flight                             #1         #2        #3      Total
+Flight                                  #1       #2       #3    Total
 ---------------------------------------------------------------------
-DTLS 1.3 RPK + ECDHE              152        385       219        756
-DTLS 1.3 Cached X.509/RPK + ECDHE 179        347       213        742
-DTLS 1.3 PSK + ECDHE              186        196        59        441
-DTLS 1.3 PSK                      136        156        59        351
+DTLS 1.3 RPK + ECDHE                   152      417      251      820
+DTLS 1.3 RPK (compressed) + ECDHE      152      385      219      756
+DTLS 1.3 Cached X.509/RPK + ECDHE      179      347      213      742
+DTLS 1.3 PSK + ECDHE                   186      196       59      441
+DTLS 1.3 PSK                           136      156       59      351
 ---------------------------------------------------------------------
-EDHOC RPK + ECDHE                  37         45        19        101
-EDHOC X.509 + ECDHE                37        115        90        242
+EDHOC RPK + ECDHE                       37       45       19      101
+EDHOC X.509 + ECDHE                     37      115       90      242
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare1 title="Comparison of message sizes in bytes with Connection ID" artwork-align="center"}
@@ -147,15 +148,15 @@ EDHOC X.509 + ECDHE                37        115        90        242
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 =====================================================================
-Flight                             #1         #2        #3      Total
+Flight                                 #1        #2       #3    Total
 ---------------------------------------------------------------------
-DTLS 1.3 RPK + ECDHE              144        364       212        722
-DTLS 1.3 PSK + ECDHE              178        183        56        417
-DTLS 1.3 PSK                      128        143        56        327
+DTLS 1.3 RPK + ECDHE                 144       364      212       722
+DTLS 1.3 PSK + ECDHE                 178       183       56       417
+DTLS 1.3 PSK                         128       143       56       327
 ---------------------------------------------------------------------
-TLS 1.3  RPK + ECDHE              129        322       194        645
-TLS 1.3  PSK + ECDHE              163        157        50        370
-TLS 1.3  PSK                      113        117        50        280
+TLS 1.3  RPK + ECDHE                 129       322      194       645
+TLS 1.3  PSK + ECDHE                 163       157       50       370
+TLS 1.3  PSK                         113       117       50       280
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes without Connection ID" artwork-align="center"}
