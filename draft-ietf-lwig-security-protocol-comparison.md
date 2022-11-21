@@ -134,7 +134,7 @@ Flight                             #1         #2        #3      Total
 DTLS 1.3 RPK + ECDHE              152        385       219        756
 DTLS 1.3 Cached X.509/RPK + ECDHE 182        347       213        742
 DTLS 1.3 PSK + ECDHE              186        196        59        441
-DTLS 1.3 PSK                      134        150        57        341
+DTLS 1.3 PSK                      136        156        59        351
 ---------------------------------------------------------------------
 EDHOC RPK + ECDHE                  37         45        19        101
 EDHOC X.509 + ECDHE                37        115        90        242
@@ -482,6 +482,8 @@ In total:
 
 DTLS 1.3 PSK + ECDHE flight_3 gives 59 bytes of overhead.
 
+
+
 ### Message Sizes PSK
 
 #### flight_1 {#dtls13f1psk}
@@ -499,10 +501,10 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-184 - 8 - 42 = 134 bytes
+186 - 8 - 42 = 136 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 PSK flight_1 gives 134 bytes of overhead.
+DTLS 1.3 PSK flight_1 gives 136 bytes of overhead.
 
 #### flight_2 {#dtls13f2psk}
 
@@ -517,16 +519,19 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-190 - 40 = 150 bytes
+196 - 40 = 156 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 PSK flight_2 gives 150 bytes of overhead.
+DTLS 1.3 PSK flight_2 gives 156 bytes of overhead.
 
 #### flight_3 {#dtls13f3psk}
 
 There are no differences in overhead compared to {{dtls13f3pskecdhe}}.
 
-DTLS 1.3 PSK flight_3 gives 57 bytes of overhead.
+DTLS 1.3 PSK flight_3 gives 59 bytes of overhead.
+
+
+
 
 ### Cached Information
 
