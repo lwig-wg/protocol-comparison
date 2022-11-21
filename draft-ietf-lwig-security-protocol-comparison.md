@@ -133,7 +133,7 @@ Flight                             #1         #2        #3      Total
 ---------------------------------------------------------------------
 DTLS 1.3 RPK + ECDHE              152        385       219        756
 DTLS 1.3 Cached X.509/RPK + ECDHE 182        347       213        742
-DTLS 1.3 PSK + ECDHE              186        196        57        431
+DTLS 1.3 PSK + ECDHE              186        196        59        441
 DTLS 1.3 PSK                      134        150        57        341
 ---------------------------------------------------------------------
 EDHOC RPK + ECDHE                  37         45        19        101
@@ -469,18 +469,18 @@ The differences in overhead compared to {{dtls13f3rpk}} are:
 The following is removed:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-- Handshake Message Certificate (78 bytes)
+- Handshake Message Certificate (80 bytes)
 
-- Handshake Message Certificate Verify (78 bytes)
+- Handshake Message Certificate Verify (80 bytes)
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-213 - 78 - 78 = 57 bytes
+219 - 80 - 80 = 59 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 PSK + ECDHE flight_3 gives 57 bytes of overhead.
+DTLS 1.3 PSK + ECDHE flight_3 gives 59 bytes of overhead.
 
 ### Message Sizes PSK
 
