@@ -131,7 +131,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
 =====================================================================
 Flight                             #1         #2        #3      Total
 ---------------------------------------------------------------------
-DTLS 1.3 RPK + ECDHE              150        373       213        736
+DTLS 1.3 RPK + ECDHE              152        385       213        736
 DTLS 1.3 Cached X.509/RPK + ECDHE 182        347       213        742
 DTLS 1.3 PSK + ECDHE              184        190        57        431
 DTLS 1.3 PSK                      134        150        57        341
@@ -334,10 +334,10 @@ HH ES SS 43 LL LL
 Auth Tag (8 bytes):
 e0 8b 0e 45 5a 35 0a e5
 
-13 + 102 + 6 + 24 + 21 + 78 + 78 + 42 + 1 + 8 = 373 bytes
+13 + 104 + 6 + 26 + 23 + 80 + 80 + 44 + 1 + 8 = 385 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 RPK + ECDHE flight_2 gives 373 bytes of overhead.
+DTLS 1.3 RPK + ECDHE flight_2 gives 385 bytes of overhead.
 
 #### flight_3 {#dtls13f3rpk}
 
