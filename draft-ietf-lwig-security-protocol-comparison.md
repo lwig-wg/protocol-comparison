@@ -650,9 +650,11 @@ DTLS 1.3 PSK (no cid)                128        143        56    327
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare4 title="Comparison of message sizes in bytes for DTLS 1.3 without Connection ID" artwork-align="center"}
 
+
+
 ### DTLS Raw Public Keys
 
-TODO
+This sections illustrates the format of DTLS P-256 (secp256r1) Raw Public Keys with and without point compression
 
 #### SubjectPublicKeyInfo without point compression
 
@@ -680,7 +682,7 @@ Total of 91 bytes
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 0x30 // Sequence
-0x59 // Size 89
+0x39 // Size 57
 
 0x30 // Sequence
 0x13 // Size 19
@@ -690,13 +692,19 @@ Total of 91 bytes
      // OID 1.2.840.10045.3.1.7 (secp256r1)
 
 0x03 // Bit string
-0x42 // Size 66
+0x22 // Size 34
 0x00 // Unused bits 0
 0x03 // Compressed
 ...... 32 bytes X
 
 Total of 59 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+
 
 ## TLS 1.3
 
