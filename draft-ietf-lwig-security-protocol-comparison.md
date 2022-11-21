@@ -131,7 +131,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
 =====================================================================
 Flight                             #1         #2        #3      Total
 ---------------------------------------------------------------------
-DTLS 1.3 RPK + ECDHE              152        385       213        736
+DTLS 1.3 RPK + ECDHE              152        385       219        756
 DTLS 1.3 Cached X.509/RPK + ECDHE 182        347       213        742
 DTLS 1.3 PSK + ECDHE              184        190        57        431
 DTLS 1.3 PSK                      134        150        57        341
@@ -385,10 +385,10 @@ ZZ ES SS 42 LL LL
 Auth Tag (8 bytes) // AES-CCM_8:
 00 01 02 03 04 05 06 07
 
-6 + 78 + 78 + 42 + 1 + 8 = 213 bytes
+6 + 80 + 80 + 44 + 1 + 8 = 219 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 RPK + ECDHE flight_2 gives 213 bytes of overhead.
+DTLS 1.3 RPK + ECDHE flight_2 gives 219 bytes of overhead.
 
 ### Message Sizes PSK + ECDHE
 
