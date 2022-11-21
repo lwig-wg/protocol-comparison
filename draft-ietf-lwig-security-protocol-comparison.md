@@ -224,11 +224,11 @@ Record Header - DTLSPlaintext (13 bytes):
       Extension - Connection Identifier (43) (6 bytes):
       XX XX 00 02 01 42
 
-13 + 10 + 2 + 32 + 1 + 1 + 4 + 2 + 2 + 8 + 8 + 42 + 7 + 6 + 6 + 6 = 150
+13 + 12 + 2 + 32 + 1 + 1 + 4 + 2 + 2 + 8 + 8 + 42 + 7 + 6 + 6 + 6 = 152
 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 RPK + ECDHE flight_1 gives 150 bytes of overhead.
+DTLS 1.3 RPK + ECDHE flight_1 gives 152 bytes of overhead.
 
 #### flight_2 {#dtls13f2rpk}
 
