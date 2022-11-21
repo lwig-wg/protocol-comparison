@@ -132,7 +132,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
 Flight                             #1         #2        #3      Total
 ---------------------------------------------------------------------
 DTLS 1.3 RPK + ECDHE              152        385       219        756
-DTLS 1.3 Cached X.509/RPK + ECDHE 182        347       213        742
+DTLS 1.3 Cached X.509/RPK + ECDHE 179        347       213        742
 DTLS 1.3 PSK + ECDHE              186        196        59        441
 DTLS 1.3 PSK                      136        156        59        351
 ---------------------------------------------------------------------
