@@ -157,7 +157,7 @@ DTLS 1.3 RPK + ECDHE                   146      407      247      800
 DTLS 1.3 PSK + ECDHE                   180      186       55      421
 DTLS 1.3 PSK                           130      146       55      331
 ---------------------------------------------------------------------
-TLS 1.3  RPK + ECDHE                   129      322      194      645
+TLS 1.3  RPK + ECDHE                   129      354      226      709
 TLS 1.3  PSK + ECDHE                   163      157       50      370
 TLS 1.3  PSK                           113      117       50      280
 =====================================================================
@@ -718,7 +718,7 @@ In this section, the message sizes are calculated for TLS 1.3. The major changes
 
 ### Message Sizes RPK + ECDHE
 
-#### flight \#1 {#tls13f1rpk}
+#### Flight \#1 {#tls13f1rpk}
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 Record Header - TLSPlaintext (5 bytes):
@@ -769,7 +769,7 @@ Record Header - TLSPlaintext (5 bytes):
 5 + 4 + 2 + 32 + 1 + 4 + 2 + 2 + 8 + 8 + 42 + 7 + 6 + 6 = 129 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-TLS 1.3 RPK + ECDHE flight_1 gives 129 bytes of overhead.
+TLS 1.3 RPK + ECDHE flight #1 gives 129 bytes of overhead.
 
 #### flight \#2 {#tls13f2rpk}
 
@@ -874,7 +874,7 @@ e0 8b 0e 45 5a 35 0a e5
 5 + 90 + 5 + 18 + 15 + 104 + 72 + 36 + 1 + 8 = 354 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-TLS 1.3 RPK + ECDHE flight_2 gives 354 bytes of overhead.
+TLS 1.3 RPK + ECDHE flight #2 gives 354 bytes of overhead.
 
 #### flight \#3 {#tls13f3rpk}
 
@@ -968,7 +968,7 @@ In total:
 129 + 6 + 48 - 8 - 6 - 6 = 163 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-TLS 1.3 PSK + ECDHE flight #1 gives 166 bytes of overhead.
+TLS 1.3 PSK + ECDHE flight #1 gives 163 bytes of overhead.
 
 #### flight \#2 {#tls13f2pskecdhe}
 
@@ -984,7 +984,7 @@ The following is added:
 The following is removed:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-- Handshake Message Certificate (72 bytes)
+- Handshake Message Certificate (104 bytes)
 
 - Handshake Message CertificateVerify (72 bytes)
 
@@ -998,10 +998,10 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-322 - 72 - 72 - 15 - 6 - 6  + 6 = 157 bytes
+354 - 104 - 72 - 15 - 6 - 6  + 6 = 157 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-TLS 1.3 PSK + ECDHE flight_2 gives 157 bytes of overhead.
+TLS 1.3 PSK + ECDHE flight #2 gives 157 bytes of overhead.
 
 #### flight \#3 {#tls13f3pskecdhe}
 
@@ -1010,7 +1010,7 @@ The differences in overhead compared to {{tls13f3rpk}} are:
 The following is removed:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-- Handshake Message Certificate (72 bytes)
+- Handshake Message Certificate (104 bytes)
 
 - Handshake Message Certificate Verify (72 bytes)
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -1018,10 +1018,13 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-194 - 72 - 72 = 50 bytes
+226 - 104 - 72 = 50 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 TLS 1.3 PSK + ECDHE flight #3 gives 50 bytes of overhead.
+
+
+
 
 ### Message Sizes PSK
 
@@ -1043,7 +1046,7 @@ In total:
 163 - 8 - 42 = 113 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-TLS 1.3 PSK flight #1 gives 116 bytes of overhead.
+TLS 1.3 PSK flight #1 gives 113 bytes of overhead.
 
 #### flight \#2 {#tls13f2psk}
 
@@ -1067,7 +1070,10 @@ TLS 1.3 PSK flight #2 gives 117 bytes of overhead.
 
 There are no differences in overhead compared to {{tls13f3pskecdhe}}.
 
-TLS 1.3 PSK flight #3 gives 57 bytes of overhead.
+TLS 1.3 PSK flight #3 gives 50 bytes of overhead.
+
+
+
 
 
 ## EDHOC
