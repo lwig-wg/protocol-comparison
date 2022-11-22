@@ -275,7 +275,7 @@ Record Header - DTLSPlaintext (13 bytes):
       XX XX 00 02 01 43
 
 Record Header - DTLSCiphertext (3 bytes):
-HH 43 SS
+HH 42 SS
 
   Handshake Header - Encrypted Extensions (12 bytes):
   08 LL LL LL SS SS 00 00 00 LL LL LL
@@ -349,7 +349,7 @@ With a point compressed RPK the overhead is 414 - 32 = 382 bytes, see {{rpkforma
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 Record Header (3 bytes): // DTLSCiphertext
-ZZ 42 SS
+ZZ 43 SS
 
   Handshake Header - Certificate (12 bytes):
   0b LL LL LL SS SS XX XX XX LL LL LL
@@ -597,7 +597,7 @@ And the following is reduced:
 Giving a total of:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-417 + 7 - 59 = 365 bytes
+414 + 7 - 59 = 362 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 In the case the cached certificate is X.509 the following is removed:
@@ -609,7 +609,7 @@ In the case the cached certificate is X.509 the following is removed:
 Giving a total of:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-365 - 6 = 359 bytes
+362 - 6 = 356 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -618,8 +618,8 @@ Giving a total of:
 To enable resumption, a 4th flight with a the handshake message New Session Ticket is added to the DTLS handshake.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-Record Header - DTLSCiphertext, Full (6 bytes):
-HH ES SS 43 LL LL
+Record Header - DTLSCiphertext (3 bytes):
+HH 42 SS
 
   Handshake Header - New Session Ticket (12 bytes):
   04 LL LL LL SS SS 00 00 00 LL LL LL
@@ -642,10 +642,10 @@ HH ES SS 43 LL LL
 Auth Tag (8 bytes) // AES-CCM_8:
 00 01 02 03 04 05 06 07
 
-6 + 12 + 4 + 4 + 2 + 6 + 2 + 8 = 44 bytes
+3 + 12 + 4 + 4 + 2 + 6 + 2 + 8 = 41 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Enabling resumption adds 42 bytes to the initial DTLS handshake. The resumption handshake is an ordinaty PSK handshake with our without ECDHE.
+Enabling resumption adds 41 bytes to the initial DTLS handshake. The resumption handshake is an ordinaty PSK handshake with our without ECDHE.
 
 ### DTLS Without Connection ID
 
