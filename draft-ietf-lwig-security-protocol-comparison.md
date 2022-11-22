@@ -466,10 +466,10 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-417 + 6 - 112 - 80 - 23 - 6 - 6 = 196 bytes
+414 + 6 - 112 - 80 - 23 - 6 - 6 = 193 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 PSK + ECDHE flight #2 gives 196 bytes of overhead.
+DTLS 1.3 PSK + ECDHE flight #2 gives 193 bytes of overhead.
 
 #### Flight \#3 {#dtls13f3pskecdhe}
 
@@ -486,10 +486,10 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-251 - 112 - 80 = 59 bytes
+248 - 112 - 80 = 56 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 PSK + ECDHE flight #3 gives 59 bytes of overhead.
+DTLS 1.3 PSK + ECDHE flight #3 gives 56 bytes of overhead.
 
 
 
@@ -528,16 +528,16 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-196 - 40 = 156 bytes
+193 - 40 = 153 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 PSK flight #2 gives 156 bytes of overhead.
+DTLS 1.3 PSK flight #2 gives 153 bytes of overhead.
 
 #### Flight \#3 {#dtls13f3psk}
 
 There are no differences in overhead compared to {{dtls13f3pskecdhe}}.
 
-DTLS 1.3 PSK flight #3 gives 59 bytes of overhead.
+DTLS 1.3 PSK flight #3 gives 56 bytes of overhead.
 
 
 
