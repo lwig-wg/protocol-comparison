@@ -612,10 +612,9 @@ Giving a total of:
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 
-
 ### Resumption
 
-To enable resumption, a 4th flight (New Session Ticket) is added to the PSK handshake.
+To enable resumption, a 4th flight with a the handshake message New Session Ticket is added to the DTLS handshake.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 Record Header - DTLSCiphertext, Full (6 bytes):
@@ -642,12 +641,12 @@ HH ES SS 43 LL LL
 Auth Tag (8 bytes) // AES-CCM_8:
 00 01 02 03 04 05 06 07
 
-6 + 10 + 4 + 4 + 2 + 6 + 2 + 8 = 42 bytes
+6 + 12 + 4 + 4 + 2 + 6 + 2 + 8 = 44 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-The initial handshake when resumption is enabled is just a PSK handshake with 134 + 150 + 57 + 42 = 383 bytes.
+Enabling resumption adds 42 bytes to the initial DTLS handshake. The resumption handshake is an ordinaty PSK handshake with our without ECDHE.
 
-### Without Connection ID
+### DTLS Without Connection ID
 
 Without a Connection ID the DTLS 1.3 flight sizes changes as follows.
 
