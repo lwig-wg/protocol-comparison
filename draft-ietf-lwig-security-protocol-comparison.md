@@ -139,10 +139,10 @@ DTLS 1.3 Cached X.509 + RPK + ECDHE    185      356      248      789
 DTLS 1.3 PSK + ECDHE                   186      193       56      435
 DTLS 1.3 PSK                           136      153       56      345
 ---------------------------------------------------------------------
-EDHOC RPK (Static DH + kid) + ECDHE     37       45       19      101
-EDHOC RPK (Static DH + x5t) + ECDHE     37       58       33      128
-EDHOC X.509 (Signature + kid) + ECDHE   37      102       77      216
 EDHOC X.509 (Signature + x5t) + ECDHE   37      115       90      242
+EDHOC X.509 (Signature + kid) + ECDHE   37      102       77      216
+EDHOC RPK (Static DH + x5t) + ECDHE     37       58       33      128
+EDHOC RPK (Static DH + kid) + ECDHE     37       45       19      101
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare1 title="Comparison of message sizes in bytes with Connection ID" artwork-align="center"}
