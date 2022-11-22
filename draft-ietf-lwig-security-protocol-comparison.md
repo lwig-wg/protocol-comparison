@@ -133,11 +133,14 @@ Flight                                  #1       #2       #3    Total
 ---------------------------------------------------------------------
 DTLS 1.3 RPK + ECDHE                   152      417      251      820
 DTLS 1.3 RPK (compressed) + ECDHE      152      385      219      756
-DTLS 1.3 Cached X.509/RPK + ECDHE      179      347      213      742
+DTLS 1.3 Cached RPK + RPK + ECDHE      191      365      251      807 
+DTLS 1.3 Cached X.509 + RPK + ECDHE    185      359      251      795 
 DTLS 1.3 PSK + ECDHE                   186      196       59      441
 DTLS 1.3 PSK                           136      156       59      351
 ---------------------------------------------------------------------
 EDHOC RPK (Static DH + kid) + ECDHE     37       45       19      101
+EDHOC RPK (Static DH + x5t) + ECDHE     37       58       33      128
+EDHOC X.509 (Signature + kid) + ECDHE   37      102       77      216
 EDHOC X.509 (Signature + x5t) + ECDHE   37      115       90      242
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -542,9 +545,11 @@ DTLS 1.3 PSK flight #3 gives 59 bytes of overhead.
 
 In this section, we consider the effect of {{RFC7924}} on the message size overhead.
 
-Cached information together with server X.509 can be used to move bytes from flight #2 to flight #1 (cached RPK increases the number of bytes compared to cached X.509).
+Cached information can be used to use a cached server cerificate from a previous connection and move bytes from flight #2 to flight #1. The cached certificate can be a RPK or X.509.
 
 The differences compared to {{size-dtls13rpk}} are the following.
+
+#### Flight \#1
 
 For the flight #1, the following is added:
 
@@ -555,7 +560,13 @@ For the flight #1, the following is added:
   16 17 18 19 1a 1b 1c 1d 1e 1f
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-And the following is removed:
+Giving a total of:
+
+~~~~~~~~~~~~~~~~~~~~~~~
+152 + 39 = 191 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+In the case the cached certificate is X.509 the following is removed:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 - Extension - Server Certificate Type (Raw Public Key) (6 bytes)
@@ -564,8 +575,10 @@ And the following is removed:
 Giving a total of:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-152 + 33 - 6 = 179 bytes
+191 - 6 = 185 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
+
+#### Flight \#2
 
 For the flight #2, the following is added:
 
@@ -574,31 +587,31 @@ For the flight #2, the following is added:
   00 19 LL LL LL LL 01
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-And the following is removed or reduced:
+And the following is reduced:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-- Extension - Server Certificate Type (Raw Public Key) (6 bytes)
-
-- Server Certificate (59 bytes -> 32 bytes)
+- Server Certificate (91 bytes -> 32 bytes)
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Giving a total of:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-385 - 26 = 347 bytes
+417 + 7 - 59 = 365 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-A summary of the calculation is given in {{fig-compare3}}.
+In the case the cached certificate is X.509 the following is removed:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-======================================================================
-Flight                             #1         #2        #3      Total
-----------------------------------------------------------------------
-DTLS 1.3 Cached X.509/RPK + ECDHE 183        347       213       743
-DTLS 1.3 RPK + ECDHE              152        385       219       756
-=======================================================================
+- Extension - Server Certificate Type (Raw Public Key) (6 bytes)
 ~~~~~~~~~~~~~~~~~~~~~~~
-{: #fig-compare3 title="Comparison of message sizes in bytes for DTLS 1.3 RPK + ECDH with and without cached X.509" artwork-align="center"}
+
+Giving a total of:
+
+~~~~~~~~~~~~~~~~~~~~~~~
+365 - 6 = 359 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+
 
 ### Resumption
 
