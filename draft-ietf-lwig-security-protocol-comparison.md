@@ -125,7 +125,7 @@ The EDHOC overhead is dependent on the key identifiers included. The following o
 
 All the overhead are dependent on the tag length. The following overheads apply for tags of the same length.
 
-{{fig-compare1}} compares the message sizes of DTLS 1.3 {{RFC9147}} and EDHOC {{I-D.ietf-lake-edhoc}} handshakes with connection ID.
+{{fig-compare1}} compares the message sizes of DTLS 1.3 {{RFC9147}} and EDHOC {{I-D.ietf-lake-edhoc}} handshakes with connection ID. EDHOC is typically sent over CoAP which would add 4 bytes to flight #1 and #2 and 5 bytes to flight #3 (4 byte CoAP header and 1 byte Connection ID).
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 =====================================================================
