@@ -170,7 +170,7 @@ This section gives an estimate of the message sizes of DTLS 1.3 with different a
 
 In this section, a Connection ID of 1 byte is used.
 
-#### flight_1 {#dtls13f1rpk}
+#### Flight \#1 {#dtls13f1rpk}
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 Record Header - DTLSPlaintext (13 bytes):
@@ -229,9 +229,9 @@ Record Header - DTLSPlaintext (13 bytes):
 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 RPK + ECDHE flight_1 gives 152 bytes of overhead.
+DTLS 1.3 RPK + ECDHE flight #1 gives 152 bytes of overhead.
 
-#### flight_2 {#dtls13f2rpk}
+#### Flight \#2 {#dtls13f2rpk}
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 Record Header - DTLSPlaintext (13 bytes):
@@ -338,9 +338,9 @@ e0 8b 0e 45 5a 35 0a e5
 13 + 104 + 6 + 26 + 23 + 112 + 80 + 44 + 1 + 8 = 417 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 RPK + ECDHE flight_2 gives 385 bytes of overhead.
+DTLS 1.3 RPK + ECDHE flight #2 gives 385 bytes of overhead.
 
-#### flight_3 {#dtls13f3rpk}
+#### Flight \#3 {#dtls13f3rpk}
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 Record Header (6 bytes) // DTLSCiphertext, Full:
@@ -389,7 +389,9 @@ Auth Tag (8 bytes) // AES-CCM_8:
 6 + 112 + 80 + 44 + 1 + 8 = 251 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 RPK + ECDHE flight_2 gives 251 bytes of overhead.
+DTLS 1.3 RPK + ECDHE flight #3 gives 251 bytes of overhead.
+
+
 
 
 
