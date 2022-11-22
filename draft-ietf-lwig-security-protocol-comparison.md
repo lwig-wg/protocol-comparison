@@ -714,21 +714,11 @@ Total of 59 bytes
 
 ## TLS 1.3
 
-In this section, the message sizes are calculated for TLS 1.3. The major changes compared to DTLS 1.3 are that the record header is smaller, the handshake headers is smaller, and that Connection ID is not supported.  Recently, additional work has taken shape with the goal to further reduce overhead for TLS 1.3 (see {{I-D.ietf-tls-ctls}}).
-
-TLS Assumptions:
-
-* Minimum number of algorithms and cipher suites offered
-* Curve25519, ECDSA with P-256, AES-CCM_8, SHA-256
-* Length of key identifiers: 1 bytes
-* TLS RPK with point compression (saves 32 bytes)
-* Only mandatory TLS extensions
-
-For the PSK calculations, {{Illustrated-TLS13}} was a useful resource, while for RPK calculations we followed the work of  {{IoT-Cert}}.
+In this section, the message sizes are calculated for TLS 1.3. The major changes compared to DTLS 1.3 are a different record header, the handshake headers is smaller, and that Connection ID is not supported.  Recently, additional work has taken shape with the goal to further reduce overhead for TLS 1.3 (see {{I-D.ietf-tls-ctls}}).
 
 ### Message Sizes RPK + ECDHE
 
-#### flight_1 {#tls13f1rpk}
+#### flight \#1 {#tls13f1rpk}
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 Record Header - TLSPlaintext (5 bytes):
@@ -781,7 +771,7 @@ Record Header - TLSPlaintext (5 bytes):
 
 TLS 1.3 RPK + ECDHE flight_1 gives 129 bytes of overhead.
 
-#### flight_2 {#tls13f2rpk}
+#### flight \#2 {#tls13f2rpk}
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 Record Header - TLSPlaintext (5 bytes):
@@ -856,7 +846,7 @@ Record Header - TLSCiphertext (5 bytes):
     Certificate Length (3 bytes):
     LL LL LL
 
-    Certificate (59 bytes) // Point compression
+    Certificate (91 bytes) \\ 91 byte RPK see {{rpkformat}}
     ....
 
     Certificate Extensions (2 bytes):
@@ -881,12 +871,12 @@ Record Header - TLSCiphertext (5 bytes):
 Auth Tag (8 bytes):
 e0 8b 0e 45 5a 35 0a e5
 
-5 + 90 + 5 + 18 + 15 + 72 + 72 + 36 + 1 + 8 = 322 bytes
+5 + 90 + 5 + 18 + 15 + 104 + 72 + 36 + 1 + 8 = 354 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-TLS 1.3 RPK + ECDHE flight_2 gives 322 bytes of overhead.
+TLS 1.3 RPK + ECDHE flight_2 gives 354 bytes of overhead.
 
-#### flight_3 {#tls13f3rpk}
+#### flight \#3 {#tls13f3rpk}
 
 <!--TODO: Don't know why this is not formatting correctly in txt, tried to separate in several code sections, it still doesn't work. -->
 
@@ -907,7 +897,7 @@ Record Header - TLSCiphertext (5 bytes):
     Certificate Length (3 bytes):
     LL LL LL
 
-    Certificate (59 bytes) // Point compression
+    Certificate (91 bytes) \\ 91 byte RPK see {{rpkformat}}
     ....
 
     Certificate Extensions (2 bytes):
@@ -935,14 +925,17 @@ Record Header - TLSCiphertext (5 bytes):
 Auth Tag (8 bytes) // AES-CCM_8:
 00 01 02 03 04 05 06 07
 
-5 + 72 + 72 + 36 + 1 + 8 = 194 bytes
+5 + 104 + 72 + 36 + 1 + 8 = 226 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-TLS 1.3 RPK + ECDHE flight_3 gives 194 bytes of overhead.
+TLS 1.3 RPK + ECDHE flight #3 gives 226 bytes of overhead.
+
+
+
 
 ### Message Sizes PSK + ECDHE
 
-#### flight_1 {#tls13f1pskecdhe}
+#### flight \#1 {#tls13f1pskecdhe}
 
 The differences in overhead compared to {{tls13f3rpk}} are:
 
@@ -975,9 +968,9 @@ In total:
 129 + 6 + 48 - 8 - 6 - 6 = 163 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-TLS 1.3 PSK + ECDHE flight_1 gives 166 bytes of overhead.
+TLS 1.3 PSK + ECDHE flight #1 gives 166 bytes of overhead.
 
-#### flight_2 {#tls13f2pskecdhe}
+#### flight \#2 {#tls13f2pskecdhe}
 
 The differences in overhead compared to {{tls13f2rpk}} are:
 
@@ -1010,7 +1003,7 @@ In total:
 
 TLS 1.3 PSK + ECDHE flight_2 gives 157 bytes of overhead.
 
-#### flight_3 {#tls13f3pskecdhe}
+#### flight \#3 {#tls13f3pskecdhe}
 
 The differences in overhead compared to {{tls13f3rpk}} are:
 
@@ -1028,11 +1021,11 @@ In total:
 194 - 72 - 72 = 50 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-TLS 1.3 PSK + ECDHE flight_3 gives 50 bytes of overhead.
+TLS 1.3 PSK + ECDHE flight #3 gives 50 bytes of overhead.
 
 ### Message Sizes PSK
 
-#### flight_1 {#tls13f1psk}
+#### flight \#1 {#tls13f1psk}
 
 The differences in overhead compared to {{tls13f1pskecdhe}} are:
 
@@ -1050,9 +1043,9 @@ In total:
 163 - 8 - 42 = 113 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-TLS 1.3 PSK flight_1 gives 116 bytes of overhead.
+TLS 1.3 PSK flight #1 gives 116 bytes of overhead.
 
-#### flight_2 {#tls13f2psk}
+#### flight \#2 {#tls13f2psk}
 
 The differences in overhead compared to {{tls13f2pskecdhe}} are:
 
@@ -1068,13 +1061,13 @@ In total:
 157 - 40 = 117 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-TLS 1.3 PSK flight_2 gives 117 bytes of overhead.
+TLS 1.3 PSK flight #2 gives 117 bytes of overhead.
 
-#### flight_3 {#tls13f3psk}
+#### flight \#3 {#tls13f3psk}
 
 There are no differences in overhead compared to {{tls13f3pskecdhe}}.
 
-TLS 1.3 PSK flight_3 gives 57 bytes of overhead.
+TLS 1.3 PSK flight #3 gives 57 bytes of overhead.
 
 
 ## EDHOC
