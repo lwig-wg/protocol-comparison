@@ -134,8 +134,8 @@ Flight                                  #1       #2       #3    Total
 ---------------------------------------------------------------------
 DTLS 1.3 RPK + ECDHE                   152      414      248      814
 DTLS 1.3 RPK (compressed) + ECDHE      152      382      216      750
-DTLS 1.3 Cached RPK + RPK + ECDHE      191      362      248      801 
-DTLS 1.3 Cached X.509 + RPK + ECDHE    185      356      248      789 
+DTLS 1.3 Cached RPK + RPK + ECDHE      191      362      248      801
+DTLS 1.3 Cached X.509 + RPK + ECDHE    185      356      248      789
 DTLS 1.3 PSK + ECDHE                   186      193       56      435
 DTLS 1.3 PSK                           136      153       56      345
 ---------------------------------------------------------------------
