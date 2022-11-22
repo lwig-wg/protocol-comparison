@@ -310,7 +310,7 @@ HH ES SS 43 LL LL
     Certificate Length (3 bytes):
     LL LL LL
 
-    Certificate (91 bytes)
+    Certificate (91 bytes) \\ 91 byte RPK see {{rpkformat}}
     ....
 
     Certificate Extensions (2 bytes):
@@ -338,7 +338,8 @@ e0 8b 0e 45 5a 35 0a e5
 13 + 104 + 6 + 26 + 23 + 112 + 80 + 44 + 1 + 8 = 417 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 RPK + ECDHE flight #2 gives 385 bytes of overhead.
+DTLS 1.3 RPK + ECDHE flight #2 gives 417 bytes of overhead.
+With a point compressed RPK the overhead is 417 - 32 = 385 bytes, see {{rpkformat}}.
 
 #### Flight \#3 {#dtls13f3rpk}
 
@@ -358,7 +359,7 @@ ZZ ES SS 42 LL LL
     Certificate Length (3 bytes):
     LL LL LL
 
-    Certificate (91 bytes)
+    Certificate (91 bytes) \\ 91 byte RPK see {{rpkformat}}
     ....
 
     Certificate Extensions (2 bytes):
@@ -390,6 +391,7 @@ Auth Tag (8 bytes) // AES-CCM_8:
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 DTLS 1.3 RPK + ECDHE flight #3 gives 251 bytes of overhead.
+With a point compressed RPK the overhead is 251 - 32 = 219 bytes, see {{rpkformat}}.
 
 
 
