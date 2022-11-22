@@ -132,12 +132,12 @@ All the overhead are dependent on the tag length. The following overheads apply 
 =====================================================================
 Flight                                  #1       #2       #3    Total
 ---------------------------------------------------------------------
-DTLS 1.3 RPK + ECDHE                   152      417      251      820
-DTLS 1.3 RPK (compressed) + ECDHE      152      385      219      756
-DTLS 1.3 Cached RPK + RPK + ECDHE      191      365      251      807 
-DTLS 1.3 Cached X.509 + RPK + ECDHE    185      359      251      795 
-DTLS 1.3 PSK + ECDHE                   186      196       59      441
-DTLS 1.3 PSK                           136      156       59      351
+DTLS 1.3 RPK + ECDHE                   152      414      248      814
+DTLS 1.3 RPK (compressed) + ECDHE      152      382      216      750
+DTLS 1.3 Cached RPK + RPK + ECDHE      191      362      248      801 
+DTLS 1.3 Cached X.509 + RPK + ECDHE    185      356      248      789 
+DTLS 1.3 PSK + ECDHE                   186      193       56      435
+DTLS 1.3 PSK                           136      153       56      345
 ---------------------------------------------------------------------
 EDHOC RPK (Static DH + kid) + ECDHE     37       45       19      101
 EDHOC RPK (Static DH + x5t) + ECDHE     37       58       33      128
@@ -274,8 +274,8 @@ Record Header - DTLSPlaintext (13 bytes):
       Extension - Connection Identifier (43) (6 bytes):
       XX XX 00 02 01 43
 
-Record Header - DTLSCiphertext, Full (6 bytes):
-HH ES SS 43 LL LL
+Record Header - DTLSCiphertext (3 bytes):
+HH 43 SS
 
   Handshake Header - Encrypted Extensions (12 bytes):
   08 LL LL LL SS SS 00 00 00 LL LL LL
@@ -339,17 +339,17 @@ HH ES SS 43 LL LL
 Auth Tag (8 bytes):
 e0 8b 0e 45 5a 35 0a e5
 
-13 + 104 + 6 + 26 + 23 + 112 + 80 + 44 + 1 + 8 = 417 bytes
+13 + 104 + 3 + 26 + 23 + 112 + 80 + 44 + 1 + 8 = 414 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 RPK + ECDHE flight #2 gives 417 bytes of overhead.
-With a point compressed RPK the overhead is 417 - 32 = 385 bytes, see {{rpkformat}}.
+DTLS 1.3 RPK + ECDHE flight #2 gives 414 bytes of overhead.
+With a point compressed RPK the overhead is 414 - 32 = 382 bytes, see {{rpkformat}}.
 
 #### Flight \#3 {#dtls13f3rpk}
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-Record Header (6 bytes) // DTLSCiphertext, Full:
-ZZ ES SS 42 LL LL
+Record Header (3 bytes): // DTLSCiphertext
+ZZ 42 SS
 
   Handshake Header - Certificate (12 bytes):
   0b LL LL LL SS SS XX XX XX LL LL LL
@@ -363,7 +363,7 @@ ZZ ES SS 42 LL LL
     Certificate Length (3 bytes):
     LL LL LL
 
-    Certificate (91 bytes) \\ 91 byte RPK see {{rpkformat}}
+    Certificate (91 bytes): \\ 91 byte RPK see {{rpkformat}}
     ....
 
     Certificate Extensions (2 bytes):
@@ -391,11 +391,11 @@ ZZ ES SS 42 LL LL
 Auth Tag (8 bytes) // AES-CCM_8:
 00 01 02 03 04 05 06 07
 
-6 + 112 + 80 + 44 + 1 + 8 = 251 bytes
+3 + 112 + 80 + 44 + 1 + 8 = 248 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 RPK + ECDHE flight #3 gives 251 bytes of overhead.
-With a point compressed RPK the overhead is 251 - 32 = 219 bytes, see {{rpkformat}}.
+DTLS 1.3 RPK + ECDHE flight #3 gives 248 bytes of overhead.
+With a point compressed RPK the overhead is 248 - 32 = 216 bytes, see {{rpkformat}}.
 
 
 
