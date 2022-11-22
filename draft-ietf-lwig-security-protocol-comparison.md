@@ -113,6 +113,7 @@ To enable a fair comparison between protocols, the following assumptions are mad
 * The length of key identifiers are 1 byte.
 * The length of connection identifiers are 1 byte.
 * DTLS handshake message fragmentation is not considered.
+* Several DTLS handshake messages are sent in a single record.
 * Only mandatory (D)TLS extensions are included.
 
 {{summ-handshake}} gives a short summary of the message overhead based on different parameters and some assumptions. The following sections detail the assumptions and the calculations.
