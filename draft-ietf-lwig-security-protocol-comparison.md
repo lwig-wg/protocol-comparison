@@ -399,7 +399,7 @@ With a point compressed RPK the overhead is 251 - 32 = 219 bytes, see {{rpkforma
 
 ### Message Sizes PSK + ECDHE
 
-#### flight_1 {#dtls13f1pskecdhe}
+#### Flight \#1 {#dtls13f1pskecdhe}
 
 The differences in overhead compared to {{dtls13f1rpk}} are:
 
@@ -432,9 +432,9 @@ In total:
 152 + 6 + 48 - 8 - 6 - 6 = 186 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 PSK + ECDHE flight_1 gives 186 bytes of overhead.
+DTLS 1.3 PSK + ECDHE flight #1 gives 186 bytes of overhead.
 
-#### flight_2 {#dtls13f2pskecdhe}
+#### Flight #2 {#dtls13f2pskecdhe}
 
 The differences in overhead compared to {{dtls13f2rpk}} are:
 
@@ -448,7 +448,7 @@ The following is added:
 The following is removed:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-- Handshake Message Certificate (80 bytes)
+- Handshake Message Certificate (112 bytes)
 
 - Handshake Message CertificateVerify (80 bytes)
 
@@ -462,19 +462,19 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-385 - 80 - 80 - 23 - 6 - 6  + 6 = 196 bytes
+417 + 6 - 112 - 80 - 23 - 6 - 6 = 196 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 PSK + ECDHE flight_2 gives 196 bytes of overhead.
+DTLS 1.3 PSK + ECDHE flight #2 gives 196 bytes of overhead.
 
-#### flight_3 {#dtls13f3pskecdhe}
+#### Flight \#3 {#dtls13f3pskecdhe}
 
 The differences in overhead compared to {{dtls13f3rpk}} are:
 
 The following is removed:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-- Handshake Message Certificate (80 bytes)
+- Handshake Message Certificate (112 bytes)
 
 - Handshake Message Certificate Verify (80 bytes)
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -482,16 +482,16 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-219 - 80 - 80 = 59 bytes
+251 - 112 - 80 = 59 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 PSK + ECDHE flight_3 gives 59 bytes of overhead.
+DTLS 1.3 PSK + ECDHE flight #3 gives 59 bytes of overhead.
 
 
 
 ### Message Sizes PSK
 
-#### flight_1 {#dtls13f1psk}
+#### flight \#1 {#dtls13f1psk}
 
 The differences in overhead compared to {{dtls13f1pskecdhe}} are:
 
@@ -509,9 +509,9 @@ In total:
 186 - 8 - 42 = 136 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 PSK flight_1 gives 136 bytes of overhead.
+DTLS 1.3 PSK flight #1 gives 136 bytes of overhead.
 
-#### flight_2 {#dtls13f2psk}
+#### Flight \#2 {#dtls13f2psk}
 
 The differences in overhead compared to {{dtls13f2pskecdhe}} are:
 
@@ -527,13 +527,13 @@ In total:
 196 - 40 = 156 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 PSK flight_2 gives 156 bytes of overhead.
+DTLS 1.3 PSK flight #2 gives 156 bytes of overhead.
 
-#### flight_3 {#dtls13f3psk}
+#### Flight \#3 {#dtls13f3psk}
 
 There are no differences in overhead compared to {{dtls13f3pskecdhe}}.
 
-DTLS 1.3 PSK flight_3 gives 59 bytes of overhead.
+DTLS 1.3 PSK flight #3 gives 59 bytes of overhead.
 
 
 
