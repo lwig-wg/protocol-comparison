@@ -151,15 +151,15 @@ EDHOC X.509 (Signature + x5t) + ECDHE   37      115       90      242
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 =====================================================================
-Flight                                 #1        #2       #3    Total
+Flight                                  #1       #2       #3    Total
 ---------------------------------------------------------------------
-DTLS 1.3 RPK + ECDHE                 144       364      212       722
-DTLS 1.3 PSK + ECDHE                 178       183       56       417
-DTLS 1.3 PSK                         128       143       56       327
+DTLS 1.3 RPK + ECDHE                   146      407      247      800
+DTLS 1.3 PSK + ECDHE                   180      186       55      421
+DTLS 1.3 PSK                           130      146       55      331
 ---------------------------------------------------------------------
-TLS 1.3  RPK + ECDHE                 129       322      194       645
-TLS 1.3  PSK + ECDHE                 163       157       50       370
-TLS 1.3  PSK                         113       117       50       280
+TLS 1.3  RPK + ECDHE                   129      322      194      645
+TLS 1.3  PSK + ECDHE                   163      157       50      370
+TLS 1.3  PSK                           113      117       50      280
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes without Connection ID" artwork-align="center"}
@@ -656,18 +656,6 @@ DTLS 1.3 Flight #1:   -6 bytes
 DTLS 1.3 Flight #2:   -7 bytes
 DTLS 1.3 Flight #3:   -1 byte
 ~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~
-=======================================================================
-Flight                                #1         #2       #3    Total
------------------------------------------------------------------------
-DTLS 1.3 RPK + ECDHE (no cid)        144        364       212    722
-DTLS 1.3 PSK + ECDHE (no cid)        178        183        56    417
-DTLS 1.3 PSK (no cid)                128        143        56    327
-=======================================================================
-~~~~~~~~~~~~~~~~~~~~~~~
-{: #fig-compare4 title="Comparison of message sizes in bytes for DTLS 1.3 without Connection ID" artwork-align="center"}
-
 
 
 ### Raw Public Keys {#rpkformat}
