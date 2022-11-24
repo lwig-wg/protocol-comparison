@@ -41,11 +41,14 @@ informative:
   RFC7924:
   RFC7925:
   RFC8323:
+  RFC8376:
   RFC8446:
   RFC8613:
+  RFC8879:
   RFC9146:
   RFC9147:
   RFC9175:
+  RFC9191:
   I-D.ietf-core-attacks-on-coap:
   I-D.ietf-core-oscore-groupcomm:
   I-D.ietf-cose-cbor-encoded-cert:
