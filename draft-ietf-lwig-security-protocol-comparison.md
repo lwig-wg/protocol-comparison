@@ -53,6 +53,7 @@ informative:
   I-D.ietf-core-oscore-groupcomm:
   I-D.ietf-cose-cbor-encoded-cert:
   I-D.ietf-lake-edhoc:
+  I-D.ietf-lake-reqs:
   I-D.ietf-lake-traces:
   I-D.ietf-tls-ctls:
 
