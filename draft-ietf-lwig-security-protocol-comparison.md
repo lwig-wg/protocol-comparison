@@ -501,7 +501,7 @@ DTLS 1.3 PSK + ECDHE flight #3 gives 56 bytes of overhead.
 
 ### Message Sizes PSK
 
-#### flight \#1 {#dtls13f1psk}
+#### Flight \#1 {#dtls13f1psk}
 
 The differences in overhead compared to {{dtls13f1pskecdhe}} are:
 
@@ -658,9 +658,9 @@ Enabling resumption adds 41 bytes to the initial DTLS handshake. The resumption 
 Without a Connection ID the DTLS 1.3 flight sizes changes as follows.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-DTLS 1.3 Flight #1:   -6 bytes
-DTLS 1.3 Flight #2:   -7 bytes
-DTLS 1.3 Flight #3:   -1 byte
+DTLS 1.3 flight #1:   -6 bytes
+DTLS 1.3 flight #2:   -7 bytes
+DTLS 1.3 flight #3:   -1 byte
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -777,7 +777,7 @@ Record Header - TLSPlaintext (5 bytes):
 
 TLS 1.3 RPK + ECDHE flight #1 gives 129 bytes of overhead.
 
-#### flight \#2 {#tls13f2rpk}
+#### Flight \#2 {#tls13f2rpk}
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 Record Header - TLSPlaintext (5 bytes):
@@ -882,7 +882,7 @@ e0 8b 0e 45 5a 35 0a e5
 
 TLS 1.3 RPK + ECDHE flight #2 gives 354 bytes of overhead.
 
-#### flight \#3 {#tls13f3rpk}
+#### Flight \#3 {#tls13f3rpk}
 
 <!--TODO: Don't know why this is not formatting correctly in txt, tried to separate in several code sections, it still doesn't work. -->
 
@@ -941,7 +941,7 @@ TLS 1.3 RPK + ECDHE flight #3 gives 226 bytes of overhead.
 
 ### Message Sizes PSK + ECDHE
 
-#### flight \#1 {#tls13f1pskecdhe}
+#### Flight \#1 {#tls13f1pskecdhe}
 
 The differences in overhead compared to {{tls13f3rpk}} are:
 
@@ -976,7 +976,7 @@ In total:
 
 TLS 1.3 PSK + ECDHE flight #1 gives 163 bytes of overhead.
 
-#### flight \#2 {#tls13f2pskecdhe}
+#### Flight \#2 {#tls13f2pskecdhe}
 
 The differences in overhead compared to {{tls13f2rpk}} are:
 
@@ -1009,7 +1009,7 @@ In total:
 
 TLS 1.3 PSK + ECDHE flight #2 gives 157 bytes of overhead.
 
-#### flight \#3 {#tls13f3pskecdhe}
+#### Flight \#3 {#tls13f3pskecdhe}
 
 The differences in overhead compared to {{tls13f3rpk}} are:
 
@@ -1034,7 +1034,7 @@ TLS 1.3 PSK + ECDHE flight #3 gives 50 bytes of overhead.
 
 ### Message Sizes PSK
 
-#### flight \#1 {#tls13f1psk}
+#### Flight \#1 {#tls13f1psk}
 
 The differences in overhead compared to {{tls13f1pskecdhe}} are:
 
@@ -1054,7 +1054,7 @@ In total:
 
 TLS 1.3 PSK flight #1 gives 113 bytes of overhead.
 
-#### flight \#2 {#tls13f2psk}
+#### Flight \#2 {#tls13f2psk}
 
 The differences in overhead compared to {{tls13f2pskecdhe}} are:
 
@@ -1072,7 +1072,7 @@ In total:
 
 TLS 1.3 PSK flight #2 gives 117 bytes of overhead.
 
-#### flight \#3 {#tls13f3psk}
+#### Flight \#3 {#tls13f3psk}
 
 There are no differences in overhead compared to {{tls13f3pskecdhe}}.
 
