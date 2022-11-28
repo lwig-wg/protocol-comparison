@@ -324,7 +324,7 @@ HH 42 SS
     Certificate Length (3 bytes):
     LL LL LL
 
-    Certificate (91 bytes) \\ 91 byte RPK see {{rpkformat}}
+    Certificate (91 bytes): \\ 91 byte RPK see {{rpkformat}}
     ....
 
     Certificate Extensions (2 bytes):
