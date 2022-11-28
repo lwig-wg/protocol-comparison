@@ -110,6 +110,8 @@ This document analyzes and compares the sizes of key exchange flights and the pe
 
 The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression. DTLS is analyzed with and without Connection ID {{RFC9146}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as ICV. {{handshake}} compares the overhead of key exchange, while {{record}} covers the overhead for protection of application data.
 
+Readers of this document also might be interested in the following documents: {{Illustrated-TLS12}}, {{Illustrated-TLS13}}, and {{Illustrated-DTLS13}} given an explanation of every byte in example TLS 1.2, TLS 1.3, and DTLS 1.3 connections. {{RFC9191}} looks at potential tools available for overcoming the deployment challenges induced by large certificates and long certificate chains and discusses solutions available to overcome these challenges. {{I-D.ietf-cose-cbor-encoded-cert}} gives examples of IoT and Web certificates as well as examples on how effective C509 an TLS certificate compression is at compressing example certificate and certificate chains.
+
 # Overhead of Key Exchange Protocols {#handshake}
 
 This section analyzes and compares the sizes of key exchange flights for different protocols.
