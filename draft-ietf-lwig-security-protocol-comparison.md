@@ -1678,6 +1678,6 @@ and
 {{{Hannes Tschofenig}}}
 for comments and suggestions on previous versions of the draft.
 
-All 6LoWPAN-GHC compression was done with {{OlegHahm-ghc}}.
+All 6LoWPAN-GHC compression was done with {{OlegHahm-ghc}}. {{Illustrated-TLS13}} as a was a useful resource for the TLS handshake content and formatting and {{IoT-Cert}} was a useful resource for SubjectPublicKeyInfo formatting.
 
 --- fluff
