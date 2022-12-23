@@ -199,8 +199,8 @@ Record Header - DTLSPlaintext (13 bytes):
     fe fd
 
     Client Random (32 bytes):
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-    16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+    14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
     Legacy Session ID (1 bytes):
     00
@@ -226,8 +226,8 @@ Record Header - DTLSPlaintext (13 bytes):
 
       Extension - Key Share (42 bytes):
       00 33 00 26 00 24 00 1d 00 20
-      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-      16 17 18 19 1a 1b 1c 1d 1e 1f
+      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+      14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
       Extension - Supported Versions (1.3) (7 bytes):
       00 2b 00 03 02 03 04
@@ -241,8 +241,8 @@ Record Header - DTLSPlaintext (13 bytes):
       Extension - Connection Identifier (43) (6 bytes):
       XX XX 00 02 01 42
 
-13 + 12 + 2 + 32 + 1 + 1 + 4 + 2 + 2 + 8 + 8 + 42 + 7 + 6 + 6 + 6 = 152
-bytes
+13 + 12 + 2 + 32 + 1 + 1 + 4 + 2 + 2 + 8 + 8 + 42 + 7 + 6 + 6 + 6
+= 152 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 DTLS 1.3 RPK + ECDHE flight #1 gives 152 bytes of overhead.
@@ -260,8 +260,8 @@ Record Header - DTLSPlaintext (13 bytes):
     fe fd
 
     Server Random (32 bytes):
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-    16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+    14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
     Legacy Session ID (1 bytes):
     00
@@ -277,8 +277,8 @@ Record Header - DTLSPlaintext (13 bytes):
 
       Extension - Key Share (40 bytes):
       00 33 00 24 00 1d 00 20
-      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-       16 17 18 19 1a 1b 1c 1d 1e 1f
+      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+      14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
       Extension - Supported Versions (1.3) (6 bytes):
       00 2b 00 02 03 04
@@ -342,8 +342,8 @@ HH 42 SS
   14 LL LL LL SS SS 00 00 00 LL LL LL
 
     Verify Data (32 bytes):
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-    16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12
+    13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
   Record Type (1 byte):
   16
@@ -386,16 +386,17 @@ ZZ 43 SS
 
     Signature  (68 bytes):
     04 03 LL LL //ecdsa_secp256r1_sha256
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-    16 17 18 19 1a 1b 1c 1d 1e 1f 00 01 02 03 04 05 06 07 08 09 0a 0b
-     0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+    14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 00 01 02 03 04 05 06 07
+    08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b
+    1c 1d 1e 1f
 
   Handshake Header - Finished (12 bytes):
   14 LL LL LL SS SS 00 00 00 LL LL LL
 
     Verify Data (32 bytes) // SHA-256:
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-    16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+    14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
   Record Type (1 byte):
   16
@@ -428,8 +429,8 @@ The following is added:
 + Extension - Pre Shared Key (48 bytes):
   00 29 00 2F
   00 0a 00 01 ID 00 00 00 00
-  00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
-  14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+  00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10
+  11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 The following is removed:
@@ -569,8 +570,8 @@ For the flight #1, the following is added:
 ~~~~~~~~~~~~~~~~~~~~~~~
 + Extension - Client Cashed Information (39 bytes):
   00 19 LL LL LL LL
-  01 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-  16 17 18 19 1a 1b 1c 1d 1e 1f
+  01 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+  14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Giving a total of:
@@ -743,8 +744,8 @@ Record Header - TLSPlaintext (5 bytes):
     03 03
 
     Client Random (32 bytes):
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-    16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+    14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
     Legacy Session ID (1 bytes):
     00
@@ -761,13 +762,14 @@ Record Header - TLSPlaintext (5 bytes):
       Extension - Supported Groups (x25519) (8 bytes):
       00 0a 00 04 00 02 00 1d
 
-      Extension - Signature Algorithms(ecdsa_secp256r1_sha256)(8 bytes):
+      Extension - Signature Algorithms (ecdsa_secp256r1_sha256)
+      (8 bytes):
       00 0d 00 04 00 02 08 07
 
       Extension - Key Share (42 bytes):
       00 33 00 26 00 24 00 1d 00 20
-      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-      16 17 18 19 1a 1b 1c 1d 1e 1f
+      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+      14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
       Extension - Supported Versions (1.3) (7 bytes):
       00 2b 00 03 02 03 04
@@ -796,8 +798,8 @@ Record Header - TLSPlaintext (5 bytes):
     fe fd
 
     Server Random (32 bytes):
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-    16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+    14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
     Legacy Session ID (1 bytes):
     00
@@ -813,8 +815,8 @@ Record Header - TLSPlaintext (5 bytes):
 
       Extension - Key Share (40 bytes):
       00 33 00 24 00 1d 00 20
-      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-      16 17 18 19 1a 1b 1c 1d 1e 1f
+      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+      14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
       Extension - Supported Versions (1.3) (6 bytes):
       00 2b 00 02 03 04
@@ -843,7 +845,8 @@ Record Header - TLSCiphertext (5 bytes):
     Extensions Length (2 bytes):
     LL LL
 
-      Extension - Signature Algorithms(ecdsa_secp256r1_sha256)(8 bytes):
+      Extension - Signature Algorithms (ecdsa_secp256r1_sha256)
+      (8 bytes):
       00 0d 00 04 00 02 08 07
 
   Handshake Header - Certificate (4 bytes):
@@ -874,8 +877,8 @@ Record Header - TLSCiphertext (5 bytes):
   14 LL LL LL
 
     Verify Data (32 bytes):
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-    16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+    14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
   Record Type (1 byte):
   16
