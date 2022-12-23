@@ -1146,18 +1146,18 @@ message_3 (19 bytes):
 
 Based on the example above it is relatively easy to calculate numbers also for EDHOC authenticated with signature keys and for authentication keys identified with a SHA-256/64 hash (x5t). Signatures increase the size of flight #2 and #3 with (64 - 8 + 1) bytes while x5t inceases the size with 13-14 bytes. The typical message sizes for the previous example and for the other combinations are summarized in {{fig-summary}}. Note that EDHOC treats authentication keys stored in RPK and X.509 in the same way. More detailed examples can be found in {{I-D.ietf-lake-traces}}.
 
-~~~~~~~~~~~~~~~~~~~~~~~
-========================================================
-                    Static DH Keys        Signature Keys
-                    --------------        --------------
-                    kid        x5t        kid        x5t
---------------------------------------------------------
-message_1            37         37         37         37
-message_2            45         58        102        115
-message_3            19         33         77         90
---------------------------------------------------------
-Total               101        128        216        242
-========================================================
+~~~~~~~~~~~~~~~~~~~~~~~ aasvg
+==========================================================
+                     Static DH Keys        Signature Keys
+                    ----------------      ----------------
+                     kid        x5t        kid        x5t
+----------------------------------------------------------
+ message_1            37         37         37         37
+ message_2            45         58        102        115
+ message_3            19         33         77         90
+----------------------------------------------------------
+ Total               101        128        216        242
+==========================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-summary title="Typical message sizes in bytes" artwork-align="center"}
 
@@ -1181,7 +1181,7 @@ The compression overhead (GHC) is dependent on the parameters epoch, sequence nu
 
 The OSCORE overhead is dependent on the included CoAP Option numbers as well as the length of the OSCORE parameters Sender ID and sequence number. The following overheads apply for all sequence numbers and Sender IDs with the same length.
 
-~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
 Sequence Number                  '05'      '1005'    '100005'
 -------------------------------------------------------------
 DTLS 1.2                          29         29         29
@@ -1205,7 +1205,7 @@ Group OSCORE pairwise response    11         11         11
 {: #fig-overhead title="Overhead in bytes as a function of sequence number &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Connection/Sender ID = '')"}
 {: artwork-align="center"}
 
-~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
 Connection/Sender ID              ''        '42'      '4002'
 -------------------------------------------------------------
 DTLS 1.2                          29         30         31
@@ -1223,7 +1223,7 @@ Group OSCORE pairwise response    11         13         14
 {: #fig-overhead2 title="Overhead in bytes as a function of Connection/Sender ID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Sequence Number = '05')"}
 {: artwork-align="center"}
 
-~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
 Protocol                       Overhead      Overhead (GHC)
 -------------------------------------------------------------
 DTLS 1.2                          21               8
