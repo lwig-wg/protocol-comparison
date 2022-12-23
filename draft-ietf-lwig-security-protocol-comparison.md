@@ -342,8 +342,8 @@ HH 42 SS
   14 LL LL LL SS SS 00 00 00 LL LL LL
 
     Verify Data (32 bytes):
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12
-    13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+    14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
   Record Type (1 byte):
   16
@@ -570,8 +570,8 @@ For the flight #1, the following is added:
 ~~~~~~~~~~~~~~~~~~~~~~~
 + Extension - Client Cashed Information (39 bytes):
   00 19 LL LL LL LL
-  01 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
-  14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+  01 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11
+  12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Giving a total of:
@@ -923,16 +923,17 @@ Record Header - TLSCiphertext (5 bytes):
 
     Signature  (68 bytes):
     04 03 LL LL //ecdsa_secp256r1_sha256
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-    16 17 18 19 1a 1b 1c 1d 1e 1f 00 01 02 03 04 05 06 07 08 09 0a 0b
-    0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+    14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 00 01 02 03 04 05 06 07
+    08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b
+    1c 1d 1e 1f
 
   Handshake Header - Finished (4 bytes):
   14 LL LL LL
 
     Verify Data (32 bytes) // SHA-256:
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15
-    16 17 18 19 1a 1b 1c 1d 1e 1f
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+    14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
   Record Type (1 byte)
   16
@@ -963,8 +964,8 @@ The following is added:
 + Extension - Pre Shared Key (48 bytes):
   00 29 00 2F
   00 0a 00 01 ID 00 00 00 00
-  00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
-  14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+  00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10
+  11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 The following is removed:
@@ -1618,7 +1619,7 @@ ff ec ae a0 15 56 67 92 4d ff 8a 24 e4 cb 35 b9
 
 CoAP option delta and length:
 93
-Option Value (flag byte, ID Context length, sequence number, and Sender ID):
+Option Value (flag byte, ID Context length, sequence nr, Sender ID):
 19 00 05 42
 Payload marker:
 ff
@@ -1637,7 +1638,7 @@ ff ec ae a0 15 56 67 92 4d ff 8a 24 e4 cb 35 b9
 
 CoAP delta and option length:
 90
-Option value:
+Option value (flag byte, Sender ID):
 08 69
 Payload marker:
 ff
