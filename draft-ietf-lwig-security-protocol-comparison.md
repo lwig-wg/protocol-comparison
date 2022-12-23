@@ -1182,61 +1182,61 @@ The compression overhead (GHC) is dependent on the parameters epoch, sequence nu
 The OSCORE overhead is dependent on the included CoAP Option numbers as well as the length of the OSCORE parameters Sender ID and sequence number. The following overheads apply for all sequence numbers and Sender IDs with the same length.
 
 ~~~~~~~~~~~ aasvg
-Sequence Number                  '05'      '1005'    '100005'
--------------------------------------------------------------
-DTLS 1.2                          29         29         29
-DTLS 1.3                          11         11         11
--------------------------------------------------------------
-DTLS 1.2 (GHC)                    16         16         16
-DTLS 1.3 (GHC)                    12         12         12
--------------------------------------------------------------
-TLS  1.2                          21         21         21
-TLS  1.3                          14         14         14
--------------------------------------------------------------
-TLS  1.2 (GHC)                    17         18         19
-TLS  1.3 (GHC)                    15         16         17
--------------------------------------------------------------
-OSCORE request                    13         14         15
-OSCORE response                   11         11         11
--------------------------------------------------------------
-Group OSCORE pairwise request     14         15         16
-Group OSCORE pairwise response    11         11         11
+ Sequence Number                  '05'      '1005'    '100005'
+---------------------------------------------------------------
+ DTLS 1.2                          29         29         29
+ DTLS 1.3                          11         11         11
+---------------------------------------------------------------
+ DTLS 1.2 (GHC)                    16         16         16
+ DTLS 1.3 (GHC)                    12         12         12
+---------------------------------------------------------------
+ TLS  1.2                          21         21         21
+ TLS  1.3                          14         14         14
+---------------------------------------------------------------
+ TLS  1.2 (GHC)                    17         18         19
+ TLS  1.3 (GHC)                    15         16         17
+---------------------------------------------------------------
+ OSCORE request                    13         14         15
+ OSCORE response                   11         11         11
+---------------------------------------------------------------
+ Group OSCORE pairwise request     14         15         16
+ Group OSCORE pairwise response    11         11         11
 ~~~~~~~~~~~
 {: #fig-overhead title="Overhead in bytes as a function of sequence number &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Connection/Sender ID = '')"}
 {: artwork-align="center"}
 
 ~~~~~~~~~~~ aasvg
-Connection/Sender ID              ''        '42'      '4002'
--------------------------------------------------------------
-DTLS 1.2                          29         30         31
-DTLS 1.3                          11         12         13
--------------------------------------------------------------
-DTLS 1.2 (GHC)                    16         17         18
-DTLS 1.3 (GHC)                    12         13         14
--------------------------------------------------------------
-OSCORE request                    13         14         15
-OSCORE response                   11         11         11
--------------------------------------------------------------
-Group OSCORE pairwise request     14         15         16
-Group OSCORE pairwise response    11         13         14
+ Connection/Sender ID              ''        '42'      '4002'
+--------------------------------------------------------------
+ DTLS 1.2                          29         30         31
+ DTLS 1.3                          11         12         13
+--------------------------------------------------------------
+ DTLS 1.2 (GHC)                    16         17         18
+ DTLS 1.3 (GHC)                    12         13         14
+--------------------------------------------------------------
+ OSCORE request                    13         14         15
+ OSCORE response                   11         11         11
+--------------------------------------------------------------
+ Group OSCORE pairwise request     14         15         16
+ Group OSCORE pairwise response    11         13         14
 ~~~~~~~~~~~
 {: #fig-overhead2 title="Overhead in bytes as a function of Connection/Sender ID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Sequence Number = '05')"}
 {: artwork-align="center"}
 
 ~~~~~~~~~~~ aasvg
-Protocol                       Overhead      Overhead (GHC)
+ Protocol                       Overhead      Overhead (GHC)
 -------------------------------------------------------------
-DTLS 1.2                          21               8
-DTLS 1.3                           3               4
+ DTLS 1.2                          21               8
+ DTLS 1.3                           3               4
 -------------------------------------------------------------
-TLS  1.2                          13               9
-TLS  1.3                           6               7
+ TLS  1.2                          13               9
+ TLS  1.3                           6               7
 -------------------------------------------------------------
-OSCORE request                     5
-OSCORE response                    3
+ OSCORE request                     5
+ OSCORE response                    3
 -------------------------------------------------------------
-Group OSCORE pairwise request      7
-Group OSCORE pairwise response     4
+ Group OSCORE pairwise request      7
+ Group OSCORE pairwise response     4
 ~~~~~~~~~~~
 {: #fig-overhead3 title="Overhead (excluding ICV) in bytes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Connection/Sender ID = '', Sequence Number = '05')"}
 {: artwork-align="center"}
