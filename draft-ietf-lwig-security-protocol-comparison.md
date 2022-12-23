@@ -138,40 +138,40 @@ All the overhead are dependent on the tag length. The following overheads apply 
 
 {{fig-compare1}} compares the message sizes of DTLS 1.3 {{RFC9147}} and EDHOC {{I-D.ietf-lake-edhoc}} handshakes with connection ID. EDHOC is typically sent over CoAP which would add 4 bytes to flight #1 and #2 and 5 bytes to flight #3 (4 byte CoAP header and 1 byte Connection ID).
 
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 =====================================================================
-Flight                                  #1       #2       #3    Total
+ Flight                                   #1      #2      #3   Total
 ---------------------------------------------------------------------
-DTLS 1.3 RPK + ECDHE                   152      414      248      814
-DTLS 1.3 RPK (compressed) + ECDHE      152      382      216      750
-DTLS 1.3 Cached RPK + RPK + ECDHE      191      362      248      801
-DTLS 1.3 Cached X.509 + RPK + ECDHE    185      356      248      789
-DTLS 1.3 PSK + ECDHE                   186      193       56      435
-DTLS 1.3 PSK                           136      153       56      345
+ DTLS 1.3 - RPKs, ECDHE                  152     414     248     814
+ DTLS 1.3 - Compressed RPKs, ECDHE       152     382     216     750
+ DTLS 1.3 - Cached RPK, ECDHE            191     362     248     801
+ DTLS 1.3 - Cached X.509, RPK, ECDHE     185     356     248     789
+ DTLS 1.3 - PSK, ECDHE                   186     193      56     435
+ DTLS 1.3 - PSK                          136     153      56     345
 ---------------------------------------------------------------------
-cTLS                                    71      143       78      292
+ cTLS                                     71     143      78     292
 ---------------------------------------------------------------------
-EDHOC X.509 (Signature + x5t) + ECDHE   37      115       90      242
-EDHOC X.509 (Signature + kid) + ECDHE   37      102       77      216
-EDHOC RPK (Static DH + x5t) + ECDHE     37       58       33      128
-EDHOC RPK (Static DH + kid) + ECDHE     37       45       19      101
+ EDHOC - X.509, Signature, x5t, ECDHE     37     115      90     242
+ EDHOC - X.509, Signature, kid, ECDHE     37     102      77     216
+ EDHOC - RPK, Static DH, x5t, ECDHE       37      58      33     128
+ EDHOC - RPK, Static DH, kid, ECDHE       37      45      19     101
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare1 title="Comparison of message sizes in bytes with Connection ID" artwork-align="center"}
 
 {{fig-compare2}} compares of message sizes of DTLS 1.3 {{RFC9147}} and TLS 1.3 {{RFC8446}} handshakes without connection ID.
 
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 =====================================================================
-Flight                                  #1       #2       #3    Total
+ Flight                                   #1      #2      #3   Total
 ---------------------------------------------------------------------
-DTLS 1.3 RPK + ECDHE                   146      407      247      800
-DTLS 1.3 PSK + ECDHE                   180      186       55      421
-DTLS 1.3 PSK                           130      146       55      331
+ DTLS 1.3 - RPK, ECDHE                   146     407     247     800
+ DTLS 1.3 - PSK, ECDHE                   180     186      55     421
+ DTLS 1.3 - PSK                          130     146      55     331
 ---------------------------------------------------------------------
-TLS 1.3  RPK + ECDHE                   129      354      226      709
-TLS 1.3  PSK + ECDHE                   163      157       50      370
-TLS 1.3  PSK                           113      117       50      280
+ TLS 1.3  - RPK, ECDHE                   129     354     226     709
+ TLS 1.3  - PSK, ECDHE                   163     157      50     370
+ TLS 1.3  - PSK                          113     117      50     280
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes without Connection ID" artwork-align="center"}
