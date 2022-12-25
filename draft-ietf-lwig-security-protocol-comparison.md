@@ -157,7 +157,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
  DTLS 1.3 - PSK, ECDHE                   186     193      56     435
  DTLS 1.3 - PSK                          136     153      56     345
 ---------------------------------------------------------------------
- cTLS                                     71     143      78     292
+ cTLS - X.509s by reference, ECDHE        71     143      78     292
 ---------------------------------------------------------------------
  EDHOC - X.509, Signature, x5t, ECDHE     37     115      90     242
  EDHOC - X.509, Signature, kid, ECDHE     37     102      77     216
