@@ -152,7 +152,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
 ---------------------------------------------------------------------
  DTLS 1.3 - RPKs, ECDHE                  152     414     248     814
  DTLS 1.3 - Compressed RPKs, ECDHE       152     382     216     750
- DTLS 1.3 - Cached RPK, ECDHE            191     362     248     801
+ DTLS 1.3 - Cached RPK, PRK, ECDHE       191     362     248     801
  DTLS 1.3 - Cached X.509, RPK, ECDHE     185     356     248     789
  DTLS 1.3 - PSK, ECDHE                   186     193      56     435
  DTLS 1.3 - PSK                          136     153      56     345
