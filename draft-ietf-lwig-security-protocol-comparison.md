@@ -184,7 +184,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes without Connection ID" artwork-align="center"}
 
-The details of the message size calculations are given in the following sections.
+The cTLS example in Figure 1. is taken from {{I-D.ietf-tls-ctls}}. The details of the other message size calculations are given in the following sections.
 
 ## DTLS 1.3
 
