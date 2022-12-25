@@ -869,7 +869,7 @@ Record Header - TLSCiphertext (5 bytes):
     Certificate Length (3 bytes):
     LL LL LL
 
-    Certificate (91 bytes) \\ 91 byte RPK see {{rpkformat}}
+    Certificate (91 bytes): \\ 91 byte RPK see Section 2.2.7.
     ....
 
     Certificate Extensions (2 bytes):
@@ -920,7 +920,7 @@ Record Header - TLSCiphertext (5 bytes):
     Certificate Length (3 bytes):
     LL LL LL
 
-    Certificate (91 bytes) \\ 91 byte RPK see {{rpkformat}}
+    Certificate (91 bytes): \\ 91 byte RPK see Section 2.2.7.
     ....
 
     Certificate Extensions (2 bytes):
