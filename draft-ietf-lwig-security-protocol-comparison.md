@@ -157,10 +157,10 @@ All the overhead are dependent on the tag length. The following overheads apply 
  DTLS 1.3 - PSK, ECDHE                   186     193      56     435
  DTLS 1.3 - PSK                          136     153      56     345
 ---------------------------------------------------------------------
- EDHOC - X.509, Signature, x5t, ECDHE     37     115      90     242
- EDHOC - X.509, Signature, kid, ECDHE     37     102      77     216
- EDHOC - RPK, Static DH, x5t, ECDHE       37      58      33     128
- EDHOC - RPK, Static DH, kid, ECDHE       37      45      19     101
+ EDHOC - X.509s, Signature, x5t, ECDHE    37     115      90     242
+ EDHOC - X.509s, Signature, kid, ECDHE    37     102      77     216
+ EDHOC - RPKs, Static DH, x5t, ECDHE      37      58      33     128
+ EDHOC - RPKs, Static DH, kid, ECDHE      37      45      19     101
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare1 title="Comparison of message sizes in bytes with Connection ID" artwork-align="center"}
@@ -171,11 +171,11 @@ All the overhead are dependent on the tag length. The following overheads apply 
 =====================================================================
  Flight                                   #1      #2      #3   Total
 ---------------------------------------------------------------------
- DTLS 1.3 - RPK, ECDHE                   146     407     247     800
+ DTLS 1.3 - RPKs, ECDHE                  146     407     247     800
  DTLS 1.3 - PSK, ECDHE                   180     186      55     421
  DTLS 1.3 - PSK                          130     146      55     331
 ---------------------------------------------------------------------
- TLS 1.3  - RPK, ECDHE                   129     354     226     709
+ TLS 1.3  - RPKs, ECDHE                  129     354     226     709
  TLS 1.3  - PSK, ECDHE                   163     157      50     370
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
