@@ -1097,7 +1097,11 @@ There are no differences in overhead compared to {{tls13f3pskecdhe}}.
 TLS 1.3 PSK flight #3 gives 50 bytes of overhead.
 
 
+## TLS 1.2 and DTLS 1.2
 
+The TLS 1.2 and DTLS 1.2 handshakes are not analyzed in detail in this document. One rough comparison on expected size between the TLS 1.2 and TLS 1.3 handshakes can be found by counting the number of bytes in the example handshakes of {{Illustrated-TLS12}} and {{Illustrated-TLS13}}. In these examples the server authenticates with a certificate and the client is not authenticated.
+
+In TLS 1.2 the number of bytes in the four flights are 170, 1188, 117, and 75 for a total of 1550 bytes. In TLS 1.3 the number of bytes in the three flights are 253, 1367, and 79 for a total of 1699 bytes. In general, the (D)TLS 1.2 and (D)TLS 1.3 handshakes can be expected to have similar number of bytes.
 
 
 ## EDHOC
