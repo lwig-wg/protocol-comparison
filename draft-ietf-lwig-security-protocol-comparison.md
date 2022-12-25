@@ -334,7 +334,7 @@ HH 42 SS
     Certificate Length (3 bytes):
     LL LL LL
 
-    Certificate (91 bytes): \\ 91 byte RPK see {{rpkformat}}
+    Certificate (91 bytes): \\ 91 byte RPK see Section 2.2.7.
     ....
 
     Certificate Extensions (2 bytes):
@@ -383,7 +383,7 @@ ZZ 43 SS
     Certificate Length (3 bytes):
     LL LL LL
 
-    Certificate (91 bytes): \\ 91 byte RPK see {{rpkformat}}
+    Certificate (91 bytes): \\ 91 byte RPK see Section 2.2.7.
     ....
 
     Certificate Extensions (2 bytes):
@@ -681,7 +681,7 @@ DTLS 1.3 flight #3:   -1 byte
 
 ### Raw Public Keys {#rpkformat}
 
-This sections illustrates the format of P-256 (secp256r1) SubjectPublicKeyInfo {{RFC5480}} with and without point compression. Point compression in SubjectPublicKeyInfo is standardized in {{RFC5480}} and is therefore theoretically possible to use in PRKs and X.509 certificates used in (D)TLS but does not seems to be supported by implementations.
+This sections illustrates the format of P-256 (secp256r1) SubjectPublicKeyInfo {{RFC5480}} with and without point compression. Point compression in SubjectPublicKeyInfo is standardized in {{RFC5480}} and is therefore theoretically possible to use in PRKs and X.509 certificates used in (D)TLS but does not seems to be supported by (D)TLS implementations.
 
 #### SubjectPublicKeyInfo Without Point Compression
 
