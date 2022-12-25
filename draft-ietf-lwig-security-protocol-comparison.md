@@ -157,8 +157,6 @@ All the overhead are dependent on the tag length. The following overheads apply 
  DTLS 1.3 - PSK, ECDHE                   186     193      56     435
  DTLS 1.3 - PSK                          136     153      56     345
 ---------------------------------------------------------------------
- cTLS - X.509s by reference, ECDHE        71     143      78     292
----------------------------------------------------------------------
  EDHOC - X.509, Signature, x5t, ECDHE     37     115      90     242
  EDHOC - X.509, Signature, kid, ECDHE     37     102      77     216
  EDHOC - RPK, Static DH, x5t, ECDHE       37      58      33     128
@@ -180,11 +178,13 @@ All the overhead are dependent on the tag length. The following overheads apply 
  TLS 1.3  - RPK, ECDHE                   129     354     226     709
  TLS 1.3  - PSK, ECDHE                   163     157      50     370
  TLS 1.3  - PSK                          113     117      50     280
+---------------------------------------------------------------------
+ cTLS - X.509s by reference, ECDHE        71     143      78     292
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes without Connection ID" artwork-align="center"}
 
-The cTLS example in Figure 1. is taken from {{I-D.ietf-tls-ctls}}. The details of the other message size calculations are given in the following sections.
+The cTLS example in Figure 2. is taken from {{I-D.ietf-tls-ctls}}. The details of the other message size calculations are given in the following sections.
 
 ## DTLS 1.3
 
