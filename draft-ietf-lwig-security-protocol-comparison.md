@@ -53,9 +53,16 @@ informative:
   I-D.ietf-core-oscore-groupcomm:
   I-D.ietf-cose-cbor-encoded-cert:
   I-D.ietf-lake-edhoc:
-  I-D.ietf-lake-reqs:
   I-D.ietf-lake-traces:
   I-D.ietf-tls-ctls:
+
+  E-impact:
+    target: https://www.iab.org/activities/workshops/e-impact/
+    title: Workshop on Environmental Impact of Internet Applications and Systems
+    author:
+      -
+        ins: Internet Architecture Board
+    date: December 2022
 
   OlegHahm-ghc:
     target: https://github.com/OlegHahm/ghc
@@ -104,13 +111,13 @@ This document analyzes and compares the sizes of key exchange flights and the pe
 
 Small message sizes are very important for reducing enery consumption, latency, and time to completion in constrained radio network such as Low-Power Personal Area Networks (LPPANs) and Low-Power Wide Area Networks (LPWANs). Constrained radio networks are not only characterized by very small frame sizes on the order of tens of bytes transmitted a few times per day at ultra-low speeds, but also high latency, and severe duty cycles constraints. Some constrained radio networks are also multi-hop where the already small frame sizes are additionally reduced for each additional hop. Too large payload sizes can easily lead to unacceptable completion times due to fragmentation into a large number of frames and long waiting times between frames can be sent (or resent in the case of transmission errors). In constrained radio networks, the processing energy costs are typically almost negligible compared to the energy costs for radio and the energy costs for sensor measurement. Keeping the number of bytes or frames low is also essential for low latency and time to completion as well as efficient use of spectrum to support a large number of devices. For an overview of LPWANs and their limitations, see {{RFC8376}}.
 
-To reduce overhead and processing in constrained radio networks, IETF has created several working groups and technologies for constrained networks, e.g., (here technologies in parenthesis when the name is different from the working group): 6lo, 6LoWPAN, 6TiSCH, ACE, CBOR, CoRE (CoAP, OSCORE), COSE, LAKE (EDHOC), LPWAN (SCHC), ROLL (RPL), and TLS (cTLS).
+To reduce overhead, processing, and energy consumption in constrained radio networks, IETF has created several working groups and technologies for constrained networks, e.g., (here technologies in parenthesis when the name is different from the working group): 6lo, 6LoWPAN, 6TiSCH, ACE, CBOR, CoRE (CoAP, OSCORE), COSE, LAKE (EDHOC), LPWAN (SCHC), ROLL (RPL), and TLS (cTLS). Compact formats and protocol has also been suggested as a way to decrease the energy consumption of Internet Applications and Systems in general {{E-impact}}.
 
 This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, cTLS {{I-D.ietf-tls-ctls}}, EDHOC {{I-D.ietf-lake-edhoc}}, OSCORE {{RFC8613}}, and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}.
 
 The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression. DTLS is analyzed with and without Connection ID {{RFC9146}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as ICV. {{handshake}} compares the overhead of key exchange, while {{record}} covers the overhead for protection of application data.
 
-Readers of this document also might be interested in the following documents: {{Illustrated-TLS12}}, {{Illustrated-TLS13}}, and {{Illustrated-DTLS13}} given an explanation of every byte in example TLS 1.2, TLS 1.3, and DTLS 1.3 connections. {{RFC9191}} looks at potential tools available for overcoming the deployment challenges induced by large certificates and long certificate chains and discusses solutions available to overcome these challenges. {{I-D.ietf-cose-cbor-encoded-cert}} gives examples of IoT and Web certificates as well as examples on how effective C509 an TLS certificate compression is at compressing example certificate and certificate chains.
+Readers of this document also might be interested in the following documents: {{Illustrated-TLS12}}, {{Illustrated-TLS13}}, and {{Illustrated-DTLS13}} gives an explanation of every byte in example TLS 1.2, TLS 1.3, and DTLS 1.3 connections. {{RFC9191}} looks at potential tools available for overcoming the deployment challenges induced by large certificates and long certificate chains and discusses solutions available to overcome these challenges. {{I-D.ietf-cose-cbor-encoded-cert}} gives examples of IoT and Web certificates as well as examples on how effective C509 an TLS certificate compression {{RFC8879}} is at compressing example certificate and certificate chains.
 
 # Overhead of Key Exchange Protocols {#handshake}
 
