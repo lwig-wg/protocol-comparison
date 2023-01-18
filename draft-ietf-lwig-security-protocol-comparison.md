@@ -56,6 +56,7 @@ informative:
   I-D.ietf-lake-edhoc:
   I-D.ietf-lake-traces:
   I-D.ietf-tls-ctls:
+  I-D.ietf-uta-tls13-iot-profile:
 
   E-impact:
     target: https://www.iab.org/activities/workshops/e-impact/
