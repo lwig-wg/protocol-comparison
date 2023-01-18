@@ -1687,8 +1687,8 @@ This document has no actions for IANA.
 {: numbered="no"}
 
 The authors want to thank
-{{{Ari Keränen}}},
 {{{Carsten Bormann}}},
+{{{Ari Keränen}}},
 {{{Stephan Koch}}},
 {{{Achim Kraus}}},
 {{{Göran Selander}}},
