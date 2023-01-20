@@ -150,17 +150,17 @@ The EDHOC overhead is dependent on the key identifiers included. The following o
 
 All the overhead are dependent on the tag length. The following overheads apply for tags of the same length.
 
-{{fig-compare1}} compares the message sizes of DTLS 1.3 {{RFC9147}} and EDHOC {{I-D.ietf-lake-edhoc}} handshakes with connection ID. EDHOC is typically sent over CoAP which would add 4 bytes to flight #1 and #2 and 5 bytes to flight #3 (4 byte CoAP header and 1 byte Connection ID).
+{{fig-compare1}} compares the message sizes of DTLS 1.3 {{RFC9147}} and EDHOC {{I-D.ietf-lake-edhoc}} handshakes with connection ID, CCM_8, P-256, and ECDSA. EDHOC is typically sent over CoAP which would add 4 bytes to flight #1 and #2 and 5 bytes to flight #3 (4 byte CoAP header and 1 byte Connection ID).
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 =====================================================================
  Flight                                   #1      #2      #3   Total
 ---------------------------------------------------------------------
- DTLS 1.3 - RPKs, ECDHE                  152     421     255     828
- DTLS 1.3 - Compressed RPKs, ECDHE       152     389     223     764
- DTLS 1.3 - Cached RPK, PRK, ECDHE       191     369     255     815
- DTLS 1.3 - Cached X.509, RPK, ECDHE     185     363     255     803
- DTLS 1.3 - PSK, ECDHE                   186     193      56     435
+ DTLS 1.3 - RPKs, ECDHE                  185     454     255     894
+ DTLS 1.3 - Compressed RPKs, ECDHE       185     422     223     830
+ DTLS 1.3 - Cached RPK, PRK, ECDHE       224     402     255     881
+ DTLS 1.3 - Cached X.509, RPK, ECDHE     218     396     255     869
+ DTLS 1.3 - PSK, ECDHE                   219     226      56     501
  DTLS 1.3 - PSK                          136     153      56     345
 ---------------------------------------------------------------------
  EDHOC - X.509s, Signature, x5t, ECDHE    37     115      90     242
@@ -171,7 +171,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare1 title="Comparison of message sizes in bytes with Connection ID" artwork-align="center"}
 
-{{fig-compare2}} compares of message sizes of DTLS 1.3 {{RFC9147}} and TLS 1.3 {{RFC8446}} handshakes without connection ID. DTLS is typically sent over 8 bytes UDP datagram headers while TLS i typically sent over 24 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally.
+{{fig-compare2}} compares of message sizes of DTLS 1.3 {{RFC9147}} and TLS 1.3 {{RFC8446}} handshakes without connection ID, CCM_8, P-256, and ECDSA. DTLS is typically sent over 8 bytes UDP datagram headers while TLS i typically sent over 24 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally.
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 =====================================================================
@@ -185,10 +185,29 @@ All the overhead are dependent on the tag length. The following overheads apply 
  TLS 1.3  - PSK, ECDHE                   163     157      50     370
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
- cTLS - X.509s by reference, ECDHE        71     143      78     292
+ cTLS - X.509s by reference, ECDHE        71     150      85     306
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes without Connection ID" artwork-align="center"}
+
+{{fig-compare3}} is the same as {{fig-compare2}} but with more efficiantly encoded key shares and signatures such as x25519 and ed25519 or {{I-D.mattsson-tls-compact-ecc}}.
+
+~~~~~~~~~~~~~~~~~~~~~~~ aasvg
+=====================================================================
+ Flight                                   #1      #2      #3   Total
+---------------------------------------------------------------------
+ DTLS 1.3 - RPKs, ECDHE                  146     407     247     800
+ DTLS 1.3 - PSK, ECDHE                   180     186      55     421
+ DTLS 1.3 - PSK                          130     146      55     331
+---------------------------------------------------------------------
+ TLS 1.3  - RPKs, ECDHE                  129     354     226     709
+ TLS 1.3  - PSK, ECDHE                   163     157      50     370
+ TLS 1.3  - PSK                          113     117      50     280
+---------------------------------------------------------------------
+ cTLS - X.509s by reference, ECDHE        71     143      78     292
+=====================================================================
+~~~~~~~~~~~~~~~~~~~~~~~
+{: #fig-compare3 title="Comparison of message sizes in bytes without Connection ID" artwork-align="center"}
 
 The cTLS example in Figure 2. is taken from {{I-D.ietf-tls-ctls}}. The details of the other message size calculations are given in the following sections.
 
