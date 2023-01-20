@@ -36,8 +36,8 @@ informative:
   RFC5246:
   RFC5480:
   RFC6347:
-  RFC7400:
   RFC7252:
+  RFC7400:
   RFC7924:
   RFC7925:
   RFC8323:
