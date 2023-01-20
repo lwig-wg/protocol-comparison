@@ -120,7 +120,7 @@ This document analyzes and compares the sizes of key exchange flights and the pe
 
 The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression. DTLS is analyzed with and without Connection ID {{RFC9146}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as ICV. {{handshake}} compares the overhead of key exchange, while {{record}} covers the overhead for protection of application data.
 
-Readers of this document also might be interested in the following documents: {{Illustrated-TLS12}}, {{Illustrated-TLS13}}, {{Illustrated-DTLS13}}, and {{I-D.ietf-lake-traces}} gives an explanation of every byte in example TLS 1.2, TLS 1.3, DTLS 1.3, and EDHOC instances. {{RFC9191}} looks at potential tools available for overcoming the deployment challenges induced by large certificates and long certificate chains and discusses solutions available to overcome these challenges. {{I-D.ietf-cose-cbor-encoded-cert}} gives examples of IoT and Web certificates as well as examples on how effective C509 an TLS certificate compression {{RFC8879}} is at compressing example certificate and certificate chains.
+Readers of this document also might be interested in the following documents: {{Illustrated-TLS12}}, {{Illustrated-TLS13}}, {{Illustrated-DTLS13}}, and {{I-D.ietf-lake-traces}} gives an explanation of every byte in example TLS 1.2, TLS 1.3, DTLS 1.3, and EDHOC instances. {{RFC9191}} looks at potential tools available for overcoming the deployment challenges induced by large certificates and long certificate chains and discusses solutions available to overcome these challenges. {{I-D.ietf-cose-cbor-encoded-cert}} gives examples of IoT and Web certificates as well as examples on how effective C509 an TLS certificate compression {{RFC8879}} is at compressing example certificate and certificate chains. {{I-D.mattsson-tls-compact-ecc}} proposes new optimized encodings for key exchange and signatures with P-256 in TLS 1.3.
 
 # Overhead of Key Exchange Protocols {#handshake}
 
@@ -128,19 +128,23 @@ This section analyzes and compares the sizes of key exchange flights for differe
 
 To enable a fair comparison between protocols, the following assumptions are made:
 
-* All the overhead calculations in this section use AES-CCM with a tag length of 8 bytes (e.g.,  AES_128_CCM_8 or AES-CCM-16-64-128).
-* A minimum number of algorithms and cipher suites is offered. The algorithm used/offered are Curve25519 or P-256, ECDSA with P-256, AES-CCM_8, and SHA-256.
+* The overhead calculations in this section use a tag length of 8 bytes (e.g., AES_128_CCM_8 or AES-CCM-16-64-128) or 16 bytes (e.g. AES-CCM, AES-GCM, or ChaCha20-Poly1305).
+* A minimum number of algorithms and cipher suites is offered. The algorithm used/offered are P-256 or Curve25519, ECDSA with P-256 and SHA-256, AES-CCM_8 or ChaCha20-Poly1305, and SHA-256.
 * The length of key identifiers are 1 byte.
 * The length of connection identifiers are 1 byte.
 * DTLS handshake message fragmentation is not considered.
-* Several DTLS handshake messages are sent in a single record.
+* As many (D)TLS handshake messages are sent in a single record.
 * Only mandatory (D)TLS extensions are included.
+
+The choices of algorithms are based on the the profiles in {{RFC7925}}, {{I-D.ietf-uta-tls13-iot-profile}}, and {{I-D.ietf-core-oscore-edhoc}}.
 
 {{summ-handshake}} gives a short summary of the message overhead based on different parameters and some assumptions. The following sections detail the assumptions and the calculations.
 
 ## Summary {#summ-handshake}
 
-The DTLS overhead is dependent on the parameter Connection ID. The following overheads apply for all Connection IDs of the same length, when Connection ID is used.
+The DTLS and cTLS overhead is dependent on the parameter Connection ID. The following overheads apply for all Connection IDs of the same length, when Connection ID is used.
+
+The TLS, DTLS, and cTLS overhead is dependent on the group used for key exchange and the signature algorithm. secp256r1 and ecdsa_secp256r1_sha256 have less optimized encoding than x25519, ed25519, and {{I-D.mattsson-tls-compact-ecc}}.
 
 The EDHOC overhead is dependent on the key identifiers included. The following overheads apply for Sender IDs of the same length.
 
@@ -152,10 +156,10 @@ All the overhead are dependent on the tag length. The following overheads apply 
 =====================================================================
  Flight                                   #1      #2      #3   Total
 ---------------------------------------------------------------------
- DTLS 1.3 - RPKs, ECDHE                  152     414     248     814
- DTLS 1.3 - Compressed RPKs, ECDHE       152     382     216     750
- DTLS 1.3 - Cached RPK, PRK, ECDHE       191     362     248     801
- DTLS 1.3 - Cached X.509, RPK, ECDHE     185     356     248     789
+ DTLS 1.3 - RPKs, ECDHE                  152     421     255     828
+ DTLS 1.3 - Compressed RPKs, ECDHE       152     389     223     764
+ DTLS 1.3 - Cached RPK, PRK, ECDHE       191     369     255     815
+ DTLS 1.3 - Cached X.509, RPK, ECDHE     185     363     255     803
  DTLS 1.3 - PSK, ECDHE                   186     193      56     435
  DTLS 1.3 - PSK                          136     153      56     345
 ---------------------------------------------------------------------
@@ -173,11 +177,11 @@ All the overhead are dependent on the tag length. The following overheads apply 
 =====================================================================
  Flight                                   #1      #2      #3   Total
 ---------------------------------------------------------------------
- DTLS 1.3 - RPKs, ECDHE                  146     407     247     800
+ DTLS 1.3 - RPKs, ECDHE                  146     414     254     814
  DTLS 1.3 - PSK, ECDHE                   180     186      55     421
  DTLS 1.3 - PSK                          130     146      55     331
 ---------------------------------------------------------------------
- TLS 1.3  - RPKs, ECDHE                  129     354     226     709
+ TLS 1.3  - RPKs, ECDHE                  129     361     233     723
  TLS 1.3  - PSK, ECDHE                   163     157      50     370
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
