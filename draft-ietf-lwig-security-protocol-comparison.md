@@ -192,6 +192,11 @@ All the overhead are dependent on the tag length. The following overheads apply 
 
 The cTLS example in Figure 2. is taken from {{I-D.ietf-tls-ctls}}. The details of the other message size calculations are given in the following sections.
 
+The numbers in {{fig-compare2}} and {{fig-compare2}} where calculated with 8 bytes tags which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}}, and {{I-D.ietf-core-oscore-edhoc}}. If 16 bytes tag are used, the numbers in the #2 and #3 columns increases with 8 and the numbers in the Total column increases with 16.
+
+cTLS example in Figure 2. is taken from {{I-D.ietf-tls-ctls}}. The details of the other message size calculations are given in the following sections.
+
+
 ## DTLS 1.3
 
 This section gives an estimate of the message sizes of DTLS 1.3 with different authentication methods. Note that the examples in this section are not test vectors, the cryptographic parts are just replaced with byte strings of the same length, while other fixed length fields are replace with arbitrary strings or omitted, in which case their length is indicated. Values that are not arbitrary are given in hexadecimal.
