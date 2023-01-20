@@ -345,8 +345,9 @@ HH 42 SS
   Handshake Header - Certificate Verify (12 bytes):
   0f LL LL LL SS SS 00 00 00 LL LL LL
 
-    Signature  (68 bytes):
-    ZZ ZZ 00 40 ....
+    Signature  (average 75 bytes):
+    04 03 LL LL //ecdsa_secp256r1_sha256
+    30 LL 02 LL ... 02 LL ... // DER
 
   Handshake Header - Finished (12 bytes):
   14 LL LL LL SS SS 00 00 00 LL LL LL
@@ -361,11 +362,11 @@ HH 42 SS
 Auth Tag (8 bytes):
 e0 8b 0e 45 5a 35 0a e5
 
-13 + 104 + 3 + 26 + 23 + 112 + 80 + 44 + 1 + 8 = 414 bytes
+13 + 104 + 3 + 26 + 23 + 112 + 87 + 44 + 1 + 8 = 421 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 RPK + ECDHE flight #2 gives 414 bytes of overhead.
-With a point compressed RPK the overhead is 414 - 32 = 382 bytes, see {{rpkformat}}.
+DTLS 1.3 RPK + ECDHE flight #2 gives 421 bytes of overhead.
+With a point compressed RPK the overhead is 421 - 32 = 389 bytes, see {{rpkformat}}.
 
 #### Flight \#3 {#dtls13f3rpk}
 
@@ -394,12 +395,9 @@ ZZ 43 SS
   Handshake Header - Certificate Verify (12 bytes):
   0f LL LL LL SS SS 00 00 00 LL LL LL
 
-    Signature  (68 bytes):
+    Signature  (average 75 bytes):
     04 03 LL LL //ecdsa_secp256r1_sha256
-    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
-    14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 00 01 02 03 04 05 06 07
-    08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b
-    1c 1d 1e 1f
+    30 LL 02 LL ... 02 LL ... // DER
 
   Handshake Header - Finished (12 bytes):
   14 LL LL LL SS SS 00 00 00 LL LL LL
@@ -414,11 +412,11 @@ ZZ 43 SS
 Auth Tag (8 bytes) // AES-CCM_8:
 00 01 02 03 04 05 06 07
 
-3 + 112 + 80 + 44 + 1 + 8 = 248 bytes
+3 + 112 + 87 + 44 + 1 + 8 = 255 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 RPK + ECDHE flight #3 gives 248 bytes of overhead.
-With a point compressed RPK the overhead is 248 - 32 = 216 bytes, see {{rpkformat}}.
+DTLS 1.3 RPK + ECDHE flight #3 gives 255 bytes of overhead.
+With a point compressed RPK the overhead is 255 - 32 = 223 bytes, see {{rpkformat}}.
 
 
 
