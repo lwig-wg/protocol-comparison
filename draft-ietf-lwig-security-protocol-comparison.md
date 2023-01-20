@@ -171,7 +171,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare1 title="Comparison of message sizes in bytes with Connection ID" artwork-align="center"}
 
-{{fig-compare2}} compares of message sizes of DTLS 1.3 {{RFC9147}} and TLS 1.3 {{RFC8446}} handshakes without connection ID.
+{{fig-compare2}} compares of message sizes of DTLS 1.3 {{RFC9147}} and TLS 1.3 {{RFC8446}} handshakes without connection ID. DTLS is typically sent over 8 bytes UDP datagram headers while TLS i typically sent over 24 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally.
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 =====================================================================
