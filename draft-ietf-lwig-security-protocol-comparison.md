@@ -45,6 +45,7 @@ informative:
   RFC8446:
   RFC8613:
   RFC8879:
+  RFC9006:
   RFC9146:
   RFC9147:
   RFC9175:
