@@ -134,7 +134,7 @@ To enable a fair comparison between protocols, the following assumptions are mad
 * The length of key identifiers are 1 byte.
 * The length of connection identifiers are 1 byte.
 * DTLS handshake message fragmentation is not considered.
-* As many (D)TLS handshake messages are sent in a single record.
+* As many (D)TLS handshake messages as possible are sent in a single record.
 * Only mandatory (D)TLS extensions are included.
 
 The choices of algorithms are based on the the profiles in {{RFC7925}}, {{I-D.ietf-uta-tls13-iot-profile}}, and {{I-D.ietf-core-oscore-edhoc}}.
@@ -178,15 +178,15 @@ All the overhead are dependent on the tag length. The following overheads apply 
 =====================================================================
  Flight                                   #1      #2      #3   Total
 ---------------------------------------------------------------------
- DTLS 1.3 - RPKs, ECDHE                  146     414     254     814
- DTLS 1.3 - PSK, ECDHE                   180     186      55     421
+ DTLS 1.3 - RPKs, ECDHE                  179     447     254     880
+ DTLS 1.3 - PSK, ECDHE                   213     219      55     487
  DTLS 1.3 - PSK                          130     146      55     331
 ---------------------------------------------------------------------
- TLS 1.3  - RPKs, ECDHE                  129     361     233     723
- TLS 1.3  - PSK, ECDHE                   163     157      50     370
+ TLS 1.3  - RPKs, ECDHE                  162     394     233     789
+ TLS 1.3  - PSK, ECDHE                   196     190      50     436
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
- cTLS - X.509s by reference, ECDHE        71     150      85     306
+ cTLS - X.509s by reference, ECDHE       104     183      85     372
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes without Connection ID" artwork-align="center"}
