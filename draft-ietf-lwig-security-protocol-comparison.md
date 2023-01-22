@@ -399,8 +399,10 @@ e0 8b 0e 45 5a 35 0a e5
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 DTLS 1.3 RPK + ECDHE flight #2 gives 454 bytes of overhead.
-With a point compressed RPK the overhead is 454 - 32 = 422 bytes, see {{rpkformat}}.
-With efficiantly encoded key share and signature such as x25519  and ed25519 or {{I-D.mattsson-tls-compact-ecc}} the overhead is 454 - 40 = 414 bytes.
+With a point compressed secp256r1 RPK the overhead is 454 - 32 = 422 bytes, see {{rpkformat}}.
+With an ed25519 RPK and signature the overhead is 454 - 33 - 7 = 414 bytes.
+With an efficiantly encoded key share such as x25519 or {{I-D.mattsson-tls-compact-ecc}} the overhead is 454 - 33 = 421 bytes.
+With an efficiantly encoded signature such {{I-D.mattsson-tls-compact-ecc}} the overhead is 454 - 7 = 447 bytes.
 
 #### Flight \#3 {#dtls13f3rpk}
 
@@ -450,10 +452,9 @@ Auth Tag (8 bytes) // AES-CCM_8:
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 DTLS 1.3 RPK + ECDHE flight #3 gives 255 bytes of overhead.
-With a point compressed RPK the overhead is 255 - 32 = 223 bytes, see {{rpkformat}}.
-
-
-
+With a point compressed secp256r1 RPK the overhead is 255 - 32 = 223 bytes, see {{rpkformat}}.
+With an ed25519 RPK and signature the overhead is 255 - 33 - 7 = 215 bytes.
+With an efficiantly encoded signature such as ed25519 or {{I-D.mattsson-tls-compact-ecc}} the overhead is 255 - 7 = 248 bytes.
 
 
 ### Message Sizes PSK + ECDHE
