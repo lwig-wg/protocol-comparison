@@ -1210,9 +1210,14 @@ Based on the example above it is relatively easy to calculate numbers also for E
 
 To do a fair comparison, one has to choose a specific deployment and look at the topology, the whole protocol stack, frame sizes (e.g., 51 or 128 bytes), how and where in the protocol stack fragmentation is done, and the expected packet loss. Note that the number of bytes in each frame that is available for the key exchange protocol may depend on the underlying protocol layers as well as on the number of hops in multi-hop networks. The packet loss may depend on how many other devices are transmitting at the same time, and may increase during network formation.  The total overhead will be larger due to mechanisms for fragmentation, retransmission, and packet ordering.  The overhead of fragmentation is roughly proportional to the number of fragments, while the expected overhead due to retransmission in noisy environments is a superlinear function of the flight sizes.
 
+
+
+
+
+
 # Overhead for Protection of Application Data {#record}
 
-To enable comparison, all the overhead calculations in this section use AES-CCM with a tag length of 8 bytes (e.g., AES_128_CCM_8 or AES-CCM-16-64), a plaintext of 6 bytes, and the sequence number ‘05’. This follows the example in {{RFC7400}}, Figure 16.
+To enable comparison, all the overhead calculations in this section use an 8 bytes ICV (e.g., AES_128_CCM_8 or AES-CCM-16-64-128) or 16 bytes (e.g. AES-CCM, AES-GCM, or ChaCha20-Poly1305), a plaintext of 6 bytes, and the sequence number ‘05’. This follows the example in {{RFC7400}}, Figure 16.
 
 Note that the compressed overhead calculations for DLTS 1.2, DTLS 1.3, TLS 1.2 and TLS 1.3 are dependent on the parameters epoch, sequence number, and length (where applicable), and all the overhead calculations are dependent on the parameter Connection ID when used. Note that the OSCORE overhead calculations are dependent on the CoAP option numbers, as well as the length of the OSCORE parameters Sender ID, ID Context, and Sequence Number (where applicable). cTLS uses the DTLS 1.3 record layer. The following calculations are only examples.
 
@@ -1247,7 +1252,7 @@ The OSCORE overhead is dependent on the included CoAP Option numbers as well as 
  Group OSCORE pairwise request     14         15         16
  Group OSCORE pairwise response    11         11         11
 ~~~~~~~~~~~
-{: #fig-overhead title="Overhead in bytes as a function of sequence number &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Connection/Sender ID = '')"}
+{: #fig-overhead title="Overhead (8 bytes ICV) in bytes as a function of sequence number (Connection/Sender ID = '')"}
 {: artwork-align="center"}
 
 ~~~~~~~~~~~ aasvg
@@ -1265,7 +1270,7 @@ The OSCORE overhead is dependent on the included CoAP Option numbers as well as 
  Group OSCORE pairwise request     14         15         16
  Group OSCORE pairwise response    11         13         14
 ~~~~~~~~~~~
-{: #fig-overhead2 title="Overhead in bytes as a function of Connection/Sender ID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Sequence Number = '05')"}
+{: #fig-overhead2 title="Overhead (8 bytes ICV) in bytes as a function of Connection/Sender ID (Sequence Number = '05')"}
 {: artwork-align="center"}
 
 ~~~~~~~~~~~ aasvg
@@ -1283,7 +1288,7 @@ The OSCORE overhead is dependent on the included CoAP Option numbers as well as 
  Group OSCORE pairwise request      7
  Group OSCORE pairwise response     4
 ~~~~~~~~~~~
-{: #fig-overhead3 title="Overhead (excluding ICV) in bytes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Connection/Sender ID = '', Sequence Number = '05')"}
+{: #fig-overhead3 title="Overhead (excluding ICV) in bytes (Connection/Sender ID = '', Sequence Number = '05')"}
 {: artwork-align="center"}
 
 The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{{{fig-overhead3}}}} does not consider the different Token processing requirements for clients {{RFC9175}} required for secure operation as motivated by {{I-D.ietf-core-attacks-on-coap}}. As reuse of Tokens is easier in OSCORE than DTLS, OSCORE might have slightly lower overhead than DTLS 1.3 for long connection even if DTLS 1.3 has slightly lower overhead than OSCORE for short connections.
