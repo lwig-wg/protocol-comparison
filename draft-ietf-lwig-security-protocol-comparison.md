@@ -255,35 +255,36 @@ Record Header - DTLSPlaintext (13 bytes):
     Extensions Length (2 bytes):
     LL LL
 
-      Extension - Supported Groups (x25519) (8 bytes):
-      00 0a 00 04 00 02 00 1d
+      Extension - Supported Groups (secp256r1) (8 bytes):
+      00 0a 00 04 00 02 00 17
 
       Extension - Signature Algorithms (ecdsa_secp256r1_sha256)
       (8 bytes):
       00 0d 00 04 00 02 08 07
 
-      Extension - Key Share (42 bytes):
-      00 33 00 26 00 24 00 1d 00 20
-      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
-      14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+      Extension - Key Share (75 bytes):
+      00 33 00 27 00 25 00 1d 00 41 04 00 01 02 03 04 05 06 07 08
+      09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c
+      1d 1e 1f 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10
+      11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
       Extension - Supported Versions (1.3) (7 bytes):
       00 2b 00 03 02 03 04
 
       Extension - Client Certificate Type (Raw Public Key) (6 bytes):
-      00 13 00 01 01 02
+      00 13 00 02 01 02
 
       Extension - Server Certificate Type (Raw Public Key) (6 bytes):
-      00 14 00 01 01 02
+      00 14 00 02 01 02
 
       Extension - Connection Identifier (43) (6 bytes):
-      XX XX 00 02 01 42
+      00 36 00 02 01 42
 
-13 + 12 + 2 + 32 + 1 + 1 + 4 + 2 + 2 + 8 + 8 + 42 + 7 + 6 + 6 + 6
-= 152 bytes
+13 + 12 + 2 + 32 + 1 + 1 + 4 + 2 + 2 + 8 + 8 + 75 + 7 + 6 + 6 + 6
+= 185 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 RPK + ECDHE flight #1 gives 152 bytes of overhead.
+DTLS 1.3 RPK + ECDHE flight #1 gives 185 bytes of overhead.
 
 #### Flight \#2 {#dtls13f2rpk}
 
