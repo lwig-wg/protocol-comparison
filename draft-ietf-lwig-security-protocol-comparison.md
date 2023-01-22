@@ -1232,6 +1232,7 @@ The compression overhead (GHC) is dependent on the parameters epoch, sequence nu
 The OSCORE overhead is dependent on the included CoAP Option numbers as well as the length of the OSCORE parameters Sender ID and sequence number. The following overheads apply for all sequence numbers and Sender IDs with the same length.
 
 ~~~~~~~~~~~ aasvg
+=============================================================
  Sequence Number                  '05'      '1005'    '100005'
 ---------------------------------------------------------------
  DTLS 1.2                          29         29         29
@@ -1251,11 +1252,13 @@ The OSCORE overhead is dependent on the included CoAP Option numbers as well as 
 ---------------------------------------------------------------
  Group OSCORE pairwise request     14         15         16
  Group OSCORE pairwise response    11         11         11
+=============================================================
 ~~~~~~~~~~~
 {: #fig-overhead title="Overhead (8 bytes ICV) in bytes as a function of sequence number (Connection/Sender ID = '')"}
 {: artwork-align="center"}
 
 ~~~~~~~~~~~ aasvg
+=============================================================
  Connection/Sender ID              ''        '42'      '4002'
 --------------------------------------------------------------
  DTLS 1.2                          29         30         31
@@ -1269,11 +1272,13 @@ The OSCORE overhead is dependent on the included CoAP Option numbers as well as 
 --------------------------------------------------------------
  Group OSCORE pairwise request     14         15         16
  Group OSCORE pairwise response    11         13         14
+=============================================================
 ~~~~~~~~~~~
 {: #fig-overhead2 title="Overhead (8 bytes ICV) in bytes as a function of Connection/Sender ID (Sequence Number = '05')"}
 {: artwork-align="center"}
 
 ~~~~~~~~~~~ aasvg
+=============================================================
  Protocol                       Overhead      Overhead (GHC)
 -------------------------------------------------------------
  DTLS 1.2                          21               8
@@ -1287,6 +1292,7 @@ The OSCORE overhead is dependent on the included CoAP Option numbers as well as 
 -------------------------------------------------------------
  Group OSCORE pairwise request      7
  Group OSCORE pairwise response     4
+=============================================================
 ~~~~~~~~~~~
 {: #fig-overhead3 title="Overhead (excluding ICV) in bytes (Connection/Sender ID = '', Sequence Number = '05')"}
 {: artwork-align="center"}
