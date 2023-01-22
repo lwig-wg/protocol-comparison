@@ -263,10 +263,11 @@ Record Header - DTLSPlaintext (13 bytes):
       00 0d 00 04 00 02 08 07
 
       Extension - Key Share (75 bytes):
-      00 33 00 27 00 25 00 1d 00 41 04 00 01 02 03 04 05 06 07 08
-      09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c
-      1d 1e 1f 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10
-      11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+      00 33 00 27 00 25 00 1d 00 41
+      04 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12
+      13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 00 01 02 03 04 05 06
+      07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a
+      1b 1c 1d 1e 1f
 
       Extension - Supported Versions (1.3) (7 bytes):
       00 2b 00 03 02 03 04
@@ -277,7 +278,7 @@ Record Header - DTLSPlaintext (13 bytes):
       Extension - Server Certificate Type (Raw Public Key) (6 bytes):
       00 14 00 02 01 02
 
-      Extension - Connection Identifier (43) (6 bytes):
+      Extension - Connection Identifier (42) (6 bytes):
       00 36 00 02 01 42
 
 13 + 12 + 2 + 32 + 1 + 1 + 4 + 2 + 2 + 8 + 8 + 75 + 7 + 6 + 6 + 6
@@ -285,6 +286,7 @@ Record Header - DTLSPlaintext (13 bytes):
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 DTLS 1.3 RPK + ECDHE flight #1 gives 185 bytes of overhead.
+With efficiantly encoded key share such as x25519 or {{I-D.mattsson-tls-compact-ecc}} the overhead is 185 - 33 = 152 bytes.
 
 #### Flight \#2 {#dtls13f2rpk}
 
@@ -314,16 +316,18 @@ Record Header - DTLSPlaintext (13 bytes):
     Extensions Length (2 bytes):
     LL LL
 
-      Extension - Key Share (40 bytes):
-      00 33 00 24 00 1d 00 20
-      00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
-      14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
+      Extension - Key Share (73 bytes):
+      00 33 00 45 00 1d 00 41
+      04 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12
+      13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 00 01 02 03 04 05 06
+      07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a
+      1b 1c 1d 1e 1f
 
       Extension - Supported Versions (1.3) (6 bytes):
       00 2b 00 02 03 04
 
       Extension - Connection Identifier (43) (6 bytes):
-      XX XX 00 02 01 43
+      00 36 00 02 01 43
 
 Record Header - DTLSCiphertext (3 bytes):
 HH 42 SS
@@ -391,11 +395,12 @@ HH 42 SS
 Auth Tag (8 bytes):
 e0 8b 0e 45 5a 35 0a e5
 
-13 + 104 + 3 + 26 + 23 + 112 + 87 + 44 + 1 + 8 = 421 bytes
+13 + 137 + 3 + 26 + 23 + 112 + 87 + 44 + 1 + 8 = 454 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 RPK + ECDHE flight #2 gives 421 bytes of overhead.
-With a point compressed RPK the overhead is 421 - 32 = 389 bytes, see {{rpkformat}}.
+DTLS 1.3 RPK + ECDHE flight #2 gives 454 bytes of overhead.
+With a point compressed RPK the overhead is 454 - 32 = 422 bytes, see {{rpkformat}}.
+With efficiantly encoded key share and signature such as x25519  and ed25519 or {{I-D.mattsson-tls-compact-ecc}} the overhead is 454 - 40 = 414 bytes.
 
 #### Flight \#3 {#dtls13f3rpk}
 
