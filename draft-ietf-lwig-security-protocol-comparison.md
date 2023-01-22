@@ -128,7 +128,7 @@ This section analyzes and compares the sizes of key exchange flights for differe
 
 To enable a fair comparison between protocols, the following assumptions are made:
 
-* The overhead calculations in this section use a tag length of 8 bytes (e.g., AES_128_CCM_8 or AES-CCM-16-64-128) or 16 bytes (e.g. AES-CCM, AES-GCM, or ChaCha20-Poly1305).
+* The overhead calculations in this section use an 8 bytes ICV (e.g., AES_128_CCM_8 or AES-CCM-16-64-128) or 16 bytes (e.g. AES-CCM, AES-GCM, or ChaCha20-Poly1305).
 * A minimum number of algorithms and cipher suites is offered. The algorithm used/offered are P-256 or Curve25519, ECDSA with P-256 and SHA-256, AES-CCM_8 or ChaCha20-Poly1305, and SHA-256.
 * The length of key identifiers are 1 byte.
 * The length of connection identifiers are 1 byte.
