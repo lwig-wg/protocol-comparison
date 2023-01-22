@@ -1291,7 +1291,12 @@ The OSCORE overhead is dependent on the included CoAP Option numbers as well as 
 {: #fig-overhead3 title="Overhead (excluding ICV) in bytes (Connection/Sender ID = '', Sequence Number = '05')"}
 {: artwork-align="center"}
 
-The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{{{fig-overhead3}}}} does not consider the different Token processing requirements for clients {{RFC9175}} required for secure operation as motivated by {{I-D.ietf-core-attacks-on-coap}}. As reuse of Tokens is easier in OSCORE than DTLS, OSCORE might have slightly lower overhead than DTLS 1.3 for long connection even if DTLS 1.3 has slightly lower overhead than OSCORE for short connections.
+The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{{{fig-overhead3}}}} do not consider the different Token processing requirements for clients {{RFC9175}} required for secure operation as motivated by {{I-D.ietf-core-attacks-on-coap}}. As reuse of Tokens is easier in OSCORE than DTLS, OSCORE might have slightly lower overhead than DTLS 1.3 for long connection even if DTLS 1.3 has slightly lower overhead than OSCORE for short connections.
+
+The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{{{fig-overhead3}}}} do not consider underlying layers. DTLS is typically sent over 8 bytes UDP datagram headers while TLS i typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. The total overhead for DTLS 1.3 over UDP is significantly less than TLS 1.3 over TCP.
+
+The numbers in {{fig-overhead}} and {{fig-overhead2}} where calculated with 8 bytes ICV which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}}, and {{I-D.ietf-core-oscore-edhoc}}. If 16 bytes tag are used, all numbers increases with 8. 
+
 
 ## DTLS 1.2
 
