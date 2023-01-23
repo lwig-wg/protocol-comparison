@@ -262,7 +262,7 @@ Record Header - DTLSPlaintext (13 bytes):
       (8 bytes):
       00 0d 00 04 00 02 08 07
 
-      Extension - Key Share (75 bytes):
+      Extension - Key Share (secp256r1) (75 bytes):
       00 33 00 27 00 25 00 1d 00 41
       04 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12
       13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 00 01 02 03 04 05 06
@@ -316,7 +316,7 @@ Record Header - DTLSPlaintext (13 bytes):
     Extensions Length (2 bytes):
     LL LL
 
-      Extension - Key Share (73 bytes):
+      Extension - Key Share (secp256r1) (73 bytes):
       00 33 00 45 00 1d 00 41
       04 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12
       13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 00 01 02 03 04 05 06
@@ -378,9 +378,9 @@ HH 42 SS
   Handshake Header - Certificate Verify (12 bytes):
   0f LL LL LL SS SS 00 00 00 LL LL LL
 
-    Signature  (average 75 bytes):
-    04 03 LL LL //ecdsa_secp256r1_sha256
-    30 LL 02 LL ... 02 LL ... // DER
+    Signature (ecdsa_secp256r1_sha256) (average 75 bytes):
+    04 03 LL LL
+    30 LL 02 LL ... 02 LL ... // DER encoded signature
 
   Handshake Header - Finished (12 bytes):
   14 LL LL LL SS SS 00 00 00 LL LL LL
@@ -431,9 +431,9 @@ ZZ 43 SS
   Handshake Header - Certificate Verify (12 bytes):
   0f LL LL LL SS SS 00 00 00 LL LL LL
 
-    Signature  (average 75 bytes):
-    04 03 LL LL //ecdsa_secp256r1_sha256
-    30 LL 02 LL ... 02 LL ... // DER
+    Signature (ecdsa_secp256r1_sha256) (average 75 bytes):
+    04 03 LL LL
+    30 LL 02 LL ... 02 LL ... // // DER encoded signature
 
   Handshake Header - Finished (12 bytes):
   14 LL LL LL SS SS 00 00 00 LL LL LL
