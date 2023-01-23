@@ -715,11 +715,12 @@ DTLS 1.3 flight #3:   -1 byte
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 
+
 ### Raw Public Keys {#rpkformat}
 
-This sections illustrates the format of P-256 (secp256r1) SubjectPublicKeyInfo {{RFC5480}} with and without point compression. Point compression in SubjectPublicKeyInfo is standardized in {{RFC5480}} and is therefore theoretically possible to use in PRKs and X.509 certificates used in (D)TLS but does not seems to be supported by (D)TLS implementations.
+This sections illustrates the format of P-256 (secp256r1) SubjectPublicKeyInfo {{RFC5480}} with and without point compression as well as an ed25519 SubjectPublicKeyInfo. Point compression in SubjectPublicKeyInfo is standardized in {{RFC5480}} and is therefore theoretically possible to use in PRKs and X.509 certificates used in (D)TLS but does not seems to be supported by IoT (D)TLS implementations.
 
-#### SubjectPublicKeyInfo Without Point Compression
+#### secp256r1 SubjectPublicKeyInfo Without Point Compression
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 0x30 // Sequence
@@ -741,7 +742,7 @@ This sections illustrates the format of P-256 (secp256r1) SubjectPublicKeyInfo {
 Total of 91 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-#### SubjectPublicKeyInfo With Point Compression
+#### secp256r1 SubjectPublicKeyInfo With Point Compression
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 0x30 // Sequence
@@ -763,9 +764,24 @@ Total of 91 bytes
 Total of 59 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
+#### ed25519 SubjectPublicKeyInfo
 
+~~~~~~~~~~~~~~~~~~~~~~~
+0x30 // Sequence
+0x2A // Size 42
 
+0x30 // Sequence
+0x13 // Size 5
+0x06 0x03 0x2B 0x65 0x70
+     // OID 1.3.101.112 (ed25519)
 
+0x03 // Bit string
+0x21 // Size 33
+0x00 // Unused bits 0
+...... 32 bytes 
+
+Total of 44 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
