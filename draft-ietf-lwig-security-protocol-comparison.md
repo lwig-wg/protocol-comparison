@@ -129,7 +129,7 @@ This section analyzes and compares the sizes of key exchange flights for differe
 To enable a fair comparison between protocols, the following assumptions are made:
 
 * The overhead calculations in this section use an 8 bytes ICV (e.g., AES_128_CCM_8 or AES-CCM-16-64-128) or 16 bytes (e.g. AES-CCM, AES-GCM, or ChaCha20-Poly1305).
-* A minimum number of algorithms and cipher suites is offered. The algorithm used/offered are P-256 or Curve25519, ECDSA with P-256 and SHA-256, AES-CCM_8 or ChaCha20-Poly1305, and SHA-256.
+* A minimum number of algorithms and cipher suites is offered. The algorithm used/offered are P-256 or Curve25519, ECDSA with P-256 and SHA-256 or Ed25519, AES-CCM_8 or ChaCha20-Poly1305, and SHA-256.
 * The length of key identifiers are 1 byte.
 * The length of connection identifiers are 1 byte.
 * DTLS handshake message fragmentation is not considered.
@@ -190,7 +190,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes without Connection ID" artwork-align="center"}
 
-{{fig-compare3}} is the same as {{fig-compare2}} but with more efficiantly encoded key shares and signatures such as x25519 and ed25519. {{I-D.mattsson-tls-compact-ecc}} with point compressed RPKs would add additional byte to #2 and #3 in the rows with RPKs.
+{{fig-compare3}} is the same as {{fig-compare2}} but with more efficiantly encoded key shares and signatures such as x25519 and ed25519. {{I-D.mattsson-tls-compact-ecc}} with point compressed RPKs would add additional one additional byte to #2 and #3 in the rows with RPKs.
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 =====================================================================
@@ -260,7 +260,7 @@ Record Header - DTLSPlaintext (13 bytes):
 
       Extension - Signature Algorithms (ecdsa_secp256r1_sha256)
       (8 bytes):
-      00 0d 00 04 00 02 08 07
+      00 0d 00 04 00 02 04 03
 
       Extension - Key Share (secp256r1) (75 bytes):
       00 33 00 27 00 25 00 1d 00 41
@@ -806,11 +806,11 @@ Record Header - TLSPlaintext (5 bytes):
       Extension - Supported Groups (x25519) (8 bytes):
       00 0a 00 04 00 02 00 1d
 
-      Extension - Signature Algorithms (ecdsa_secp256r1_sha256)
+      Extension - Signature Algorithms (ed25519)
       (8 bytes):
       00 0d 00 04 00 02 08 07
 
-      Extension - Key Share (42 bytes):
+      Extension - Key Share (x25519) (42 bytes):
       00 33 00 26 00 24 00 1d 00 20
       00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
       14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
@@ -857,7 +857,7 @@ Record Header - TLSPlaintext (5 bytes):
     Extensions Length (2 bytes):
     LL LL
 
-      Extension - Key Share (40 bytes):
+      Extension - Key Share (x25519) (40 bytes):
       00 33 00 24 00 1d 00 20
       00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
       14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
@@ -889,7 +889,7 @@ Record Header - TLSCiphertext (5 bytes):
     Extensions Length (2 bytes):
     LL LL
 
-      Extension - Signature Algorithms (ecdsa_secp256r1_sha256)
+      Extension - Signature Algorithms (ed25519)
       (8 bytes):
       00 0d 00 04 00 02 08 07
 
@@ -914,8 +914,10 @@ Record Header - TLSCiphertext (5 bytes):
   Handshake Header - Certificate Verify (4 bytes):
   0f LL LL LL
 
-    Signature  (68 bytes):
-    ZZ ZZ 00 40 ....
+    Signature (ed25519) (68 bytes):
+    08 07 LL LL
+    00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
+    14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
   Handshake Header - Finished (4 bytes):
   14 LL LL LL
@@ -965,12 +967,10 @@ Record Header - TLSCiphertext (5 bytes):
   Handshake Header - Certificate Verify (4 bytes):
   0f LL LL LL
 
-    Signature  (68 bytes):
-    04 03 LL LL //ecdsa_secp256r1_sha256
+    Signature (ed25519) (68 bytes):
+    08 07 LL LL
     00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13
-    14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 00 01 02 03 04 05 06 07
-    08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b
-    1c 1d 1e 1f
+    14 15 16 17 18 19 1a 1b 1c 1d 1e 1f
 
   Handshake Header - Finished (4 bytes):
   14 LL LL LL
