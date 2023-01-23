@@ -490,10 +490,10 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-152 + 6 + 48 - 8 - 6 - 6 = 186 bytes
+185 + 6 + 48 - 8 - 6 - 6 = 219 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 PSK + ECDHE flight #1 gives 186 bytes of overhead.
+DTLS 1.3 PSK + ECDHE flight #1 gives 219 bytes of overhead.
 
 #### Flight #2 {#dtls13f2pskecdhe}
 
@@ -511,7 +511,7 @@ The following is removed:
 ~~~~~~~~~~~~~~~~~~~~~~~
 - Handshake Message Certificate (112 bytes)
 
-- Handshake Message CertificateVerify (80 bytes)
+- Handshake Message CertificateVerify (87 bytes)
 
 - Handshake Message CertificateRequest (23 bytes)
 
@@ -523,10 +523,10 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-414 + 6 - 112 - 80 - 23 - 6 - 6 = 193 bytes
+454 + 6 - 112 - 87 - 23 - 6 - 6 = 226 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-DTLS 1.3 PSK + ECDHE flight #2 gives 193 bytes of overhead.
+DTLS 1.3 PSK + ECDHE flight #2 gives 226 bytes of overhead.
 
 #### Flight \#3 {#dtls13f3pskecdhe}
 
@@ -537,13 +537,13 @@ The following is removed:
 ~~~~~~~~~~~~~~~~~~~~~~~
 - Handshake Message Certificate (112 bytes)
 
-- Handshake Message Certificate Verify (80 bytes)
+- Handshake Message Certificate Verify (87 bytes)
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-248 - 112 - 80 = 56 bytes
+255 - 112 - 87 = 56 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 DTLS 1.3 PSK + ECDHE flight #3 gives 56 bytes of overhead.
@@ -561,13 +561,13 @@ The following is removed:
 ~~~~~~~~~~~~~~~~~~~~~~~
 - Extension - Supported Groups (x25519) (8 bytes)
 
-- Extension - Key Share (42 bytes)
+- Extension - Key Share (75 bytes)
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-186 - 8 - 42 = 136 bytes
+219 - 8 - 75 = 136 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 DTLS 1.3 PSK flight #1 gives 136 bytes of overhead.
@@ -579,13 +579,13 @@ The differences in overhead compared to {{dtls13f2pskecdhe}} are:
 The following is removed:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-- Extension - Key Share (40 bytes)
+- Extension - Key Share (73 bytes)
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-193 - 40 = 153 bytes
+226 - 73 = 153 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 DTLS 1.3 PSK flight #2 gives 153 bytes of overhead.
