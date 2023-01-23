@@ -150,7 +150,7 @@ The EDHOC overhead is dependent on the key identifiers included. The following o
 
 All the overhead are dependent on the tag length. The following overheads apply for tags of the same length.
 
-{{fig-compare1}} compares the message sizes of DTLS 1.3 {{RFC9147}}{{I-D.ietf-uta-tls13-iot-profile}} and EDHOC {{I-D.ietf-lake-edhoc}} handshakes with connection ID and the mandatory to implement algorithms CCM_8, P-256, and ECDSA. EDHOC is typically sent over CoAP which would add 4 bytes to flight #1 and #2 and 5 bytes to flight #3 (4 byte CoAP header and 1 byte Connection ID).
+{{fig-compare1}} compares the message sizes of DTLS 1.3 {{RFC9147}}{{I-D.ietf-uta-tls13-iot-profile}} and EDHOC {{I-D.ietf-lake-edhoc}} handshakes with connection ID and the mandatory to implement algorithms CCM_8, P-256, and ECDSA. EDHOC is typically sent over CoAP which would add 4 bytes to flight #1 and #2 and 5 or 20 bytes to flight #3 depending on if OSCORE is used {{I-D.ietf-core-oscore-edhoc}}.
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 =====================================================================
@@ -190,17 +190,17 @@ All the overhead are dependent on the tag length. The following overheads apply 
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes without Connection ID" artwork-align="center"}
 
-{{fig-compare3}} is the same as {{fig-compare2}} but with more efficiantly encoded key shares and signatures such as x25519 and ed25519 or {{I-D.mattsson-tls-compact-ecc}}.
+{{fig-compare3}} is the same as {{fig-compare2}} but with more efficiantly encoded key shares and signatures such as x25519 and ed25519. {{I-D.mattsson-tls-compact-ecc}} with point compressed RPKs would add additional byte to #2 and #3 in the rows with RPKs.
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 =====================================================================
  Flight                                   #1      #2      #3   Total
 ---------------------------------------------------------------------
- DTLS 1.3 - RPKs, ECDHE                  146     407     247     800
+ DTLS 1.3 - RPKs, ECDHE                  146     374     214     734
  DTLS 1.3 - PSK, ECDHE                   180     186      55     421
  DTLS 1.3 - PSK                          130     146      55     331
 ---------------------------------------------------------------------
- TLS 1.3  - RPKs, ECDHE                  129     354     226     709
+ TLS 1.3  - RPKs, ECDHE                  129     321     193     676
  TLS 1.3  - PSK, ECDHE                   163     157      50     370
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
