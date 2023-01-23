@@ -164,9 +164,9 @@ All the overhead are dependent on the tag length. The following overheads apply 
  DTLS 1.3 - PSK                          136     153      56     345
 ---------------------------------------------------------------------
  EDHOC - X.509s, Signature, x5t, ECDHE    37     115      90     242
- EDHOC - X.509s, Signature, kid, ECDHE    37     102      77     216
- EDHOC - RPKs, Static DH, x5t, ECDHE      37      58      33     128
- EDHOC - RPKs, Static DH, kid, ECDHE      37      45      19     101
+ EDHOC - RPKs,   Signature, kid, ECDHE    37     102      77     216
+ EDHOC - X.509s, Static DH, x5t, ECDHE    37      58      33     128
+ EDHOC - RPKs,   Static DH, kid, ECDHE    37      45      19     101
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare1 title="Comparison of message sizes in bytes with Connection ID" artwork-align="center"}
