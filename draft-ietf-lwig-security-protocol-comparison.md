@@ -190,7 +190,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes without Connection ID" artwork-align="center"}
 
-{{fig-compare3}} is the same as {{fig-compare2}} but with more efficiantly encoded key shares and signatures such as x25519 and ed25519. {{I-D.mattsson-tls-compact-ecc}} with point compressed RPKs would add additional one additional byte to #2 and #3 in the rows with RPKs.
+{{fig-compare3}} is the same as {{fig-compare2}} but with more efficiantly encoded key shares and signatures such as x25519 and ed25519. {{I-D.mattsson-tls-compact-ecc}} with point compressed secp256r1 RPKs would add 15 bytes to #2 and #3 in the rows with RPKs.
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 =====================================================================
