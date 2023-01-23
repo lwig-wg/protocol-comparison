@@ -621,7 +621,7 @@ For the flight #1, the following is added:
 Giving a total of:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-152 + 39 = 191 bytes
+185 + 39 = 224 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 In the case the cached certificate is X.509 the following is removed:
@@ -633,7 +633,7 @@ In the case the cached certificate is X.509 the following is removed:
 Giving a total of:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-191 - 6 = 185 bytes
+224 - 6 = 218 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 #### Flight \#2
@@ -654,7 +654,7 @@ And the following is reduced:
 Giving a total of:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-414 + 7 - 59 = 362 bytes
+454 + 7 - 59 = 402 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 In the case the cached certificate is X.509 the following is removed:
@@ -666,7 +666,7 @@ In the case the cached certificate is X.509 the following is removed:
 Giving a total of:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-362 - 6 = 356 bytes
+402 - 6 = 396 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 
