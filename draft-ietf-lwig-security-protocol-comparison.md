@@ -129,7 +129,7 @@ This section analyzes and compares the sizes of key exchange flights for differe
 To enable a fair comparison between protocols, the following assumptions are made:
 
 * The overhead calculations in this section use an 8 bytes ICV (e.g., AES_128_CCM_8 or AES-CCM-16-64-128) or 16 bytes (e.g. AES-CCM, AES-GCM, or ChaCha20-Poly1305).
-* A minimum number of algorithms and cipher suites is offered. The algorithm used/offered are P-256 or Curve25519, ECDSA with P-256 and SHA-256 or Ed25519, AES-CCM_8 or ChaCha20-Poly1305, and SHA-256.
+* A minimum number of algorithms and cipher suites is offered. The algorithm used/offered are P-256 or Curve25519, ECDSA with P-256 and SHA-256 or Ed25519, AES-CCM_8, and SHA-256.
 * The length of key identifiers are 1 byte.
 * The length of connection identifiers are 1 byte.
 * DTLS handshake message fragmentation is not considered.
@@ -369,8 +369,8 @@ HH 42 SS
     Certificate Length (3 bytes):
     LL LL LL
 
-    Certificate (91 bytes): \\ See Section 2.2.7.
-    30 59 30 13 ... // DER encoded RPK
+    Certificate (Uncompressed secp256r1 RPK) (91 bytes):
+    30 59 30 13 ... // DER encoded RPK, See Section 2.2.7.
 
     Certificate Extensions (2 bytes):
     00 00
@@ -423,8 +423,8 @@ ZZ 43 SS
     Certificate Length (3 bytes):
     LL LL LL
 
-    Certificate (91 bytes): \\ See Section 2.2.7.
-    30 59 30 13 ... // DER encoded RPK
+    Certificate (Uncompressed secp256r1 RPK) (91 bytes):
+    30 59 30 13 ... // DER encoded RPK, See Section 2.2.7.
 
     Certificate Extensions (2 bytes):
     00 00
@@ -771,7 +771,7 @@ Total of 59 bytes
 0x2A // Size 42
 
 0x30 // Sequence
-0x13 // Size 5
+0x05 // Size 5
 0x06 0x03 0x2B 0x65 0x70
      // OID 1.3.101.112 (ed25519)
 
@@ -921,9 +921,9 @@ Record Header - TLSCiphertext (5 bytes):
     Certificate Length (3 bytes):
     LL LL LL
 
-    Certificate (91 bytes): \\ 91 byte RPK see Section 2.2.7.
-    ....
-
+    Certificate (ed25519 RPK) (44 bytes):
+    30 2A 30 05 ... // DER encoded RPK, see Section 2.2.7.     
+     
     Certificate Extensions (2 bytes):
     00 00
 
@@ -974,8 +974,8 @@ Record Header - TLSCiphertext (5 bytes):
     Certificate Length (3 bytes):
     LL LL LL
 
-    Certificate (91 bytes): \\ 91 byte RPK see Section 2.2.7.
-    ....
+    Certificate (ed25519 RPK) (44 bytes):
+    30 2A 30 05 ... // DER encoded RPK, see Section 2.2.7.     
 
     Certificate Extensions (2 bytes):
     00 00
