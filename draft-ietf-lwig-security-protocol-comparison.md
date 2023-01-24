@@ -204,7 +204,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
  TLS 1.3  - PSK, ECDHE                   163     157      50     370
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
- cTLS - X.509s by reference, ECDHE        71     143      78     292
+ cTLS - X.509s by reference, ECDHE        71     144      78     293
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare3 title="Comparison of message sizes in bytes with CCM_8, Curve25519, and Ed25519 and without Connection ID" artwork-align="center"}
