@@ -469,7 +469,7 @@ The following is added:
 + Extension - PSK Key Exchange Modes (6 bytes):
   00 2d 00 02 01 01
 
-+ Extension - Pre Shared Key (48 bytes):
++ Extension - Pre-Shared Key (48 bytes):
   00 29 00 2F
   00 0a 00 01 ID 00 00 00 00
   00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10
@@ -501,7 +501,7 @@ The differences in overhead compared to {{dtls13f2rpk}} are:
 The following is added:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-+ Extension - Pre Shared Key (6 bytes)
++ Extension - Pre-Shared Key (6 bytes)
   00 29 00 02 00 00
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1022,7 +1022,7 @@ The following is added:
 + Extension - PSK Key Exchange Modes (6 bytes):
   00 2d 00 02 01 01
 
-+ Extension - Pre Shared Key (48 bytes):
++ Extension - Pre-Shared Key (48 bytes):
   00 29 00 2F
   00 0a 00 01 ID 00 00 00 00
   00 21 20 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10
@@ -1054,7 +1054,7 @@ The differences in overhead compared to {{tls13f2rpk}} are:
 The following is added:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-+ Extension - Pre Shared Key (6 bytes)
++ Extension - Pre-Shared Key (6 bytes)
   00 29 00 02 00 00
 ~~~~~~~~~~~~~~~~~~~~~~~
 
