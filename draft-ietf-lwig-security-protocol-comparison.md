@@ -220,7 +220,7 @@ This section gives an estimate of the message sizes of DTLS 1.3 with different a
 
 ### Message Sizes RPK + ECDHE {#size-dtls13rpk}
 
-In this section, a Connection ID of 1 byte is used.
+In this section, CCM_8, P-256, and ECDSA and a Connection ID of 1 byte are used.
 
 #### Flight \#1 {#dtls13f1rpk}
 
@@ -788,6 +788,8 @@ Total of 44 bytes
 In this section, the message sizes are calculated for TLS 1.3. The major changes compared to DTLS 1.3 are a different record header, the handshake headers is smaller, and that Connection ID is not supported.  Recently, additional work has taken shape with the goal to further reduce overhead for TLS 1.3 (see {{I-D.ietf-tls-ctls}}).
 
 ### Message Sizes RPK + ECDHE
+
+In this section, CCM_8, x25519, and ed25519 are used.
 
 #### Flight \#1 {#tls13f1rpk}
 
