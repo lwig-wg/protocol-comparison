@@ -150,7 +150,7 @@ The EDHOC overhead is dependent on the key identifiers included. The following o
 
 All the overhead are dependent on the tag length. The following overheads apply for tags of the same length.
 
-{{fig-compare1}} compares the message sizes of DTLS 1.3 {{RFC9147}}{{I-D.ietf-uta-tls13-iot-profile}} and EDHOC {{I-D.ietf-lake-edhoc}} handshakes with connection ID and the mandatory to implement algorithms CCM_8, P-256, and ECDSA. EDHOC is typically sent over CoAP which would add 4 bytes to flight #1 and #2 and 5 or 20 bytes to flight #3 depending on if OSCORE is used {{I-D.ietf-core-oscore-edhoc}}.
+{{fig-compare1}} compares the message sizes of DTLS 1.3 {{RFC9147}}{{I-D.ietf-uta-tls13-iot-profile}} and EDHOC {{I-D.ietf-lake-edhoc}} handshakes with connection ID and the mandatory to implement algorithms CCM_8, P-256, and ECDSA {{I-D.ietf-uta-tls13-iot-profile}} {{I-D.ietf-core-oscore-edhoc}}. EDHOC is typically sent over CoAP which would add 4 bytes to flight #1 and #2 and 5 or 20 bytes to flight #3 depending on if OSCORE is used {{I-D.ietf-core-oscore-edhoc}}.
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 =====================================================================
@@ -171,7 +171,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare1 title="Comparison of message sizes in bytes with Connection ID" artwork-align="center"}
 
-{{fig-compare2}} compares of message sizes of DTLS 1.3 {{RFC9147}} and TLS 1.3 {{RFC8446}} handshakes without connection ID, CCM_8, P-256, and ECDSA. DTLS is typically sent over 8 bytes UDP datagram headers while TLS i typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally.
+{{fig-compare2}} compares of message sizes of DTLS 1.3 {{RFC9147}} and TLS 1.3 {{RFC8446}} handshakes without connection ID but with the same algorithms CCM_8, P-256, and ECDSA. DTLS is typically sent over 8 bytes UDP datagram headers while TLS i typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally.
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 =====================================================================
@@ -190,7 +190,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes without Connection ID" artwork-align="center"}
 
-{{fig-compare3}} is the same as {{fig-compare2}} but with more efficiantly encoded key shares and signatures such as x25519 and ed25519. {{I-D.mattsson-tls-compact-ecc}} with point compressed secp256r1 RPKs would add 15 bytes to #2 and #3 in the rows with RPKs.
+{{fig-compare3}} is the same as {{fig-compare2}} but with more efficiantly encoded key shares and signatures such as x25519 and ed25519. The algorithms in {{I-D.mattsson-tls-compact-ecc}} with point compressed secp256r1 RPKs would add 15 bytes to #2 and #3 in the rows with RPKs.
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 =====================================================================
@@ -209,11 +209,9 @@ All the overhead are dependent on the tag length. The following overheads apply 
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare3 title="Comparison of message sizes in bytes without Connection ID" artwork-align="center"}
 
-The cTLS example in Figure 2. is taken from {{I-D.ietf-tls-ctls}}. The details of the other message size calculations are given in the following sections.
+The numbers in {{fig-compare2}}, {{fig-compare2}}, and {{fig-compare3}} where calculated with 8 bytes tags which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}} and {{I-D.ietf-core-oscore-edhoc}}. If 16 bytes tag are used, the numbers in the #2 and #3 columns increases with 8 and the numbers in the Total column increases with 16.
 
-The numbers in {{fig-compare2}} and {{fig-compare2}} where calculated with 8 bytes tags which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}}, and {{I-D.ietf-core-oscore-edhoc}}. If 16 bytes tag are used, the numbers in the #2 and #3 columns increases with 8 and the numbers in the Total column increases with 16.
-
-cTLS example in Figure 2. is taken from {{I-D.ietf-tls-ctls}}. The details of the other message size calculations are given in the following sections.
+cTLS example in {{fig-compare3}} is taken from {{I-D.ietf-tls-ctls}}. The details of the other message size calculations are given in the following sections.
 
 
 ## DTLS 1.3
