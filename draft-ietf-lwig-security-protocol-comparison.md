@@ -118,7 +118,7 @@ To reduce overhead, processing, and energy consumption in constrained radio netw
 
 This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, cTLS {{I-D.ietf-tls-ctls}}, EDHOC {{I-D.ietf-lake-edhoc}} {{I-D.ietf-core-oscore-edhoc}}, OSCORE {{RFC8613}}, and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}.
 
-The protocols are analysed with different algorithms and options. The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression {{RFC7400}}. DTLS is analyzed with and without Connection ID {{RFC9146}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as Integrity Check Value (ICV). {{handshake}} compares the overhead of mutually authenticated key exchange, while {{record}} covers the overhead for protection of application data.
+The protocols are analyzed with different algorithms and options. The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression {{RFC7400}}. DTLS is analyzed with and without Connection ID {{RFC9146}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as Integrity Check Value (ICV). {{handshake}} compares the overhead of mutually authenticated key exchange, while {{record}} covers the overhead for protection of application data.
 
 Readers of this document also might be interested in the following documents: {{Illustrated-TLS12}}, {{Illustrated-TLS13}}, {{Illustrated-DTLS13}}, and {{I-D.ietf-lake-traces}} gives an explanation of every byte in example TLS 1.2, TLS 1.3, DTLS 1.3, and EDHOC instances. {{RFC9191}} looks at potential tools available for overcoming the deployment challenges induced by large certificates and long certificate chains and discusses solutions available to overcome these challenges. {{I-D.ietf-cose-cbor-encoded-cert}} gives examples of IoT and Web certificates as well as examples on how effective C509 an TLS certificate compression {{RFC8879}} is at compressing example certificate and certificate chains. {{I-D.mattsson-tls-compact-ecc}} proposes new optimized encodings for key exchange and signatures with P-256 in TLS 1.3.
 
@@ -136,7 +136,7 @@ To enable a fair comparison between protocols, the following assumptions are mad
 * As many (D)TLS handshake messages as possible are sent in a single record.
 * Only mandatory (D)TLS extensions are included.
 
-The choices of algorithms are based on the the profiles in {{RFC7925}}, {{I-D.ietf-uta-tls13-iot-profile}}, and {{I-D.ietf-core-oscore-edhoc}}.
+The choices of algorithms are based on the profiles in {{RFC7925}}, {{I-D.ietf-uta-tls13-iot-profile}}, and {{I-D.ietf-core-oscore-edhoc}}.
 
 {{summ-handshake}} gives a short summary of the message overhead based on different parameters and some assumptions. The following sections detail the assumptions and the calculations.
 
@@ -171,7 +171,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare1 title="Comparison of message sizes in bytes with CCM_8, P-256, and ECDSA and with Connection ID" artwork-align="center"}
 
-{{fig-compare2}} compares of message sizes of DTLS 1.3 {{RFC9147}} and TLS 1.3 {{RFC8446}} handshakes without connection ID but with the same algorithms CCM_8, P-256, and ECDSA. DTLS is typically sent over 8 bytes UDP datagram headers while TLS i typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally.
+{{fig-compare2}} compares of message sizes of DTLS 1.3 {{RFC9147}} and TLS 1.3 {{RFC8446}} handshakes without connection ID but with the same algorithms CCM_8, P-256, and ECDSA. DTLS is typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally.
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 =====================================================================
@@ -192,7 +192,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes with CCM_8, secp256r1, and ecdsa_secp256r1_sha256 or PSK and without Connection ID" artwork-align="center"}
 
-{{fig-compare3}} is the same as {{fig-compare2}} but with more efficiantly encoded key shares and signatures such as x25519 and ed25519. The algorithms in {{I-D.mattsson-tls-compact-ecc}} with point compressed secp256r1 RPKs would add 15 bytes to #2 and #3 in the rows with RPKs.
+{{fig-compare3}} is the same as {{fig-compare2}} but with more efficiently encoded key shares and signatures such as x25519 and ed25519. The algorithms in {{I-D.mattsson-tls-compact-ecc}} with point compressed secp256r1 RPKs would add 15 bytes to #2 and #3 in the rows with RPKs.
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 =====================================================================
@@ -213,11 +213,11 @@ All the overhead are dependent on the tag length. The following overheads apply 
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare3 title="Comparison of message sizes in bytes with CCM_8, x25519, and ed25519 or PSK and without Connection ID" artwork-align="center"}
 
-The numbers in {{fig-compare2}}, {{fig-compare2}}, and {{fig-compare3}} where calculated with 8 bytes tags which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}} and {{I-D.ietf-core-oscore-edhoc}}. If 16 bytes tag are used, the numbers in the #2 and #3 columns increases with 8 and the numbers in the Total column increases with 16.
+The numbers in {{fig-compare2}}, {{fig-compare2}}, and {{fig-compare3}} were calculated with 8 bytes tags which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}} and {{I-D.ietf-core-oscore-edhoc}}. If 16 bytes tag are used, the numbers in the #2 and #3 columns increases with 8 and the numbers in the Total column increases with 16.
 
 ## DTLS 1.3
 
-This section gives an estimate of the message sizes of DTLS 1.3 with different authentication methods. Note that the examples in this section are not test vectors, the cryptographic parts are just replaced with byte strings of the same length, while other fixed length fields are replace with arbitrary strings or omitted, in which case their length is indicated. Values that are not arbitrary are given in hexadecimal.
+This section gives an estimate of the message sizes of DTLS 1.3 with different authentication methods. Note that the examples in this section are not test vectors, the cryptographic parts are just replaced with byte strings of the same length, while other fixed length fields are replaced with arbitrary strings or omitted, in which case their length is indicated. Values that are not arbitrary are given in hexadecimal.
 
 ### Message Sizes RPK + ECDHE {#size-dtls13rpk}
 
@@ -1333,7 +1333,7 @@ The OSCORE overhead is dependent on the included CoAP Option numbers as well as 
 
 The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{{{fig-overhead3}}}} do not consider the different Token processing requirements for clients {{RFC9175}} required for secure operation as motivated by {{I-D.ietf-core-attacks-on-coap}}. As reuse of Tokens is easier in OSCORE than DTLS, OSCORE might have slightly lower overhead than DTLS 1.3 for long connection even if DTLS 1.3 has slightly lower overhead than OSCORE for short connections.
 
-The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{{{fig-overhead3}}}} do not consider underlying layers. DTLS is typically sent over 8 bytes UDP datagram headers while TLS i typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. The total overhead for DTLS 1.3 over UDP is significantly less than TLS 1.3 over TCP.
+The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{{{fig-overhead3}}}} do not consider underlying layers. DTLS is typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. The total overhead for DTLS 1.3 over UDP is significantly less than TLS 1.3 over TCP.
 
 The numbers in {{fig-overhead}} and {{fig-overhead2}} where calculated with 8 bytes ICV which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}}, and {{I-D.ietf-core-oscore-edhoc}}. If 16 bytes tag are used, all numbers increases with 8. 
 
