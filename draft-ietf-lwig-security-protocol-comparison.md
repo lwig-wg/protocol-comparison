@@ -150,7 +150,7 @@ The EDHOC overhead is dependent on the key identifiers included. The following o
 
 All the overhead are dependent on the tag length. The following overheads apply for tags of the same length.
 
-{{fig-compare1}} compares the message sizes of DTLS 1.3 {{RFC9147}}{{I-D.ietf-uta-tls13-iot-profile}} and EDHOC {{I-D.ietf-lake-edhoc}} handshakes with connection ID and the mandatory to implement algorithms CCM_8, P-256, and ECDSA {{I-D.ietf-uta-tls13-iot-profile}} {{I-D.ietf-core-oscore-edhoc}}. EDHOC is typically sent over CoAP which would add 4 bytes to flight #1 and #2 and 5 or 20 bytes to flight #3 depending on if OSCORE is used {{I-D.ietf-core-oscore-edhoc}}.
+{{fig-compare1}} compares the message sizes of DTLS 1.3, cTLS, and EDHOC handshakes with connection ID and the mandatory to implement algorithms CCM_8, P-256, and ECDSA {{I-D.ietf-uta-tls13-iot-profile}} {{I-D.ietf-core-oscore-edhoc}}. EDHOC is typically sent over CoAP which would add 4 bytes to flight #1 and #2 and 5 or 20 bytes to flight #3 depending on if OSCORE is used {{I-D.ietf-core-oscore-edhoc}}.
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 =====================================================================
