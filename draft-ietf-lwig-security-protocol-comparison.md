@@ -1636,7 +1636,7 @@ When compressed with 6LoWPAN-GHC, TLS 1.3 with the above parameters (epoch, sequ
 
 This section analyzes the overhead of OSCORE {{RFC8613}}.
 
-The below calculation Option Delta = ‘9’, Sender ID = ‘’ (empty string), and Sequence Number = ‘05’, and is only an example. Note that Sender ID = ‘’ (empty string) can only be used by one client per server.
+The below calculation Option Delta = ‘9’, Sender ID = ‘’ (empty string), and Sequence Number = ‘05’ and is only an example. Note that Sender ID = ‘’ (empty string) can only be used by one client per server.
 
 ~~~~~~~~~~~
 OSCORE request (19 bytes, 13 bytes overhead):
