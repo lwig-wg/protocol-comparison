@@ -1167,6 +1167,9 @@ Using ecdsa_secp256r1_sha256 instead ed25519 add an average of 7 bytes to flight
 
 Using PSK authentication instead of ed25519 add 1 byte (psk identifier) to flight #1 and removes 69 bytes from flight #2 and #3.
 
+Using Connection ID adds 1 byte to flight #1 and #3, and 2 bytes to flight #2.
+
+
 ## EDHOC
 
 This section gives an estimate of the message sizes of EDHOC {{I-D.ietf-lake-edhoc}} authenticated with static Diffie-Hellman keys and where the static Diffie-Hellman are identified with a key identifier (kid). All examples are given in CBOR diagnostic notation and hexadecimal, and are based on the test vectors in Section 4 of {{I-D.ietf-lake-traces}}.
