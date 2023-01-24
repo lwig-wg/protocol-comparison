@@ -169,7 +169,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
  EDHOC - RPKs,   Static DH, kid, ECDHE    37      45      19     101
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
-{: #fig-compare1 title="Comparison of message sizes in bytes with Connection ID" artwork-align="center"}
+{: #fig-compare1 title="Comparison of message sizes in bytes with CCM_8, P-256, and ECDSA and with Connection ID" artwork-align="center"}
 
 {{fig-compare2}} compares of message sizes of DTLS 1.3 {{RFC9147}} and TLS 1.3 {{RFC8446}} handshakes without connection ID but with the same algorithms CCM_8, P-256, and ECDSA. DTLS is typically sent over 8 bytes UDP datagram headers while TLS i typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally.
 
@@ -188,7 +188,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
  cTLS - X.509s by reference, ECDHE       104     183      85     372
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
-{: #fig-compare2 title="Comparison of message sizes in bytes without Connection ID" artwork-align="center"}
+{: #fig-compare2 title="Comparison of message sizes in bytes with CCM_8, P-256, and ECDSA and without Connection ID" artwork-align="center"}
 
 {{fig-compare3}} is the same as {{fig-compare2}} but with more efficiantly encoded key shares and signatures such as x25519 and ed25519. The algorithms in {{I-D.mattsson-tls-compact-ecc}} with point compressed secp256r1 RPKs would add 15 bytes to #2 and #3 in the rows with RPKs.
 
@@ -207,7 +207,7 @@ All the overhead are dependent on the tag length. The following overheads apply 
  cTLS - X.509s by reference, ECDHE        71     143      78     292
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
-{: #fig-compare3 title="Comparison of message sizes in bytes without Connection ID" artwork-align="center"}
+{: #fig-compare3 title="Comparison of message sizes in bytes with CCM_8, Curve25519, and Ed25519 and without Connection ID" artwork-align="center"}
 
 The numbers in {{fig-compare2}}, {{fig-compare2}}, and {{fig-compare3}} where calculated with 8 bytes tags which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}} and {{I-D.ietf-core-oscore-edhoc}}. If 16 bytes tag are used, the numbers in the #2 and #3 columns increases with 8 and the numbers in the Total column increases with 16.
 
