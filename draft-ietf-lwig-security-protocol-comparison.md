@@ -1395,7 +1395,7 @@ When compressed with 6LoWPAN-GHC, DTLS 1.2 with the above parameters (epoch, seq
 
 ### DTLS 1.2 with Connection ID
 
-This section analyzes the overhead of DTLS 1.2 {{RFC6347}} with Connection ID {{RFC9146}}. The overhead calculations in this section uses Connection ID = '42'. DTLS recored layer with a Connection ID = '' (the empty string) is equal to DTLS without Connection ID.
+This section analyzes the overhead of DTLS 1.2 {{RFC6347}} with Connection ID {{RFC9146}}. The overhead calculations in this section uses Connection ID = '42'. DTLS record layer with a Connection ID = '' (the empty string) is equal to DTLS without Connection ID.
 
 ~~~~~~~~~~~
 DTLS 1.2 record layer (36 bytes, 30 bytes overhead):
