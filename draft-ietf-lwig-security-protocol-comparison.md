@@ -186,8 +186,8 @@ All the overhead are dependent on the tag length. The following overheads apply 
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
  cTLS - X.509s by reference, ECDHE       104     184      85     373
- cTLS - PSK, ECDHE                       104     184      85     373
- cTLS - PSK                              104     184      85     373
+ cTLS - PSK, ECDHE                       105     184      85     373
+ cTLS - PSK                               40     184      85     373
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes with CCM_8, secp256r1, and ecdsa_secp256r1_sha256 and without Connection ID" artwork-align="center"}
@@ -207,16 +207,13 @@ All the overhead are dependent on the tag length. The following overheads apply 
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
  cTLS - X.509s by reference, ECDHE        71     144      78     293
- cTLS - PSK, ECDHE                        71     144      78     293
- cTLS - PSK                               71     144      78     293
+ cTLS - PSK, ECDHE                        72     144      78     293
+ cTLS - PSK                               40     144      78     293
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare3 title="Comparison of message sizes in bytes with CCM_8, x25519, and ed25519 and without Connection ID" artwork-align="center"}
 
 The numbers in {{fig-compare2}}, {{fig-compare2}}, and {{fig-compare3}} where calculated with 8 bytes tags which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}} and {{I-D.ietf-core-oscore-edhoc}}. If 16 bytes tag are used, the numbers in the #2 and #3 columns increases with 8 and the numbers in the Total column increases with 16.
-
-cTLS example in {{fig-compare3}} is taken from {{I-D.ietf-tls-ctls}}. The details of the other message size calculations are given in the following sections.
-
 
 ## DTLS 1.3
 
@@ -1158,6 +1155,13 @@ TLS 1.3 PSK flight #3 gives 50 bytes of overhead.
 The TLS 1.2 and DTLS 1.2 handshakes are not analyzed in detail in this document. One rough comparison on expected size between the TLS 1.2 and TLS 1.3 handshakes can be found by counting the number of bytes in the example handshakes of {{Illustrated-TLS12}} and {{Illustrated-TLS13}}. In these examples the server authenticates with a certificate and the client is not authenticated.
 
 In TLS 1.2 the number of bytes in the four flights are 170, 1188, 117, and 75 for a total of 1550 bytes. In TLS 1.3 the number of bytes in the three flights are 253, 1367, and 79 for a total of 1699 bytes. In general, the (D)TLS 1.2 and (D)TLS 1.3 handshakes can be expected to have similar number of bytes.
+
+
+## cTLS
+
+cTLS example in {{fig-compare3}} is taken from {{I-D.ietf-tls-ctls}}. The details of the other message size calculations are given in the following sections.
+
+
 
 
 ## EDHOC
