@@ -671,7 +671,7 @@ Giving a total of:
 
 ### Resumption
 
-To enable resumption, a 4th flight with a the handshake message New Session Ticket is added to the DTLS handshake.
+To enable resumption, a 4th flight with the handshake message New Session Ticket is added to the DTLS handshake.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 Record Header - DTLSCiphertext (3 bytes):
@@ -701,7 +701,7 @@ Auth Tag (8 bytes) // AES-CCM_8:
 3 + 12 + 4 + 4 + 2 + 6 + 2 + 8 = 41 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Enabling resumption adds 41 bytes to the initial DTLS handshake. The resumption handshake is an ordinaty PSK handshake with our without ECDHE.
+Enabling resumption adds 41 bytes to the initial DTLS handshake. The resumption handshake is an ordinary PSK handshake with our without ECDHE.
 
 ### DTLS Without Connection ID
 
@@ -1165,7 +1165,7 @@ Using secp256r1 instead x25519 add 33 bytes to flight #1 and flight #2.
 
 Using ecdsa_secp256r1_sha256 instead ed25519 add an average of 7 bytes to flight #2 and flight #3.
 
-Using PSK authentication instead of ed25519 add 1 byte (psk identifier) to flight #1, and removes 69 bytes from flight #2 and #3.
+Using PSK authentication instead of ed25519 add 1 byte (psk identifier) to flight #1 and removes 69 bytes from flight #2 and #3.
 
 ## EDHOC
 
@@ -1223,7 +1223,7 @@ message_3 (19 bytes):
 
 ### Summary
 
-Based on the example above it is relatively easy to calculate numbers also for EDHOC authenticated with signature keys and for authentication keys identified with a SHA-256/64 hash (x5t). Signatures increase the size of flight #2 and #3 with (64 - 8 + 1) bytes while x5t inceases the size with 13-14 bytes. The typical message sizes for the previous example and for the other combinations are summarized in {{fig-summary}}. Note that EDHOC treats authentication keys stored in RPK and X.509 in the same way. More detailed examples can be found in {{I-D.ietf-lake-traces}}.
+Based on the example above it is relatively easy to calculate numbers also for EDHOC authenticated with signature keys and for authentication keys identified with a SHA-256/64 hash (x5t). Signatures increase the size of flight #2 and #3 with (64 - 8 + 1) bytes while x5t increases the size with 13-14 bytes. The typical message sizes for the previous example and for the other combinations are summarized in {{fig-summary}}. Note that EDHOC treats authentication keys stored in RPK and X.509 in the same way. More detailed examples can be found in {{I-D.ietf-lake-traces}}.
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 ==========================================================
@@ -1335,7 +1335,7 @@ The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{{{fig-overhead3}}}} do
 
 The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{{{fig-overhead3}}}} do not consider underlying layers. DTLS is typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. The total overhead for DTLS 1.3 over UDP is significantly less than TLS 1.3 over TCP.
 
-The numbers in {{fig-overhead}} and {{fig-overhead2}} where calculated with 8 bytes ICV which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}}, and {{I-D.ietf-core-oscore-edhoc}}. If 16 bytes tag are used, all numbers increases with 8. 
+The numbers in {{fig-overhead}} and {{fig-overhead2}} were calculated with 8 bytes ICV which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}}, and {{I-D.ietf-core-oscore-edhoc}}. If 16 bytes tag are used, all numbers increases with 8. 
 
 
 ## DTLS 1.2
