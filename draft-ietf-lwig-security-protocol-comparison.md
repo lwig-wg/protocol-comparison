@@ -196,11 +196,11 @@ All the overhead are dependent on the tag length. The following overheads apply 
 =====================================================================
  Flight                                   #1      #2      #3   Total
 ---------------------------------------------------------------------
- DTLS 1.3 - RPKs, ECDHE                  146     360     214     734
+ DTLS 1.3 - RPKs, ECDHE                  146     360     200     706
  DTLS 1.3 - PSK, ECDHE                   180     186      55     421
  DTLS 1.3 - PSK                          130     146      55     331
 ---------------------------------------------------------------------
- TLS 1.3  - RPKs, ECDHE                  129     307     193     676
+ TLS 1.3  - RPKs, ECDHE                  129     307     179     615
  TLS 1.3  - PSK, ECDHE                   163     157      50     370
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
@@ -951,7 +951,7 @@ e0 8b 0e 45 5a 35 0a e5
 5 + 90 + 5 + 18 + 15 + 57 + 72 + 36 + 1 + 8 = 307 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-TLS 1.3 RPK + ECDHE flight #2 gives 354 bytes of overhead.
+TLS 1.3 RPK + ECDHE flight #2 gives 307 bytes of overhead.
 
 #### Flight \#3 {#tls13f3rpk}
 
@@ -1001,10 +1001,10 @@ Record Header - TLSCiphertext (5 bytes):
 Auth Tag (8 bytes) // AES-CCM_8:
 00 01 02 03 04 05 06 07
 
-5 + 104 + 72 + 36 + 1 + 8 = 226 bytes
+5 + 57 + 72 + 36 + 1 + 8 = 179 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-TLS 1.3 RPK + ECDHE flight #3 gives 226 bytes of overhead.
+TLS 1.3 RPK + ECDHE flight #3 gives 179 bytes of overhead.
 
 
 
