@@ -1060,7 +1060,7 @@ The following is added:
 The following is removed:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-- Handshake Message Certificate (104 bytes)
+- Handshake Message Certificate (57 bytes)
 
 - Handshake Message CertificateVerify (72 bytes)
 
@@ -1074,7 +1074,7 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-354 - 104 - 72 - 15 - 6 - 6  + 6 = 157 bytes
+307 - 57 - 72 - 15 - 6 - 6  + 6 = 157 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 TLS 1.3 PSK + ECDHE flight #2 gives 157 bytes of overhead.
@@ -1086,7 +1086,7 @@ The differences in overhead compared to {{tls13f3rpk}} are:
 The following is removed:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-- Handshake Message Certificate (104 bytes)
+- Handshake Message Certificate (57 bytes)
 
 - Handshake Message Certificate Verify (72 bytes)
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -1094,7 +1094,7 @@ The following is removed:
 In total:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
-226 - 104 - 72 = 50 bytes
+179 - 57 - 72 = 50 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 TLS 1.3 PSK + ECDHE flight #3 gives 50 bytes of overhead.
