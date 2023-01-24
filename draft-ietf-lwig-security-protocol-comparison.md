@@ -186,8 +186,8 @@ All the overhead are dependent on the tag length. The following overheads apply 
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
  cTLS - X.509s by reference, ECDHE       104     184      85     373
- cTLS - PSK, ECDHE                       105     184       9     373
- cTLS - PSK                               40      47       9     373
+ cTLS - PSK, ECDHE                       105     112       9     226
+ cTLS - PSK                               40      47       9      96
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes with CCM_8, secp256r1, and ecdsa_secp256r1_sha256 or PSK and without Connection ID" artwork-align="center"}
