@@ -185,9 +185,9 @@ All the overhead are dependent on the tag length. The following overheads apply 
  TLS 1.3  - PSK, ECDHE                   196     190      50     436
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
- cTLS - X.509s by reference, ECDHE       104     184      85     373
- cTLS - PSK, ECDHE                       105     112       9     226
- cTLS - PSK                               40      47       9      96
+ cTLS - X.509s by reference, ECDHE       104     195      96     395
+ cTLS - PSK, ECDHE                       105     119      20     226
+ cTLS - PSK                               40      58      20     118 
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes with CCM_8, secp256r1, and ecdsa_secp256r1_sha256 or PSK and without Connection ID" artwork-align="center"}
@@ -206,9 +206,9 @@ All the overhead are dependent on the tag length. The following overheads apply 
  TLS 1.3  - PSK, ECDHE                   163     157      50     370
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
- cTLS - X.509s by reference, ECDHE        71     144      78     293
- cTLS - PSK, ECDHE                        72      79       9     160
- cTLS - PSK                               40      47       9      96 
+ cTLS - X.509s by reference, ECDHE        71     155      89     315
+ cTLS - PSK, ECDHE                        72      86      20     178
+ cTLS - PSK                               40      58      20     118 
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare3 title="Comparison of message sizes in bytes with CCM_8, x25519, and ed25519 or PSK and without Connection ID" artwork-align="center"}
@@ -1159,10 +1159,13 @@ In TLS 1.2 the number of bytes in the four flights are 170, 1188, 117, and 75 fo
 
 ## cTLS
 
-cTLS example in {{fig-compare3}} is taken from {{I-D.ietf-tls-ctls}}. The details of the other message size calculations are given in the following sections.
+The cTLS specification {{I-D.ietf-tls-ctls}} has a single example in Appendix A. The numbers given are correct for the algorithms CCM_8, x25519, and ed25519 but are missing overhead from CTLSCiphertext which adds 11 bytes to flight #2 and #3. The sizes for flights are therefore 71, 155 (66 + 79 + 11), and 89 (78 + 11) bytes for a total of 315 bytes.
 
+Using secp256r1 instead x25519 add 33 bytes to flight #1 and flight #2.
 
+Using ecdsa_secp256r1_sha256 instead ed25519 add an average of 7 bytes to flight #2 and flight #3.
 
+Using PSK authentication instead of ed25519 add 1 byte (psk identifier) to flight #1, and removes 69 bytes from flight #2 and #3.
 
 ## EDHOC
 
