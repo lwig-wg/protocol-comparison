@@ -602,7 +602,7 @@ DTLS 1.3 PSK flight #3 gives 56 bytes of overhead.
 
 In this section, we consider the effect of {{RFC7924}} on the message size overhead.
 
-Cached information can be used to use a cached server cerificate from a previous connection and move bytes from flight #2 to flight #1. The cached certificate can be a RPK or X.509.
+Cached information can be used to use a cached server certificate from a previous connection and move bytes from flight #2 to flight #1. The cached certificate can be a RPK or X.509.
 
 The differences compared to {{size-dtls13rpk}} are the following.
 
