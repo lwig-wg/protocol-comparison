@@ -1,9 +1,9 @@
 ---
 title: Comparison of CoAP Security Protocols
-docname: draft-ietf-lwig-security-protocol-comparison-latest
+docname: draft-ietf-iotops-security-protocol-comparison-latest
 
 ipr: trust200902
-wg: LWIG Working Group
+wg: IOTOPS Working Group
 cat: info
 submissiontype: IETF
 
