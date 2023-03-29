@@ -44,6 +44,7 @@ informative:
   RFC8376:
   RFC8446:
   RFC8613:
+  RFC8824:
   RFC8879:
   RFC9146:
   RFC9147:
@@ -58,7 +59,8 @@ informative:
   I-D.ietf-tls-ctls:
   I-D.ietf-uta-tls13-iot-profile:
   I-D.mattsson-tls-compact-ecc:
-
+  I-D.tiloca-lpwan-8824-update:
+  
   E-impact:
     target: https://www.iab.org/activities/workshops/e-impact/
     title: Workshop on Environmental Impact of Internet Applications and Systems
