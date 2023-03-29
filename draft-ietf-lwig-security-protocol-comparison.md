@@ -124,7 +124,9 @@ The protocols are analyzed with different algorithms and options. The DTLS and T
 
 Readers of this document also might be interested in the following documents: {{Illustrated-TLS12}}, {{Illustrated-TLS13}}, {{Illustrated-DTLS13}}, and {{I-D.ietf-lake-traces}} gives an explanation of every byte in example TLS 1.2, TLS 1.3, DTLS 1.3, and EDHOC instances. {{RFC9191}} looks at potential tools available for overcoming the deployment challenges induced by large certificates and long certificate chains and discusses solutions available to overcome these challenges. {{I-D.ietf-cose-cbor-encoded-cert}} gives examples of IoT and Web certificates as well as examples on how effective C509 and TLS certificate compression {{RFC8879}} is at compressing example certificate and certificate chains. {{I-D.mattsson-tls-compact-ecc}} proposes new optimized encodings for key exchange and signatures with P-256 in TLS 1.3.
 
-DTLS and cTLS is typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. IPv6, UDP, and CoAP can be compressed with the Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP) {{RFC8824}}{{I-D.tiloca-lpwan-8824-update}}. Use of SCHC can significantly reduce the overhead.
+DTLS and cTLS is typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. IPv6, UDP, and CoAP can be compressed with the Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP) {{RFC8824}}{{I-D.tiloca-lpwan-8824-update}}. Use of SCHC can significantly reduce the overhead. Fragmentation can singificantly increase the overhead.
+
+but the fragmentation depends heavily on the transport 
 
 # Overhead of Key Exchange Protocols {#handshake}
 
@@ -141,7 +143,7 @@ To enable a fair comparison between protocols, the following assumptions are mad
 * Only mandatory (D)TLS extensions are included.
 * DoS protection with DTLS HelloRetryRequest or the CoAP Echo Option is not considered.
 
-The choices of algorithms are based on the profiles in {{RFC7925}}, {{I-D.ietf-uta-tls13-iot-profile}}, and {{I-D.ietf-core-oscore-edhoc}}. Many DTLS implementations splits flight #2 in 2 records. Fragmentation can singificantly increase the overhead.
+The choices of algorithms are based on the profiles in {{RFC7925}}, {{I-D.ietf-uta-tls13-iot-profile}}, and {{I-D.ietf-core-oscore-edhoc}}. Many DTLS implementations splits flight #2 in 2 records.
 
 {{summ-handshake}} gives a short summary of the message overhead based on different parameters and some assumptions. The following sections detail the assumptions and the calculations.
 
