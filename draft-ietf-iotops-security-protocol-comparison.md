@@ -1165,7 +1165,7 @@ In TLS 1.2 the number of bytes in the four flights are 170, 1188, 117, and 75 fo
 
 ## cTLS
 
-The cTLS specification {{I-D.ietf-tls-ctls}} has a single example with CCM_8, x25519, and ed25519 in Appendix A.
+Version -08 of the cTLS specification {{I-D.ietf-tls-ctls}} has a single example with CCM_8, x25519, and ed25519 in Appendix A. This document uses that examples and calculates number for different parameters as follows:
 
 Using secp256r1 instead x25519 add 33 bytes to flight #1 and flight #2.
 
@@ -1173,8 +1173,9 @@ Using ecdsa_secp256r1_sha256 instead ed25519 add an average of 7 bytes to flight
 
 Using PSK authentication instead of ed25519 add 1 byte (psk identifier) to flight #1 and removes 69 bytes from flight #2 and #3.
 
-Using Connection ID adds 1 byte to flight #1 and #3, and 2 bytes to flight #2.
+Using PSK key exchange x25519 removes 32 bytes from flight #1 and #2.
 
+Using Connection ID adds 1 byte to flight #1 and #3, and 2 bytes to flight #2.
 
 ## EDHOC
 
