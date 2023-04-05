@@ -1165,7 +1165,7 @@ In TLS 1.2 the number of bytes in the four flights are 170, 1188, 117, and 75 fo
 
 ## cTLS
 
-The cTLS specification {{I-D.ietf-tls-ctls}} has a single example in Appendix A. The numbers given are correct for the algorithms CCM_8, x25519, and ed25519 but are missing overhead from CTLSCiphertext which adds 11 bytes to flight #2 and #3. The sizes for flights are therefore 71, 155 (66 + 79 + 11), and 89 (78 + 11) bytes for a total of 315 bytes.
+The cTLS specification {{I-D.ietf-tls-ctls}} has a single example with CCM_8, x25519, and ed25519 in Appendix A.
 
 Using secp256r1 instead x25519 add 33 bytes to flight #1 and flight #2.
 
