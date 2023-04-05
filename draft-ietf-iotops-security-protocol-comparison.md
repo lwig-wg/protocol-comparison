@@ -1749,7 +1749,7 @@ ICV:
 
 The pairwise mode OSCORE with the above parameters gives 15 bytes overhead for requests and 12 bytes overhead for responses.
 
-## Conclusion
+## Summary
 
 DTLS 1.2 has quite a large overhead as it uses an explicit sequence number and an explicit nonce. TLS 1.2 has significantly less (but not small) overhead. TLS 1.3 has quite a small overhead. OSCORE and DTLS 1.3 (using the minimal structure) format have very small overhead.
 
@@ -1778,6 +1778,7 @@ The authors want to thank
 {{{Stephan Koch}}},
 {{{Achim Kraus}}},
 {{{Göran Selander}}},
+{{{Marco Tiloca}}},
 and
 {{{Hannes Tschofenig}}}
 for comments and suggestions on previous versions of the draft.
