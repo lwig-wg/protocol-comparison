@@ -190,9 +190,9 @@ All the overhead are dependent on the tag length. The following overheads apply 
  TLS 1.3  - PSK, ECDHE                   196     190      50     436
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
- cTLS - X.509s by reference, ECDHE       104     195      96     395
- cTLS - PSK, ECDHE                       105     119      20     226
- cTLS - PSK                               40      58      20     118 
+ cTLS-08 - X.509s by reference, ECDHE    104     195      96     395
+ cTLS-08 - PSK, ECDHE                    105     119      20     226
+ cTLS-08 - PSK                            40      58      20     118 
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes with CCM_8, secp256r1, and ecdsa_secp256r1_sha256 or PSK and without Connection ID" artwork-align="center"}
@@ -211,9 +211,9 @@ All the overhead are dependent on the tag length. The following overheads apply 
  TLS 1.3  - PSK, ECDHE                   163     157      50     370
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
- cTLS - X.509s by reference, ECDHE        71     155      89     315
- cTLS - PSK, ECDHE                        72      86      20     178
- cTLS - PSK                               40      58      20     118 
+ cTLS-08 - X.509s by reference, ECDHE     71     155      89     315
+ cTLS-08 - PSK, ECDHE                     72      86      20     178
+ cTLS-08 - PSK                            40      58      20     118 
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare3 title="Comparison of message sizes in bytes with CCM_8, x25519, and ed25519 or PSK and without Connection ID" artwork-align="center"}
