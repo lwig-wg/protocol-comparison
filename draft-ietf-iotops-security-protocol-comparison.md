@@ -59,6 +59,7 @@ informative:
   I-D.ietf-lake-traces:
   I-D.ietf-tls-ctls:
   I-D.ietf-uta-tls13-iot-profile:
+  I-D.kampanakis-tls-scas-latest:
   I-D.mattsson-tls-compact-ecc:
   I-D.tiloca-lpwan-8824-update:
 
