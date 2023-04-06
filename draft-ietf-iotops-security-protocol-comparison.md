@@ -128,7 +128,7 @@ Readers of this document also might be interested in the following documents: {{
 
 ## Underlying layers
 
-DTLS and cTLS is typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. EDHOC is typically sent over CoAP which would add 4 bytes to flight #1 and #2 and 5 or 20 bytes to flight #3 depending on if OSCORE is used {{I-D.ietf-core-oscore-edhoc}}. OSCORE and Group OSCORE is part of CoAP and are typically sent over UDP.
+DTLS and cTLS are typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. EDHOC is typically sent over CoAP which would add 4 bytes to flight #1 and #2 and 5 or 20 bytes to flight #3 depending on if OSCORE is used {{I-D.ietf-core-oscore-edhoc}}. OSCORE and Group OSCORE is part of CoAP and are typically sent over UDP.
 
 IPv6, UDP, and CoAP can be compressed with the Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP) {{RFC8824}}{{I-D.tiloca-lpwan-8824-update}}. Use of SCHC can significantly reduce the overhead.
 
