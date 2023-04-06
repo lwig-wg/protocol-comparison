@@ -133,7 +133,7 @@ DTLS and cTLS is typically sent over 8 bytes UDP datagram headers while TLS is t
 
 This section analyzes and compares the sizes of key exchange flights for different protocols.
 
-To enable a fair comparison between protocols, the following assumptions are made:
+To enable a comparison between protocols, the following assumptions are made:
 
 * The overhead calculations in this section use an 8 bytes ICV (e.g., AES_128_CCM_8 or AES-CCM-16-64-128) or 16 bytes (e.g., AES-CCM, AES-GCM, or ChaCha20-Poly1305).
 * A minimum number of algorithms and cipher suites is offered. The algorithm used/offered are P-256 or Curve25519, ECDSA with P-256 and SHA-256 or Ed25519, AES-CCM_8, and SHA-256.
