@@ -128,7 +128,11 @@ Readers of this document also might be interested in the following documents: {{
 
 ## Underlying layers
 
-DTLS and cTLS is typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. IPv6, UDP, and CoAP can be compressed with the Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP) {{RFC8824}}{{I-D.tiloca-lpwan-8824-update}}. Use of SCHC can significantly reduce the overhead. Fragmentation can significantly increase the overhead. How and where fragmentation depends heavily on the underlying layers.
+DTLS and cTLS is typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. EDHOC is typically sent over CoAP which would add 4 bytes to flight #1 and #2 and 5 or 20 bytes to flight #3 depending on if OSCORE is used {{I-D.ietf-core-oscore-edhoc}}. OSCORE and Group OSCORE is part of CoAP and are typically sent over UDP.
+
+IPv6, UDP, and CoAP can be compressed with the Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP) {{RFC8824}}{{I-D.tiloca-lpwan-8824-update}}. Use of SCHC can significantly reduce the overhead.
+
+Fragmentation can significantly increase the total overhead as many more packet headers have to be sent. CoAP, (D)TLS handshake, and IP supports fragmentation. If, how, and where fragmentation is done depends heavily on the underlying layers. 
 
 # Overhead of Key Exchange Protocols {#handshake}
 
@@ -155,7 +159,7 @@ The DTLS, EDHOC, and cTLS overhead is dependent on the parameter Connection ID. 
 
 The TLS, DTLS, and cTLS overhead is dependent on the group used for key exchange and the signature algorithm. secp256r1 and ecdsa_secp256r1_sha256 have less optimized encoding than x25519, ed25519, and {{I-D.mattsson-tls-compact-ecc}}.
 
-{{fig-compare1}} compares the message sizes of DTLS 1.3, cTLS, and EDHOC handshakes with connection ID and the mandatory to implement algorithms CCM_8, P-256, and ECDSA {{I-D.ietf-uta-tls13-iot-profile}} {{I-D.ietf-core-oscore-edhoc}}. EDHOC is typically sent over CoAP which would add 4 bytes to flight #1 and #2 and 5 or 20 bytes to flight #3 depending on if OSCORE is used {{I-D.ietf-core-oscore-edhoc}}.
+{{fig-compare1}} compares the message sizes of DTLS 1.3, cTLS, and EDHOC handshakes with connection ID and the mandatory to implement algorithms CCM_8, P-256, and ECDSA {{I-D.ietf-uta-tls13-iot-profile}} {{I-D.ietf-core-oscore-edhoc}}.
 
 Editor's note: The protocol and algorithm encoding in cTLS is currently not stable and the number might change in the final version. This version of the document analyses the -08 version of cTLS. It is uncertain if the TLS WG will adopt more compact encoding for P-256 and ECDSA such as secp256r1_compact and ecdsa_secp256r1_sha256_compact {{I-D.mattsson-tls-compact-ecc}}.
 
