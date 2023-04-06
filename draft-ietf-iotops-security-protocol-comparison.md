@@ -192,8 +192,8 @@ Editor's note: The protocol and algorithm encoding in cTLS is currently not stab
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
  cTLS-08 - X.509s by reference, ECDHE    107     200      98     405
- cTLS-08 - PSK, ECDHE                    108     124      22     254
- cTLS-08 - PSK                            43      59      22     124 
+ cTLS-08 - PSK, ECDHE                    108     120      20     250
+ cTLS-08 - PSK                            43      57      20     120 
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes with CCM_8, secp256r1, and ecdsa_secp256r1_sha256 or PSK and without Connection ID" artwork-align="center"}
@@ -213,8 +213,8 @@ Editor's note: The protocol and algorithm encoding in cTLS is currently not stab
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
  cTLS-08 - X.509s by reference, ECDHE     74     160      91     325
- cTLS-08 - PSK, ECDHE                     75      91      22     188
- cTLS-08 - PSK                            43      59      22     124 
+ cTLS-08 - PSK, ECDHE                     75      89      20     186
+ cTLS-08 - PSK                            43      57      20     120 
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare3 title="Comparison of message sizes in bytes with CCM_8, x25519, and ed25519 or PSK and without Connection ID" artwork-align="center"}
@@ -1169,9 +1169,9 @@ Version -08 of the cTLS specification {{I-D.ietf-tls-ctls}} has a single example
 
 Using secp256r1 instead x25519 add 33 bytes to flight #1 and flight #2.
 
-Using ecdsa_secp256r1_sha256 instead ed25519 add an average of 7 bytes to flight #2 and flight #3.
+Using ecdsa_secp256r1_sha256 instead ed25519 add an average of 7 bytes to flight #2 and flight #3. 
 
-Using PSK authentication instead of ed25519 add 1 byte (psk identifier) to flight #1 and removes 69 bytes from flight #2 and #3.
+Using PSK authentication instead of ed25519 add 1 byte (psk identifier) to flight #1 and removes 71 bytes from flight #2 and #3.
 
 Using PSK key exchange x25519 removes 32 bytes from flight #1 and #2.
 
