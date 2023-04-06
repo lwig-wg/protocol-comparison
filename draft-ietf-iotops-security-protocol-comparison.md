@@ -6,7 +6,11 @@ ipr: trust200902
 wg: IOTOPS Working Group
 cat: info
 submissiontype: IETF
-
+venue:
+  group: IOT Operations (iotops)
+  mail: iotops@ietf.org
+  github: lwig-wg/protocol-comparison
+  
 coding: utf-8
 pi: # can use array (if all yes) or hash here
   toc: yes
