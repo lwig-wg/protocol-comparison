@@ -67,6 +67,20 @@ informative:
   I-D.mattsson-tls-compact-ecc:
   I-D.tiloca-lpwan-8824-update:
 
+  SCHC-eval:
+    target: https://ieeexplore.ieee.org/document/9685592
+    title: Effective interoperability and security support for constrained IoT networks
+    author:
+      -
+        ins: M. Dumay
+      -
+        ins: D. Barthel
+      -
+        ins: L. Toutain
+      -
+        ins: J. Lecoeuvre
+    date: December 2021
+
   E-impact:
     target: https://www.iab.org/activities/workshops/e-impact/
     title: Workshop on Environmental Impact of Internet Applications and Systems
