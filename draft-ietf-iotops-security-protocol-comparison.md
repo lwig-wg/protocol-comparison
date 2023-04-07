@@ -153,7 +153,7 @@ To enable a comparison between protocols, the following assumptions are made:
 * Only mandatory (D)TLS extensions are included.
 * DoS protection with DTLS HelloRetryRequest or the CoAP Echo Option is not considered.
 
-The choices of algorithms are based on the profiles in {{RFC7925}}, {{I-D.ietf-uta-tls13-iot-profile}}, and {{I-D.ietf-core-oscore-edhoc}}. Many DTLS implementations splits flight #2 in 2 records.
+The choices of algorithms are based on the profiles in {{RFC7925}}, {{I-D.ietf-uta-tls13-iot-profile}}, and {{I-D.ietf-core-oscore-edhoc}}. Many DTLS implementations splits flight #2 in two records.
 
 {{summ-handshake}} gives a short summary of the message overhead based on different parameters and some assumptions. The following sections detail the assumptions and the calculations.
 
