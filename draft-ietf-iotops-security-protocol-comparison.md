@@ -144,7 +144,7 @@ The protocols are analyzed with different algorithms and options. The DTLS and T
 
 Readers of this document also might be interested in the following documents: {{Illustrated-TLS12}}, {{Illustrated-TLS13}}, {{Illustrated-DTLS13}}, and {{I-D.ietf-lake-traces}} explain every byte in example TLS 1.2, TLS 1.3, DTLS 1.3, and EDHOC instances. {{RFC9191}} looks at potential tools available for overcoming the deployment challenges induced by large certificates and long certificate chains and discusses solutions available to overcome these challenges. {{I-D.ietf-cose-cbor-encoded-cert}} gives examples of IoT and Web certificates as well as examples on how effective C509 and TLS certificate compression {{RFC8879}} is at compressing example certificate and certificate chains. {{I-D.kampanakis-tls-scas-latest}} describes how TLS clients or servers can reduce the size of the TLS handshake by not sending certificate authority certificates. {{I-D.mattsson-tls-compact-ecc}} proposes new optimized encodings for key exchange and signatures with P-256 in TLS 1.3.
 
-## Underlying layers
+# Underlying layers {#layers}
 
 DTLS and cTLS are typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. EDHOC is typically sent over CoAP which would add 4 bytes to flight #1 and #2 and 5 or 20 bytes to flight #3 depending on if OSCORE is used {{I-D.ietf-core-oscore-edhoc}}. OSCORE and Group OSCORE is part of CoAP and are typically sent over UDP.
 
@@ -243,6 +243,8 @@ Editor's note: The protocol and algorithm encoding in cTLS is currently not stab
 {: #fig-compare3 title="Comparison of message sizes in bytes with CCM_8, x25519, and ed25519 or PSK and without Connection ID" artwork-align="center"}
 
 The numbers in {{fig-compare2}}, {{fig-compare2}}, and {{fig-compare3}} were calculated with 8 bytes tags which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}} and {{I-D.ietf-core-oscore-edhoc}}. If 16 bytes tag are used, the numbers in the #2 and #3 columns increases with 8 and the numbers in the Total column increases with 16.
+
+The numbers in {{fig-compare1}}, {{fig-compare2}}, and {{fig-compare3}} do not consider underlying layers, see {{layers}}.
 
 ## DTLS 1.3
 
@@ -1366,10 +1368,9 @@ The OSCORE overhead is dependent on the included CoAP Option numbers as well as 
 
 The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{{{fig-overhead3}}}} do not consider the different Token processing requirements for clients {{RFC9175}} required for secure operation as motivated by {{I-D.ietf-core-attacks-on-coap}}. As reuse of Tokens is easier in OSCORE than DTLS, OSCORE might have slightly lower overhead than DTLS 1.3 for long connection even if DTLS 1.3 has slightly lower overhead than OSCORE for short connections.
 
-The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{{{fig-overhead3}}}} do not consider underlying layers. DTLS is typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. The total overhead for DTLS 1.3 over UDP is significantly less than TLS 1.3 over TCP.
-
 The numbers in {{fig-overhead}} and {{fig-overhead2}} were calculated with 8 bytes ICV which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}}, and {{I-D.ietf-core-oscore-edhoc}}. If 16 bytes tag are used, all numbers increases with 8. 
 
+The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{fig-overhead3}} do not consider underlying layers, see {{layers}}.
 
 ## DTLS 1.2
 
