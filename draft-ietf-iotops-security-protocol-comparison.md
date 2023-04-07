@@ -1786,8 +1786,10 @@ This document has no actions for IANA.
 The authors want to thank
 {{{Carsten Bormann}}},
 {{{Ari Keränen}}},
+{{{Erik Kline}}},
 {{{Stephan Koch}}},
 {{{Achim Kraus}}},
+{{{Michael Richardsson}}},
 {{{Göran Selander}}},
 {{{Marco Tiloca}}},
 and
