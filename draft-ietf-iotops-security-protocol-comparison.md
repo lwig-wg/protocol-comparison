@@ -159,7 +159,7 @@ The choices of algorithms are based on the profiles in {{RFC7925}}, {{I-D.ietf-u
 
 ## Summary {#summ-handshake}
 
-The DTLS, EDHOC, and cTLS overhead is dependent on the parameter Connection ID. The EDHOC and cTLS overhead is dependent on the key/certificate identifiers included. If 8 bytes key/certificate identifiers are used instead of 1 byte, the RPK numbers for flight #2 and #3 increases with 7 bytes and the PSK numbers for flight #1 increases with 1 byte.
+The DTLS, EDHOC, and cTLS overhead is dependent on the parameter Connection ID. The EDHOC and cTLS overhead is dependent on the key/certificate identifiers included. If 8 bytes key/certificate identifiers are used instead of 1 byte, the RPK numbers for flight #2 and #3 increases with 7 bytes and the PSK numbers for flight #1 increases with 7 bytes.
 
 The TLS, DTLS, and cTLS overhead is dependent on the group used for key exchange and the signature algorithm. secp256r1 and ecdsa_secp256r1_sha256 have less optimized encoding than x25519, ed25519, and {{I-D.mattsson-tls-compact-ecc}}.
 
