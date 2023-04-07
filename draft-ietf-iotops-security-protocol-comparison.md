@@ -1324,7 +1324,7 @@ The OSCORE overhead is dependent on the included CoAP Option numbers as well as 
  OSCORE response                   11         11         11
 --------------------------------------------------------------
  Group OSCORE pairwise request     14         15         16
- Group OSCORE pairwise response    11         13         14
+ Group OSCORE pairwise response    11         11         11
 ==============================================================
 ~~~~~~~~~~~
 {: #fig-overhead2 title="Overhead (8 bytes ICV) in bytes as a function of Connection/Sender ID (Sequence Number = '05')"}
