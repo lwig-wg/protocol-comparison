@@ -1753,25 +1753,6 @@ ICV:
 4d ff 8a 24 e4 cb 35 b9
 ~~~~~~~~~~~
 
-The below calculation uses Option Delta = ‘9’ and is only an example.
-
-~~~~~~~~~~~
-OSCORE response (18 bytes, 12 bytes overhead):
-90
-ff ec ae a0 15 56 67 92 4d ff 8a 24 e4 cb 35 b9
-
-CoAP delta and option length:
-90
-Option value (flag byte, Sender ID):
-08 69
-Payload marker:
-ff
-Ciphertext (including encrypted code):
-ec ae a0 15 56 67 92
-ICV:
-4d ff 8a 24 e4 cb 35 b9
-~~~~~~~~~~~
-
 The pairwise mode OSCORE with the above parameters gives 15 bytes overhead for requests and 11 bytes overhead for responses.
 
 ## Summary
