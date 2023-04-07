@@ -1732,7 +1732,7 @@ Unlike DTLS and TLS, OSCORE has much smaller overhead for responses than request
 
 ## Group OSCORE
 
-This section analyzes the overhead of Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}. Group OSCORE defines a pairwise mode where each member of the group can efficiently derive a symmetric pairwise key with any other member of the group for pairwise OSCORE communication. Additional requirements compared to {{RFC8613}} is that ID Context is always included in requests and that Sender ID is always included in responses. Assuming 1 byte ID Context and Sender ID this adds 2 bytes to requests and 1 byte to responses.
+This section analyzes the overhead of Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}. Group OSCORE defines a pairwise mode where each member of the group can efficiently derive a symmetric pairwise key with any other member of the group for pairwise OSCORE communication. Additional requirements compared to {{RFC8613}} is that ID Context is always included in requests. Assuming 1 byte ID Context and Sender ID this adds 2 bytes to requests.
 
 The below calculation Option Delta = ‘9’, ID Context = ‘’, Sender ID = ‘42’, and Sequence Number = ‘05’, and is only an example. ID Context = ‘’ would be the standard for local deployments only having a single group.
 
