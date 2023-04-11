@@ -154,7 +154,7 @@ Fragmentation can significantly increase the total overhead as many more packet 
 
 ## EDHOC Over CoAP and OSCORE
 
-Assuming a that the CoAP token has a length of 0 bytes, that CoAP Content-Format is not used, that the EDHOC Initiator is the CoAP client, the connection identifiers have 1 byte encodings, the CoAP URI parh is "edhoc", the additional overhead due to CoAP being used as transport is:
+Assuming a that the CoAP Token has a length of 0 bytes, that CoAP Content-Format is not used, that the EDHOC Initiator is the CoAP client, that the connection identifiers have 1 byte encodings, and the the CoAP URI parh is "edhoc", the additional overhead due to CoAP being used as transport is:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 For EDHOC message_1
