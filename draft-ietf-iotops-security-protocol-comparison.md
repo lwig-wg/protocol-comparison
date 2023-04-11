@@ -146,11 +146,53 @@ Readers of this document also might be interested in the following documents: {{
 
 # Underlying layers {#layers}
 
-DTLS and cTLS are typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. EDHOC is typically sent over CoAP which would add 4 bytes to flight #1 and #2 and 5 or 20 bytes to flight #3 depending on if OSCORE is used {{I-D.ietf-core-oscore-edhoc}}. OSCORE and Group OSCORE is part of CoAP and are typically sent over UDP.
+DTLS and cTLS are typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. EDHOC is typically sent over CoAP which would typically add 12 bytes to flight #1, 5 bytes to flight #2, and 1 byte to flight #3 when used in the combined mode with OSCORE according to {{I-D.ietf-core-oscore-edhoc}}. If EDHOC is used without OSCORE, the overhead would typically be 12 bytes to flight #1 and #3 and 5 bytes to flight #2. OSCORE and Group OSCORE is part of CoAP and are typically sent over UDP.
 
 IPv6, UDP, and CoAP can be compressed with the Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP) {{RFC8824}}{{I-D.tiloca-schc-8824-update}}. Use of SCHC can significantly reduce the overhead. {{SCHC-eval}} gives an evaluation of how SCHC reduces this overhead for OSCORE and the DTLS 1.2 record layer when used in four of the most widely used LPWAN radio technologies 
 
 Fragmentation can significantly increase the total overhead as many more packet headers have to be sent. CoAP, (D)TLS handshake, and IP supports fragmentation. If, how, and where fragmentation is done depends heavily on the underlying layers. 
+
+## EDHOC Over CoAP and OSCORE
+
+Assuming a that the CoAP token has a length of 0 bytes, that CoAP Content-Format is not used, that the EDHOC Initiator is the CoAP client, the connection identifiers have 1 byte encodings, the CoAP URI parh is "edhoc", the additional overhead due to CoAP being used as transport is:
+
+~~~~~~~~~~~~~~~~~~~~~~~
+For EDHOC message_1
+
+--- CoAP header: 4 bytes
+--- CoAP token: 0 bytes
+--- URI-Path option with value "edhoc": 6 bytes
+--- Payload marker 0xff: 1 byte
+--- Dummy connection identifier "true": 1 byte
+
+Total: 12 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+~~~~~~~~~~~~~~~~~~~~~~~
+For EDHOC message_2
+
+--- CoAP header: 4 bytes
+--- CoAP token: 0 bytes
+--- Payload marker 0xff: 1 byte
+
+Total: 5 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+~~~~~~~~~~~~~~~~~~~~~~~
+For EDHOC message_3 without the combined request
+
+--- CoAP header: 4 bytes
+--- CoAP token: 0 bytes
+--- URI-Path option with value "edhoc": 6 bytes
+--- Payload marker 0xff: 1 byte
+--- Connection identifier C_R (wire encoding): 1 byte
+
+Total: 12 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+For EDHOC message_3 over OSCORE with the EDHOC + OSCORE combined request {{I-D.ietf-core-oscore-edhoc}}
+all the overhead contributions from the previous case is gone. The only additional overhead is 1 byte
+due to the EDHOC CoAP option.
 
 # Overhead of Key Exchange Protocols {#handshake}
 
