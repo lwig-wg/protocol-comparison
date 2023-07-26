@@ -1823,6 +1823,7 @@ This document has no actions for IANA.
 
 The authors want to thank
 {{{Carsten Bormann}}},
+{{{Russ Housley}}},
 {{{Ari Keränen}}},
 {{{Erik Kline}}},
 {{{Stephan Koch}}},
