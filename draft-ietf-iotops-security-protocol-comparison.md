@@ -38,6 +38,7 @@ author:
 informative:
 
   RFC5246:
+  RFC5280:
   RFC5480:
   RFC6347:
   RFC7252:
@@ -50,10 +51,12 @@ informative:
   RFC8613:
   RFC8824:
   RFC8879:
+  RFC8996:
   RFC9146:
   RFC9147:
   RFC9175:
   RFC9191:
+  RFC9325:
   I-D.ietf-core-attacks-on-coap:
   I-D.ietf-core-oscore-edhoc:
   I-D.ietf-core-oscore-groupcomm:
@@ -66,6 +69,18 @@ informative:
   I-D.kampanakis-tls-scas-latest:
   I-D.mattsson-tls-compact-ecc:
   I-D.tiloca-schc-8824-update:
+
+  SP-800-52:
+    target: https://doi.org/10.6028/NIST.SP.800-52r2
+    title: "Guidelines for the Selection, Configuration, and Use of Transport Layer Security (TLS) Implementations"
+    seriesinfo:
+      "NIST": "Special Publication 800-52 Revision 2"
+    author:
+      -
+        ins: K. McKay
+      -
+        ins: D. Cooper
+    date: August 2019
 
   SCHC-eval:
     target: https://ieeexplore.ieee.org/document/9685592
@@ -1810,7 +1825,11 @@ Note that the compared protocols have slightly different use cases. TLS and DTLS
 
 # Security Considerations
 
-This document is purely informational.
+When using the security protocols outlined in this document, it is important to adhere to the latest requirements and recommendations for respective protocol. It is also crucial to utilize supported versions of libraries that continue to receive security updates in response to identified vulnerabilities.
+
+While the security considerations provided in DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, cTLS {{I-D.ietf-tls-ctls}}, EDHOC {{I-D.ietf-lake-edhoc}} {{I-D.ietf-core-oscore-edhoc}}, OSCORE {{RFC8613}}, Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}, and X.509 {{RFC5280}} serve as a good starting point, they are not sufficient due to the fact that some of these specifications were authored many years ago. For instance, being compliant to to the TLS 1.2 {{RFC5246}} specification is considered very poor security practice, given that the mandatory-to-implement cipher suite TLS_RSA_WITH_AES_128_CBC_SHA possesses at least three major weaknesses.
+
+Therefore, implementations and configurations must also align with the latest recommendations and best practices. Notable examples when this document was published include BCP 195 ({{RFC9325}}, {{RFC8996}}) and {{SP-800-52}}.
 
 # IANA Considerations
 
