@@ -66,6 +66,7 @@ informative:
   I-D.ietf-lake-traces:
   I-D.ietf-tls-ctls:
   I-D.ietf-uta-tls13-iot-profile:
+  I-D.jackson-tls-cert-abridge:
   I-D.kampanakis-tls-scas-latest:
   I-D.mattsson-tls-compact-ecc:
   I-D.tiloca-schc-8824-update:
@@ -165,7 +166,7 @@ This document analyzes and compares the sizes of key exchange flights and the pe
 
 The protocols are analyzed with different algorithms and options. The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression {{RFC7400}}. DTLS is analyzed with and without Connection ID {{RFC9146}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as Integrity Check Value (ICV). {{handshake}} compares the overhead of mutually authenticated key exchange, while {{record}} covers the overhead for protection of application data.
 
-Readers of this document also might be interested in the following documents: {{Illustrated-TLS12}}, {{Illustrated-TLS13}}, {{Illustrated-DTLS13}}, and {{I-D.ietf-lake-traces}} explain every byte in example TLS 1.2, TLS 1.3, DTLS 1.3, and EDHOC instances. {{RFC9191}} looks at potential tools available for overcoming the deployment challenges induced by large certificates and long certificate chains and discusses solutions available to overcome these challenges. {{I-D.ietf-cose-cbor-encoded-cert}} gives examples of IoT and Web certificates as well as examples on how effective C509 and TLS certificate compression {{RFC8879}} is at compressing example certificate and certificate chains. {{I-D.kampanakis-tls-scas-latest}} describes how TLS clients or servers can reduce the size of the TLS handshake by not sending certificate authority certificates. {{I-D.mattsson-tls-compact-ecc}} proposes new optimized encodings for key exchange and signatures with P-256 in TLS 1.3.
+Readers of this document also might be interested in the following documents: {{Illustrated-TLS12}}, {{Illustrated-TLS13}}, {{Illustrated-DTLS13}}, and {{I-D.ietf-lake-traces}} explain every byte in example TLS 1.2, TLS 1.3, DTLS 1.3, and EDHOC instances. {{RFC9191}} looks at potential tools available for overcoming the deployment challenges induced by large certificates and long certificate chains and discusses solutions available to overcome these challenges. {{I-D.ietf-cose-cbor-encoded-cert}} gives examples of IoT and Web certificates as well as examples on how effective C509 and TLS certificate compression {{RFC8879}} is at compressing example certificate and certificate chains. {{I-D.jackson-tls-cert-abridge}} and {{I-D.kampanakis-tls-scas-latest}} describe how TLS clients or servers can reduce the size of the TLS handshake by not sending certificate authority certificates. {{I-D.mattsson-tls-compact-ecc}} proposes new optimized encodings for key exchange and signatures with P-256 in TLS 1.3.
 
 # Underlying layers {#layers}
 
