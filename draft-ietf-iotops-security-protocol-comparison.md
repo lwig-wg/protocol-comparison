@@ -43,8 +43,10 @@ informative:
   RFC6347:
   RFC7252:
   RFC7400:
+  RFC7748:
   RFC7924:
   RFC7925:
+  RFC8032:
   RFC8323:
   RFC8376:
   RFC8446:
@@ -243,7 +245,7 @@ This section analyzes and compares the sizes of key exchange flights for differe
 To enable a comparison between protocols, the following assumptions are made:
 
 * The overhead calculations in this section use an 8 bytes ICV (e.g., AES_128_CCM_8 or AES-CCM-16-64-128) or 16 bytes (e.g., AES-CCM, AES-GCM, or ChaCha20-Poly1305).
-* A minimum number of algorithms and cipher suites is offered. The algorithm used/offered are P-256 or Curve25519, ECDSA with P-256 and SHA-256 or Ed25519, AES-CCM_8, and SHA-256.
+* A minimum number of algorithms and cipher suites is offered. The algorithm used/offered are P-256 {{SP-800-186}} or Curve25519 {{RFC7748}}, ECDSA with P-256 and SHA-256 or Ed25519 {{RFC8032}}, AES-CCM_8, and SHA-256.
 * The length of key identifiers are 1 byte.
 * The length of connection identifiers are 1 byte.
 * DTLS handshake message fragmentation is not considered.
