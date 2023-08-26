@@ -71,7 +71,25 @@ informative:
   I-D.mattsson-tls-compact-ecc:
   I-D.tiloca-schc-8824-update:
 
-  NIST-TLS:
+  SP-800-186:
+    target: https://doi.org/10.6028/NIST.SP.800-186
+    title: "Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters"
+    seriesinfo:
+      "NIST": "Special Publication 800-186"
+    author:
+      -
+        ins: L. Chen
+      -
+        ins: D. Moody
+      -
+        ins: K. Randall
+      -
+        ins: A. Regenscheid
+      -
+        ins: A. Robinson
+    date: February 2023
+
+  SP-800-52:
     target: https://doi.org/10.6028/NIST.SP.800-52r2
     title: "Guidelines for the Selection, Configuration, and Use of Transport Layer Security (TLS) Implementations"
     seriesinfo:
@@ -166,7 +184,7 @@ This document analyzes and compares the sizes of key exchange flights and the pe
 
 The protocols are analyzed with different algorithms and options. The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression {{RFC7400}}. DTLS is analyzed with and without Connection ID {{RFC9146}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as Integrity Check Value (ICV). {{handshake}} compares the overhead of mutually authenticated key exchange, while {{record}} covers the overhead for protection of application data.
 
-Readers of this document also might be interested in the following documents: {{Illustrated-TLS12}}, {{Illustrated-TLS13}}, {{Illustrated-DTLS13}}, and {{I-D.ietf-lake-traces}} explain every byte in example TLS 1.2, TLS 1.3, DTLS 1.3, and EDHOC instances. {{RFC9191}} looks at potential tools available for overcoming the deployment challenges induced by large certificates and long certificate chains and discusses solutions available to overcome these challenges. {{I-D.ietf-cose-cbor-encoded-cert}} gives examples of IoT and Web certificates as well as examples on how effective C509 and TLS certificate compression {{RFC8879}} is at compressing example certificate and certificate chains. {{I-D.jackson-tls-cert-abridge}} and {{I-D.kampanakis-tls-scas-latest}} describe how TLS clients or servers can reduce the size of the TLS handshake by not sending certificate authority certificates. {{I-D.mattsson-tls-compact-ecc}} proposes new optimized encodings for key exchange and signatures with P-256 in TLS 1.3.
+Readers of this document also might be interested in the following documents: {{Illustrated-TLS12}}, {{Illustrated-TLS13}}, {{Illustrated-DTLS13}}, and {{I-D.ietf-lake-traces}} explain every byte in example TLS 1.2, TLS 1.3, DTLS 1.3, and EDHOC instances. {{RFC9191}} looks at potential tools available for overcoming the deployment challenges induced by large certificates and long certificate chains and discusses solutions available to overcome these challenges. {{I-D.ietf-cose-cbor-encoded-cert}} gives examples of IoT and Web certificates as well as examples on how effective C509 and TLS certificate compression {{RFC8879}} is at compressing example certificate and certificate chains. {{I-D.jackson-tls-cert-abridge}} and {{I-D.kampanakis-tls-scas-latest}} describe how TLS clients or servers can reduce the size of the TLS handshake by not sending certificate authority certificates. {{I-D.mattsson-tls-compact-ecc}} proposes new optimized encodings for key exchange and signatures with P-256 {{SP-800-186}} in TLS 1.3.
 
 # Underlying layers {#layers}
 
@@ -1838,7 +1856,7 @@ When using the security protocols outlined in this document, it is important to 
 
 While the security considerations provided in DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, cTLS {{I-D.ietf-tls-ctls}}, EDHOC {{I-D.ietf-lake-edhoc}} {{I-D.ietf-core-oscore-edhoc}}, OSCORE {{RFC8613}}, Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}, and X.509 {{RFC5280}} serve as a good starting point, they are not sufficient due to the fact that some of these specifications were authored many years ago. For instance, being compliant to to the TLS 1.2 {{RFC5246}} specification is considered very poor security practice, given that the mandatory-to-implement cipher suite TLS_RSA_WITH_AES_128_CBC_SHA possesses at least three major weaknesses.
 
-Therefore, implementations and configurations must also align with the latest recommendations and best practices. Notable examples when this document was published include BCP 195 {{RFC9325}}{{RFC8996}}, {{NIST-TLS}}, and {{BSI-TLS}}.
+Therefore, implementations and configurations must also align with the latest recommendations and best practices. Notable examples when this document was published include BCP 195 {{RFC9325}}{{RFC8996}}, {{SP-800-52}}, and {{BSI-TLS}}.
 
 # IANA Considerations
 
