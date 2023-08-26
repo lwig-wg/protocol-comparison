@@ -70,7 +70,7 @@ informative:
   I-D.mattsson-tls-compact-ecc:
   I-D.tiloca-schc-8824-update:
 
-  SP-800-52:
+  NIST-TLS:
     target: https://doi.org/10.6028/NIST.SP.800-52r2
     title: "Guidelines for the Selection, Configuration, and Use of Transport Layer Security (TLS) Implementations"
     seriesinfo:
@@ -81,6 +81,14 @@ informative:
       -
         ins: D. Cooper
     date: August 2019
+
+  BSI-TLS:
+    target: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/TechGuidelines/TG02102/BSI-TR-02102-2.pdf
+    title: "Technical Guideline TR-02102-2 Cryptographic Mechanisms: Recommendations and Key Lengths Part 2 – Use of Transport Layer Security (TLS)"
+    author:
+      -
+        ins: "Bundesamt für Sicherheit in der Informationstechnik"
+    date: January 2023
 
   SCHC-eval:
     target: https://ieeexplore.ieee.org/document/9685592
@@ -1829,7 +1837,7 @@ When using the security protocols outlined in this document, it is important to 
 
 While the security considerations provided in DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, cTLS {{I-D.ietf-tls-ctls}}, EDHOC {{I-D.ietf-lake-edhoc}} {{I-D.ietf-core-oscore-edhoc}}, OSCORE {{RFC8613}}, Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}, and X.509 {{RFC5280}} serve as a good starting point, they are not sufficient due to the fact that some of these specifications were authored many years ago. For instance, being compliant to to the TLS 1.2 {{RFC5246}} specification is considered very poor security practice, given that the mandatory-to-implement cipher suite TLS_RSA_WITH_AES_128_CBC_SHA possesses at least three major weaknesses.
 
-Therefore, implementations and configurations must also align with the latest recommendations and best practices. Notable examples when this document was published include BCP 195 {{RFC9325}}{{RFC8996}} and {{SP-800-52}}.
+Therefore, implementations and configurations must also align with the latest recommendations and best practices. Notable examples when this document was published include BCP 195 {{RFC9325}}{{RFC8996}}, {{NIST-TLS}}, and {{BSI-TLS}}.
 
 # IANA Considerations
 
