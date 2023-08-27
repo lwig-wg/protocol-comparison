@@ -219,48 +219,6 @@ IPv6, UDP, and CoAP can be compressed with the Static Context Header Compression
 
 Fragmentation can significantly increase the total overhead as many more packet headers have to be sent. CoAP, (D)TLS handshake, and IP supports fragmentation. If, how, and where fragmentation is done depends heavily on the underlying layers. 
 
-## EDHOC Over CoAP and OSCORE
-
-Assuming a that the CoAP Token has a length of 0 bytes, that CoAP Content-Format is not used, that the EDHOC Initiator is the CoAP client, that the connection identifiers have 1 byte encodings, and the the CoAP URI parh is "edhoc", the additional overhead due to CoAP being used as transport is:
-
-~~~~~~~~~~~~~~~~~~~~~~~
-For EDHOC message_1
-
---- CoAP header: 4 bytes
---- CoAP token: 0 bytes
---- URI-Path option with value "edhoc": 6 bytes
---- Payload marker 0xff: 1 byte
---- Dummy connection identifier "true": 1 byte
-
-Total: 12 bytes
-~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~
-For EDHOC message_2
-
---- CoAP header: 4 bytes
---- CoAP token: 0 bytes
---- Payload marker 0xff: 1 byte
-
-Total: 5 bytes
-~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~
-For EDHOC message_3 without the combined request
-
---- CoAP header: 4 bytes
---- CoAP token: 0 bytes
---- URI-Path option with value "edhoc": 6 bytes
---- Payload marker 0xff: 1 byte
---- Connection identifier C_R (wire encoding): 1 byte
-
-Total: 12 bytes
-~~~~~~~~~~~~~~~~~~~~~~~
-
-For EDHOC message_3 over OSCORE with the EDHOC + OSCORE combined request {{I-D.ietf-core-oscore-edhoc}}
-all the overhead contributions from the previous case is gone. The only additional overhead is 1 byte
-due to the EDHOC CoAP option.
-
 # Overhead of Key Exchange Protocols {#handshake}
 
 This section analyzes and compares the sizes of key exchange flights for different protocols.
@@ -1888,6 +1846,48 @@ Therefore, implementations and configurations must also align with the latest re
 This document has no actions for IANA.
 
 --- back
+
+# EDHOC Over CoAP and OSCORE
+
+Assuming a that the CoAP Token has a length of 0 bytes, that CoAP Content-Format is not used, that the EDHOC Initiator is the CoAP client, that the connection identifiers have 1 byte encodings, and the the CoAP URI parh is "edhoc", the additional overhead due to CoAP being used as transport is:
+
+~~~~~~~~~~~~~~~~~~~~~~~
+For EDHOC message_1
+
+--- CoAP header: 4 bytes
+--- CoAP token: 0 bytes
+--- URI-Path option with value "edhoc": 6 bytes
+--- Payload marker 0xff: 1 byte
+--- Dummy connection identifier "true": 1 byte
+
+Total: 12 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+~~~~~~~~~~~~~~~~~~~~~~~
+For EDHOC message_2
+
+--- CoAP header: 4 bytes
+--- CoAP token: 0 bytes
+--- Payload marker 0xff: 1 byte
+
+Total: 5 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+~~~~~~~~~~~~~~~~~~~~~~~
+For EDHOC message_3 without the combined request
+
+--- CoAP header: 4 bytes
+--- CoAP token: 0 bytes
+--- URI-Path option with value "edhoc": 6 bytes
+--- Payload marker 0xff: 1 byte
+--- Connection identifier C_R (wire encoding): 1 byte
+
+Total: 12 bytes
+~~~~~~~~~~~~~~~~~~~~~~~
+
+For EDHOC message_3 over OSCORE with the EDHOC + OSCORE combined request {{I-D.ietf-core-oscore-edhoc}}
+all the overhead contributions from the previous case is gone. The only additional overhead is 1 byte
+due to the EDHOC CoAP option.
 
 # Acknowledgments
 {: numbered="no"}
