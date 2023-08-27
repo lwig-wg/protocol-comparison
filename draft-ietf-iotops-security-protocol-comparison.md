@@ -41,8 +41,10 @@ informative:
   RFC5280:
   RFC5480:
   RFC6347:
+  RFC6655:
   RFC7252:
   RFC7400:
+  RFC7539:
   RFC7748:
   RFC7924:
   RFC7925:
@@ -54,6 +56,7 @@ informative:
   RFC8824:
   RFC8879:
   RFC8996:
+  RFC9053:
   RFC9146:
   RFC9147:
   RFC9175:
@@ -102,6 +105,26 @@ informative:
       -
         ins: D. Cooper
     date: August 2019
+
+  SP-800-38C:
+    target: https://doi.org/10.6028/NIST.SP.800-38C
+    title: "Recommendation for Block Cipher Modes of Operation: the CCM Mode for Authentication and Confidentiality"
+    seriesinfo:
+      "NIST": "Special Publication 800-38C"
+    author:
+      -
+        ins: M. Dworkin
+    date: May 2004
+
+  SP-800-38D:
+    target: https://doi.org/10.6028/NIST.SP.800-38D
+    title: "Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC"
+    seriesinfo:
+      "NIST": "Special Publication 800-38D"
+    author:
+      -
+        ins: M. Dworkin
+    date: November 2007
 
   BSI-TLS:
     target: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/TechGuidelines/TG02102/BSI-TR-02102-2.pdf
@@ -1372,7 +1395,7 @@ To do a fair comparison, one has to choose a specific deployment and look at the
 
 # Overhead for Protection of Application Data {#record}
 
-To enable comparison, all the overhead calculations in this section use an 8 bytes ICV (e.g., AES_128_CCM_8 or AES-CCM-16-64-128) or 16 bytes (e.g., AES-CCM, AES-GCM, or ChaCha20-Poly1305), a plaintext of 6 bytes, and the sequence number ‘05’. This follows the example in {{RFC7400}}, Figure 16.
+To enable comparison, all the overhead calculations in this section use an 8 bytes ICV (e.g., AES_128_CCM_8 {{RFC6655}} or AES-CCM-16-64-128 {{RFC9053}}) or 16 bytes (e.g., AES-CCM {{SP-800-38C}}, AES-GCM {{SP-800-38D}}, or ChaCha20-Poly1305 {{RFC7539}}), a plaintext of 6 bytes, and the sequence number ‘05’. This follows the example in {{RFC7400}}, Figure 16.
 
 Note that the compressed overhead calculations for DLTS 1.2, DTLS 1.3, TLS 1.2 and TLS 1.3 are dependent on the parameters epoch, sequence number, and length (where applicable), and all the overhead calculations are dependent on the parameter Connection ID when used. Note that the OSCORE overhead calculations are dependent on the CoAP option numbers, as well as the length of the OSCORE parameters Sender ID, ID Context, and Sequence Number (where applicable). cTLS uses the DTLS 1.3 record layer. The following calculations are only examples.
 
