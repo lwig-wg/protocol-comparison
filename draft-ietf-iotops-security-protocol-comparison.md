@@ -126,6 +126,22 @@ informative:
         ins: M. Dworkin
     date: November 2007
 
+  FIPS-180-4:
+    target: https://doi.org/10.6028/NIST.FIPS.180-4
+    title: "Secure Hash Standard (SHS)"
+    author:
+      -
+        ins: NIST
+    date: August 2015
+
+  FIPS-186-5:
+    target: https://doi.org/10.6028/NIST.FIPS.186-5
+    title: "Digital Signature Standard (DSS)"
+    author:
+      -
+        ins: NIST
+    date: February 2023
+
   BSI-TLS:
     target: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/TechGuidelines/TG02102/BSI-TR-02102-2.pdf
     title: "Technical Guideline TR-02102-2 Cryptographic Mechanisms: Recommendations and Key Lengths Part 2 – Use of Transport Layer Security (TLS)"
@@ -226,7 +242,7 @@ This section analyzes and compares the sizes of key exchange flights for differe
 To enable a comparison between protocols, the following assumptions are made:
 
 * The overhead calculations in this section use an 8 bytes ICV (e.g., AES_128_CCM_8 {{RFC6655}} or AES-CCM-16-64-128 {{RFC9053}}) or 16 bytes e.g., AES-CCM {{SP-800-38C}}, AES-GCM {{SP-800-38D}}, or ChaCha20-Poly1305 {{RFC7539}}).
-* A minimum number of algorithms and cipher suites is offered. The algorithm used/offered are P-256 {{SP-800-186}} or Curve25519 {{RFC7748}}, ECDSA with P-256 and SHA-256 or Ed25519 {{RFC8032}}, AES-CCM_8, and SHA-256.
+* A minimum number of algorithms and cipher suites is offered. The algorithm used/offered are P-256 {{SP-800-186}} or Curve25519 {{RFC7748}}, ECDSA {{FIPS-186-5}} with P-256 and SHA-256 or Ed25519 {{RFC8032}}, AES-CCM_8, and SHA-256 {{FIPS-180-4}}.
 * The length of key identifiers are 1 byte.
 * The length of connection identifiers are 1 byte.
 * DTLS handshake message fragmentation is not considered.
