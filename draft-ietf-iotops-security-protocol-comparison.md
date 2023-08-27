@@ -42,6 +42,7 @@ informative:
   RFC5480:
   RFC6347:
   RFC6655:
+  RFC7250:
   RFC7252:
   RFC7400:
   RFC7539:
