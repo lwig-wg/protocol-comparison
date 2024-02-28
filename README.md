@@ -2,7 +2,7 @@
 
 This is the working area for the IETF [IOTOPS Working Group](https://datatracker.ietf.org/wg/iotops/documents/) Internet-Draft, "Comparison of CoAP Security Protocols".
 
-<>* [Editor's Copy HTML](https://EricssonResearch.github.io/lwig-comparison/#go.draft-ietf-lwig-security-protocol-comparison.html)
+* [Editor's Copy HTML](https://EricssonResearch.github.io/lwig-comparison/#go.draft-ietf-lwig-security-protocol-comparison.html)
 * [Editor's Copy Text](https://EricssonResearch.github.io/lwig-comparison/#go.draft-ietf-lwig-security-protocol-comparison.txt)
 * [Working Group Draft](https://tools.ietf.org/html/draft-ietf-lwig-security-protocol-comparison)
 * [Compare Editor's Copy to Working Group Draft](https://EricssonResearch.github.io/lwig-comparison/#go.draft-ietf-lwig-security-protocol-comparison.diff)
