@@ -6,8 +6,8 @@ This is the working area for the IETF [IOTOPS Working Group](https://datatracker
 * [Editor's Copy Text](https://EricssonResearch.github.io/lwig-comparison/#go.draft-ietf-lwig-security-protocol-comparison.txt)
 * [Compare Editor's Copy to Working Group Draft](https://EricssonResearch.github.io/lwig-comparison/#go.draft-ietf-lwig-security-protocol-comparison.diff)
 ---> 
-
-* [Working Group Draft](https://tools.ietf.org/html/draft-ietf-lwig-security-protocol-comparison)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-ietf-iotops-security-protocol-comparison)
+* [Working Group Draft](https://tools.ietf.org/html/draft-ietf-iotops-security-protocol-comparison)
 
 ## Building the Draft
 
