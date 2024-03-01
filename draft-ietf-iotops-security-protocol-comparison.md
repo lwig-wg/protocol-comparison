@@ -1917,27 +1917,25 @@ Changes from -03 to -04:
 Changes from -02 to -03:
 
 * Security considerations linking to the security considerations for the protocols as well as newer recommendations and best practices.
-* Moved "EDHOC Over CoAP and OSCORE" section to appendix
+* Moved "EDHOC Over CoAP and OSCORE" subsection to appendix
 * References for the algorithms
 
 Changes from -01 to -02:
 
-* More information about underlying layers.
-* 
+* More information about overhead in underlying layers.
+* New subsection "EDHOC Over CoAP and OSCORE" contributed by Marco.
+
 Changes from -00 to -01:
 
-
-Added links to the IOTOPS mailing list and the GitHub repository.
-— Made it clearer that the document focuses on comparing the security protocols and not underlying layers.
-— Added a short section on underlying layers. Added references to SCHC documents.
-— Changed “Conclusion” to “Summary”.
-— Corrected Group OSCORE numbers.
-— Added new section on EDHOC Over CoAP and OSCORE. Thanks Marco!
-— Updated cTLS numbers to align with -08. Use “cTLS-08” in tables to make it clear that numbers are for -08.
-— cTLS is more stable now. Seems like cTLS will not optimize P-256/ECDSA and instead focus on x25519
+* Added links to the IOTOPS mailing list and the GitHub repository.
+* Made it clearer that the document focuses on comparing the security protocols and not underlying layers.
+* Added a short section on underlying layers. Added references to SCHC documents.
+* Changed “Conclusion” to “Summary”.
+* Corrected Group OSCORE numbers.
+* Updated cTLS numbers to align with -08. Use “cTLS-08” in tables to make it clear that numbers are for -08.
+* cTLS is more stable now. Seems like cTLS will not optimize P-256/ECDSA and instead focus on x25519
 and EdDSA. The impact of any cTLS changes are now much smaller than before.
-— Editorial changes.
-
+* Editorial changes.
 
 # Acknowledgments
 {: numbered="no"}
