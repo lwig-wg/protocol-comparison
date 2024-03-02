@@ -226,7 +226,7 @@ Readers of this document also might be interested in the following documents: {{
 
 DTLS and cTLS are typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. EDHOC is typically sent over CoAP which would typically add 12 bytes to flight #1, 5 bytes to flight #2, and 1 byte to flight #3 when used in the combined mode with OSCORE according to {{I-D.ietf-core-oscore-edhoc}}. If EDHOC is used without OSCORE, the overhead would typically be 12 bytes to flight #1 and #3 and 5 bytes to flight #2. OSCORE and Group OSCORE is part of CoAP and are typically sent over UDP.
 
-IPv6, UDP, and CoAP can be compressed with the Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP) {{RFC8824}}{{I-D.draft-ietf-schc-8824-update}}. Use of SCHC can significantly reduce the overhead. {{SCHC-eval}} gives an evaluation of how SCHC reduces this overhead for OSCORE and the DTLS 1.2 record layer when used in four of the most widely used LPWAN radio technologies 
+IPv6, UDP, and CoAP can be compressed with the Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP) {{RFC8824}}{{I-D.ietf-schc-8824-update}}. Use of SCHC can significantly reduce the overhead. {{SCHC-eval}} gives an evaluation of how SCHC reduces this overhead for OSCORE and the DTLS 1.2 record layer when used in four of the most widely used LPWAN radio technologies 
 
 Fragmentation can significantly increase the total overhead as many more packet headers have to be sent. CoAP, (D)TLS handshake, and IP supports fragmentation. If, how, and where fragmentation is done depends heavily on the underlying layers. 
 
