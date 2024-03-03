@@ -52,7 +52,6 @@ informative:
   RFC8032:
   RFC8323:
   RFC8376:
-  RFC8442:
   RFC8446:
   RFC8613:
   RFC8824:
