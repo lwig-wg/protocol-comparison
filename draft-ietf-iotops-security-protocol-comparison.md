@@ -257,7 +257,7 @@ The TLS, DTLS, and cTLS overhead is dependent on the group used for key exchange
 
 {{fig-compare1}} compares the message sizes of DTLS 1.3, cTLS, and EDHOC handshakes with connection ID and the mandatory to implement algorithms CCM_8, P-256, and ECDSA {{I-D.ietf-uta-tls13-iot-profile}} {{I-D.ietf-core-oscore-edhoc}}.
 
-Editor's note: The protocol and algorithm encoding in cTLS is currently not stable and the number might change in the final version. This version of the document analyses the -08 version of cTLS. It is uncertain if the TLS WG will adopt more compact encoding for P-256 and ECDSA such as secp256r1_compact and ecdsa_secp256r1_sha256_compact {{I-D.mattsson-tls-compact-ecc}}.
+Editor's note: This version of the document analyses the -09 version of cTLS, which seems relatively stable. It is uncertain if the TLS WG will adopt more compact encoding for P-256 and ECDSA such as secp256r1_compact and ecdsa_secp256r1_sha256_compact {{I-D.mattsson-tls-compact-ecc}}.
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 =====================================================================
@@ -292,9 +292,9 @@ Editor's note: The protocol and algorithm encoding in cTLS is currently not stab
  TLS 1.3  - PSK, ECDHE                   196     190      50     436
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
- cTLS-08  - X.509s by reference, ECDHE   107     200      98     405
- cTLS-08  - PSK, ECDHE                   108     120      20     250
- cTLS-08  - PSK                           43      57      20     120 
+ cTLS-09  - X.509s by reference, ECDHE   107     200      98     405
+ cTLS-09  - PSK, ECDHE                   108     120      20     250
+ cTLS-09  - PSK                           43      57      20     120 
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes with CCM_8, secp256r1, and ecdsa_secp256r1_sha256 or PSK and without Connection ID" artwork-align="center"}
@@ -313,9 +313,9 @@ Editor's note: The protocol and algorithm encoding in cTLS is currently not stab
  TLS 1.3  - PSK, ECDHE                   163     157      50     370
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
- cTLS-08  - X.509s by reference, ECDHE    74     160      91     325
- cTLS-08  - PSK, ECDHE                    75      89      20     186
- cTLS-08  - PSK                           43      57      20     120 
+ cTLS-09  - X.509s by reference, ECDHE    74     160      91     325
+ cTLS-09  - PSK, ECDHE                    75      89      20     186
+ cTLS-09  - PSK                           43      57      20     120 
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare3 title="Comparison of message sizes in bytes with CCM_8, x25519, and ed25519 or PSK and without Connection ID" artwork-align="center"}
