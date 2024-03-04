@@ -233,7 +233,7 @@ Readers of this document also might be interested in the following documents: {{
 
 # Underlying Layers {#layers}
 
-The described overheads in {{handshake}} and {{record}} are independent of the underlying layers as they do not consider DTLS handshake message fragmentation, how to compose DTLS handshake messages into records, and how the underlying layers influence the choice of application plaintext sizes. The complete overhead for all layers depends on the combination of layers as well as assumptions regarding the devices and applications, and is out of scope of the document. This section give a short overview of the overheads of UDP, TCP, and CoAP to give the reader a high level overview.
+The described overheads in {{handshake}} and {{record}} are independent of the underlying layers as they do not consider DTLS handshake message fragmentation, how to compose DTLS handshake messages into records, and how the underlying layers influence the choice of application plaintext sizes. The complete overhead for all layers depends on the combination of layers as well as assumptions regarding the devices and applications and is out of scope of the document. This section give a short overview of the overheads of UDP, TCP, and CoAP to give the reader a high-level overview.
 
 DTLS and cTLS are typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. EDHOC is typically sent over CoAP which would typically add 12 bytes to flight #1, 5 bytes to flight #2, and 1 byte to flight #3 when used in the combined mode with OSCORE according to {{I-D.ietf-core-oscore-edhoc}}, see {{marco}}. If EDHOC is used without OSCORE, the overhead would typically be 12 bytes to flight #1 and #3 and 5 bytes to flight #2. OSCORE and Group OSCORE is part of CoAP and are typically sent over UDP. A comparison of the total size for DTLS and EDHOC when transported over IEEE 802.15.4 and 6LoWPAN is provided in {{Performance}}.
 
@@ -823,7 +823,7 @@ Auth Tag (8 bytes) // AES-CCM_8:
 3 + 12 + 4 + 4 + 2 + 6 + 2 + 8 = 41 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Enabling resumption adds 41 bytes to the initial DTLS handshake. The resumption handshake is an ordinary PSK handshake with our without ECDHE.
+Enabling resumption adds 41 bytes to the initial DTLS handshake. The resumption handshake is an ordinary PSK handshake with or without ECDHE.
 
 ### DTLS Without Connection ID
 
