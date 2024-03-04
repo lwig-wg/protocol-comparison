@@ -1922,8 +1922,8 @@ Changes from -03 to -04:
 * Updated to cTLS-09, which seems relatively stable.
 * Explained key and certificate identifiers.
 * Added a paragraph to introduce the section of underlying layers.
-* Added reference to RFC 7250, RFC 9547, and "Performance Comparison of EDHOC and DTLS 1.3 in Internet-	
-of-Things Environments".
+* Added text explaining the difference between AKEs and protocols for protection of application data.
+* Added reference to RFC 7250, RFC 9547, and "Performance Comparison of EDHOC and DTLS 1.3 in Internet-of-Things Environments".
 * Editorial changes.
 
 Changes from -02 to -03:
@@ -1947,8 +1947,7 @@ Changes from -00 to -01:
 * Changed “Conclusion” to “Summary”.
 * Corrected Group OSCORE numbers.
 * Updated cTLS numbers to align with -08. Use “cTLS-08” in tables to make it clear that numbers are for -08.
-* cTLS is more stable now. Seems like cTLS will not optimize P-256/ECDSA and instead focus on x25519
-and EdDSA. The impact of any cTLS changes are now much smaller than before.
+* cTLS is more stable now. Seems like cTLS will not optimize P-256/ECDSA and instead focus on x25519 and EdDSA. The impact of any cTLS changes are now much smaller than before.
 * Editorial changes.
 
 # Acknowledgments
