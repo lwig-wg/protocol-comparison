@@ -1923,18 +1923,21 @@ Changes from -03 to -04:
 * Explained key and certificate identifiers.
 * Added a paragraph to introduce the section of underlying layers.
 * Added reference to RFC 7250, RFC 9547, and "Performance Comparison of EDHOC and DTLS 1.3 in Internet-	
-of-Things Environments"
+of-Things Environments".
+* Editorial changes.
 
 Changes from -02 to -03:
 
 * Security considerations linking to the security considerations for the protocols as well as newer recommendations and best practices.
-* Moved "EDHOC Over CoAP and OSCORE" subsection to appendix
-* References for the algorithms
+* Moved "EDHOC Over CoAP and OSCORE" subsection to appendix.
+* References for the algorithms.
+* Editorial changes.
 
 Changes from -01 to -02:
 
 * More information about overhead in underlying layers.
 * New subsection "EDHOC Over CoAP and OSCORE" contributed by Marco.
+* Editorial changes.
 
 Changes from -00 to -01:
 
