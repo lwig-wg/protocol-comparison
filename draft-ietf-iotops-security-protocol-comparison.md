@@ -1915,7 +1915,7 @@ For EDHOC message_3 over OSCORE with the EDHOC + OSCORE combined request {{I-D.i
 all the overhead contributions from the previous case is gone. The only additional overhead is 1 byte
 due to the EDHOC CoAP option.
 
-# Change log
+# Change Log
 {:removeInRFC="true" numbered="false"}
 
 Changes from -03 to -04:
