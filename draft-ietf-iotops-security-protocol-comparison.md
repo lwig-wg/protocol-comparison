@@ -1873,7 +1873,7 @@ This document has no actions for IANA.
 
 # EDHOC Over CoAP and OSCORE {#marco}
 
-The overhead of CoAP and OSCORE when used to transport EDHOC is a bit more complex than the overhead of UPD and TCP. Assuming a that the CoAP Token has a length of 0 bytes, that CoAP Content-Format is not used, that the EDHOC Initiator is the CoAP client, that the connection identifiers have 1 byte encodings, and the CoAP URI parh is "edhoc", the additional overhead due to CoAP being used as transport is:
+The overhead of CoAP and OSCORE when used to transport EDHOC is a bit more complex than the overhead of UPD and TCP. Assuming a that the CoAP Token has a length of 0 bytes, that CoAP Content-Format is not used, that the EDHOC Initiator is the CoAP client, that the connection identifiers have 1 byte encodings, and the CoAP URI path is "edhoc", the additional overhead due to CoAP being used as transport is:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 For EDHOC message_1
