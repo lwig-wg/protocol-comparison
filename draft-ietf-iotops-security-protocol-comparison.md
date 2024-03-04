@@ -839,7 +839,7 @@ DTLS 1.3 flight #3:   -1 byte
 
 ### Raw Public Keys {#rpkformat}
 
-Raw Public Keys in TLS consists of a DER encoded ASN.1 SubjectPublicKeyInfo structure {{RFC7250}}. This section illustrates the format of P-256 (secp256r1) SubjectPublicKeyInfo {{RFC5480}} with and without point compression as well as an ed25519 SubjectPublicKeyInfo. Point compression in SubjectPublicKeyInfo is standardized in {{RFC5480}} and is therefore theoretically possible to use in PRKs and X.509 certificates used in (D)TLS but does not seems to be supported by (D)TLS implementations.
+Raw Public Keys in TLS consists of a DER encoded ASN.1 SubjectPublicKeyInfo structure {{RFC7250}}. This section illustrates the format of P-256 (secp256r1) SubjectPublicKeyInfo {{RFC5480}} with and without point compression as well as an ed25519 SubjectPublicKeyInfo. Point compression in SubjectPublicKeyInfo is standardized in {{RFC5480}} and is therefore theoretically possible to use in PRKs and X.509 certificates used in (D)TLS but does not seem to be supported by (D)TLS implementations.
 
 #### secp256r1 SubjectPublicKeyInfo Without Point Compression
 
@@ -1295,7 +1295,7 @@ Using Connection ID adds 1 byte to flight #1 and #3, and 2 bytes to flight #2.
 
 ## EDHOC
 
-This section gives an estimate of the message sizes of EDHOC {{I-D.ietf-lake-edhoc}} authenticated with static Diffie-Hellman keys and where the static Diffie-Hellman are identified with a key identifier (kid). All examples are given in CBOR diagnostic notation and hexadecimal, and are based on the test vectors in Section 4 of {{I-D.ietf-lake-traces}}.
+This section gives an estimate of the message sizes of EDHOC {{I-D.ietf-lake-edhoc}} authenticated with static Diffie-Hellman keys and where the static Diffie-Hellman are identified with a key identifier (kid). All examples are given in CBOR diagnostic notation and hexadecimal and are based on the test vectors in Section 4 of {{I-D.ietf-lake-traces}}.
 
 ### Message Sizes RPK
 
@@ -1368,7 +1368,7 @@ Based on the example above it is relatively easy to calculate numbers also for E
 
 ## Summary
 
-To do a fair comparison, one has to choose a specific deployment and look at the topology, the whole protocol stack, frame sizes (e.g., 51 or 128 bytes), how and where in the protocol stack fragmentation is done, and the expected packet loss. Note that the number of bytes in each frame that is available for the key exchange protocol may depend on the underlying protocol layers as well as on the number of hops in multi-hop networks. The packet loss may depend on how many other devices are transmitting at the same time, and may increase during network formation.  The total overhead will be larger due to mechanisms for fragmentation, retransmission, and packet ordering.  The overhead of fragmentation is roughly proportional to the number of fragments, while the expected overhead due to retransmission in noisy environments is a superlinear function of the flight sizes.
+To do a fair comparison, one has to choose a specific deployment and look at the topology, the whole protocol stack, frame sizes (e.g., 51 or 128 bytes), how and where in the protocol stack fragmentation is done, and the expected packet loss. Note that the number of bytes in each frame that is available for the key exchange protocol may depend on the underlying protocol layers as well as on the number of hops in multi-hop networks. The packet loss may depend on how many other devices are transmitting at the same time and may increase during network formation.  The total overhead will be larger due to mechanisms for fragmentation, retransmission, and packet ordering.  The overhead of fragmentation is roughly proportional to the number of fragments, while the expected overhead due to retransmission in noisy environments is a superlinear function of the flight sizes.
 
 
 
@@ -1873,7 +1873,7 @@ This document has no actions for IANA.
 
 # EDHOC Over CoAP and OSCORE {#marco}
 
-The overhead of CoAP and OSCORE when used to transport EDHOC is a bit more complex than the overhead of UPD and TCP. Assuming a that the CoAP Token has a length of 0 bytes, that CoAP Content-Format is not used, that the EDHOC Initiator is the CoAP client, that the connection identifiers have 1 byte encodings, and the CoAP URI path is "edhoc", the additional overhead due to CoAP being used as transport is:
+The overhead of CoAP and OSCORE when used to transport EDHOC is a bit more complex than the overhead of UPD and TCP. Assuming a that the CoAP Token has a length of 0 bytes, that CoAP Content-Format is not used, that the EDHOC Initiator is the CoAP client, that the connection identifiers have 1-byte encodings, and the CoAP URI path is "edhoc", the additional overhead due to CoAP being used as transport is:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 For EDHOC message_1
