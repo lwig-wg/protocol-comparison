@@ -210,7 +210,7 @@ informative:
       -
         ins: G. Fedrecheski
       -
-        ins: {{{M. Vučinić}}}
+        ins: M. Vučinić
       -
         ins: T. Watteyne
     date: January 2024
