@@ -1921,7 +1921,7 @@ Changes from -03 to -04:
 * Added change log
 * Updated to cTLS-09, which seems relatively stable.
 * Explained key and certificate identifiers.
-* Added a paragraph to introduce the section of underlying layers.
+* Added a paragraph to introduce the section on underlying layers.
 * Added text explaining the difference between AKEs and protocols for protection of application data.
 * Added reference to RFC 7250, RFC 9547, and "Performance Comparison of EDHOC and DTLS 1.3 in Internet-of-Things Environments".
 * Editorial changes.
