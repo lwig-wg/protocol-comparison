@@ -235,9 +235,9 @@ Readers of this document also might be interested in the following documents: {{
 
 # Underlying Layers {#layers}
 
-The described overheads in {{handshake}} and {{record}} are independent of the underlying layers as they do not consider DTLS handshake message fragmentation, how to compose DTLS handshake messages into records, and how the underlying layers influence the choice of application plaintext sizes. The complete overhead for all layers depends on the combination of layers as well as assumptions regarding the devices and applications and are out of scope of the document. This section give a short overview of the overheads of UDP, TCP, and CoAP.
+The described overheads in {{handshake}} and {{record}} are independent of the underlying layers as they do not consider DTLS handshake message fragmentation, how to compose DTLS handshake messages into records, and how the underlying layers influence the choice of application plaintext sizes. The complete overhead for all layers depends on the combination of layers as well as assumptions regarding the devices and applications, and is out of scope of the document. This section give a short overview of the overheads of UDP, TCP, and CoAP to give the reader a high level overview.
 
-DTLS and cTLS are typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. EDHOC is typically sent over CoAP which would typically add 12 bytes to flight #1, 5 bytes to flight #2, and 1 byte to flight #3 when used in the combined mode with OSCORE according to {{I-D.ietf-core-oscore-edhoc}}. If EDHOC is used without OSCORE, the overhead would typically be 12 bytes to flight #1 and #3 and 5 bytes to flight #2, see {{marco}}. OSCORE and Group OSCORE is part of CoAP and are typically sent over UDP. A comparision of the total size for DTLS and EDHOC when transported over IEEE 802.15.4 and 6LoWPAN is provided in {{Performance}}.
+DTLS and cTLS are typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. EDHOC is typically sent over CoAP which would typically add 12 bytes to flight #1, 5 bytes to flight #2, and 1 byte to flight #3 when used in the combined mode with OSCORE according to {{I-D.ietf-core-oscore-edhoc}}, see {{marco}}. If EDHOC is used without OSCORE, the overhead would typically be 12 bytes to flight #1 and #3 and 5 bytes to flight #2. OSCORE and Group OSCORE is part of CoAP and are typically sent over UDP. A comparision of the total size for DTLS and EDHOC when transported over IEEE 802.15.4 and 6LoWPAN is provided in {{Performance}}.
 
 IPv6, UDP, and CoAP can be compressed with the Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP) {{RFC8824}}{{I-D.ietf-schc-8824-update}}. Use of SCHC can significantly reduce the overhead. {{SCHC-eval}} gives an evaluation of how SCHC reduces this overhead for OSCORE and the DTLS 1.2 record layer when used in four of the most widely used LPWAN radio technologies 
 
@@ -1875,7 +1875,7 @@ This document has no actions for IANA.
 
 # EDHOC Over CoAP and OSCORE {#marco}
 
-Assuming a that the CoAP Token has a length of 0 bytes, that CoAP Content-Format is not used, that the EDHOC Initiator is the CoAP client, that the connection identifiers have 1 byte encodings, and the the CoAP URI parh is "edhoc", the additional overhead due to CoAP being used as transport is:
+The overhead of CoAP and OSCORE when used to transport EDHOC is a bit more complex than the overhead of UPD and TCP. Assuming a that the CoAP Token has a length of 0 bytes, that CoAP Content-Format is not used, that the EDHOC Initiator is the CoAP client, that the connection identifiers have 1 byte encodings, and the the CoAP URI parh is "edhoc", the additional overhead due to CoAP being used as transport is:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 For EDHOC message_1
