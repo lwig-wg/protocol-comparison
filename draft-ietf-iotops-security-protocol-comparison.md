@@ -217,7 +217,7 @@ informative:
 
 --- abstract
 
-This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP. The described overheads are independent of the underlying transport. Small message sizes are very important for reducing energy consumption, latency, and time to completion in constrained radio network such as Low-Power Wide Area Networks (LPWANs). The analyzed security protocols are DTLS 1.2, DTLS 1.3, TLS 1.2, TLS 1.3, cTLS, EDHOC, OSCORE, and Group OSCORE. The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression. DTLS is analyzed with and without Connection ID.
+This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP. Small message sizes are very important for reducing energy consumption, latency, and time to completion in constrained radio network such as Low-Power Wide Area Networks (LPWANs). The analyzed security protocols are DTLS 1.2, DTLS 1.3, TLS 1.2, TLS 1.3, cTLS, EDHOC, OSCORE, and Group OSCORE. The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression. DTLS is analyzed with and without Connection ID.
 
 --- middle
 
@@ -227,7 +227,7 @@ Small message sizes are very important for reducing energy consumption, latency,
 
 To reduce overhead, processing, and energy consumption in constrained radio networks, IETF has created several working groups and technologies for constrained networks, e.g., (here technologies in parenthesis when the name is different from the working group): 6lo, 6LoWPAN, 6TiSCH, ACE, CBOR, CoRE (CoAP, OSCORE), COSE (COSE, C509), LAKE (EDHOC), LPWAN (SCHC), ROLL (RPL), and TLS (cTLS). Compact formats and protocol have also been suggested as a way to decrease the energy consumption of Internet Applications and Systems in general {{RFC9547}}.
 
-This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, cTLS {{I-D.ietf-tls-ctls}}, EDHOC {{I-D.ietf-lake-edhoc}} {{I-D.ietf-core-oscore-edhoc}}, OSCORE {{RFC8613}}, and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}. The described overheads are independent of the underlying transport.
+This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, cTLS {{I-D.ietf-tls-ctls}}, EDHOC {{I-D.ietf-lake-edhoc}} {{I-D.ietf-core-oscore-edhoc}}, OSCORE {{RFC8613}}, and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}. The described overheads are independent of the underlying transport but the overhead in the underlying layer might depend on security protocol on the higher layer.
 
 The protocols are analyzed with different algorithms and options. The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression {{RFC7400}}. DTLS is analyzed with and without Connection ID {{RFC9146}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as Integrity Check Value (ICV). {{handshake}} compares the overhead of mutually authenticated key exchange, while {{record}} covers the overhead for protection of application data.
 
@@ -235,7 +235,7 @@ Readers of this document also might be interested in the following documents: {{
 
 # Underlying layers {#layers}
 
-DTLS and cTLS are typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. EDHOC is typically sent over CoAP which would typically add 12 bytes to flight #1, 5 bytes to flight #2, and 1 byte to flight #3 when used in the combined mode with OSCORE according to {{I-D.ietf-core-oscore-edhoc}}. If EDHOC is used without OSCORE, the overhead would typically be 12 bytes to flight #1 and #3 and 5 bytes to flight #2. OSCORE and Group OSCORE is part of CoAP and are typically sent over UDP.
+DTLS and cTLS are typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. EDHOC is typically sent over CoAP which would typically add 12 bytes to flight #1, 5 bytes to flight #2, and 1 byte to flight #3 when used in the combined mode with OSCORE according to {{I-D.ietf-core-oscore-edhoc}}. If EDHOC is used without OSCORE, the overhead would typically be 12 bytes to flight #1 and #3 and 5 bytes to flight #2, see {{marco}}. OSCORE and Group OSCORE is part of CoAP and are typically sent over UDP. A comparision of the total size for DTLS and EDHOC when transported over IEEE 802.15.4 and 6LoWPAN is provided in {{Performance}}.
 
 IPv6, UDP, and CoAP can be compressed with the Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP) {{RFC8824}}{{I-D.ietf-schc-8824-update}}. Use of SCHC can significantly reduce the overhead. {{SCHC-eval}} gives an evaluation of how SCHC reduces this overhead for OSCORE and the DTLS 1.2 record layer when used in four of the most widely used LPWAN radio technologies 
 
@@ -1871,7 +1871,7 @@ This document has no actions for IANA.
 
 --- back
 
-# EDHOC Over CoAP and OSCORE
+# EDHOC Over CoAP and OSCORE {#marco}
 
 Assuming a that the CoAP Token has a length of 0 bytes, that CoAP Content-Format is not used, that the EDHOC Initiator is the CoAP client, that the connection identifiers have 1 byte encodings, and the the CoAP URI parh is "edhoc", the additional overhead due to CoAP being used as transport is:
 
