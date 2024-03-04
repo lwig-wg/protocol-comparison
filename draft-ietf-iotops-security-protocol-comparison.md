@@ -1281,7 +1281,7 @@ In TLS 1.2 the number of bytes in the four flights are 170, 1188, 117, and 75 fo
 
 ## cTLS
 
-Version -08 of the cTLS specification {{I-D.ietf-tls-ctls}} has a single example with CCM_8, x25519, and ed25519 in Appendix A. This document uses that examples and calculates number for different parameters as follows:
+Version -09 of the cTLS specification {{I-D.ietf-tls-ctls}} has a single example with CCM_8, x25519, and ed25519 in Appendix A. This document uses that example and calculates numbers for different parameters as follows:
 
 Using secp256r1 instead x25519 add 33 bytes to the KeyShareEntry.key_exchange in flight #1 and flight #2.
 
