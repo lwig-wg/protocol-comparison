@@ -264,7 +264,7 @@ The choices of algorithms are based on the profiles in {{RFC7925}}, {{I-D.ietf-u
 
 ## Summary {#summ-handshake}
 
-The DTLS, EDHOC, and cTLS overhead is dependent on the parameter Connection ID.  The EDHOC and cTLS overhead is dependent on the key or certificate identifiers included. Key identifiers are used to identity a cryptographic key and certificate identifiers are used to identify a certificate. If 8 bytes identifiers are used instead of 1 byte, the RPK numbers for flight #2 and #3 increases with 7 bytes and the PSK numbers for flight #1 increases with 7 bytes.
+The DTLS, EDHOC, and cTLS overhead is dependent on the parameter Connection ID.  The EDHOC and cTLS overhead is dependent on the key or certificate identifiers included. Key identifiers are byte strings used to identity a cryptographic key and certificate identifiers are used to identify a certificate. If 8 bytes identifiers are used instead of 1 byte, the RPK numbers for flight #2 and #3 increases with 7 bytes and the PSK numbers for flight #1 increases with 7 bytes.
 
 The DTLS, EDHOC, and cTLS overhead is dependent on the parameter Connection ID. The EDHOC and cTLS overhead is dependent on the key/certificate identifiers included. If 8 bytes key/certificate identifiers are used instead of 1 byte, the RPK numbers for flight #2 and #3 increases with 7 bytes and the PSK numbers for flight #1 increases with 7 bytes.
 
@@ -841,7 +841,7 @@ DTLS 1.3 flight #3:   -1 byte
 
 ### Raw Public Keys {#rpkformat}
 
-Raw Public Keys in TLS consists of a DER encoded ANS.1 SubjectPublicKeyInfo structure {{RFC7250}}. This section illustrates the format of P-256 (secp256r1) SubjectPublicKeyInfo {{RFC5480}} with and without point compression as well as an ed25519 SubjectPublicKeyInfo. Point compression in SubjectPublicKeyInfo is standardized in {{RFC5480}} and is therefore theoretically possible to use in PRKs and X.509 certificates used in (D)TLS but does not seems to be supported by (D)TLS implementations.
+Raw Public Keys in TLS consists of a DER encoded ASN.1 SubjectPublicKeyInfo structure {{RFC7250}}. This section illustrates the format of P-256 (secp256r1) SubjectPublicKeyInfo {{RFC5480}} with and without point compression as well as an ed25519 SubjectPublicKeyInfo. Point compression in SubjectPublicKeyInfo is standardized in {{RFC5480}} and is therefore theoretically possible to use in PRKs and X.509 certificates used in (D)TLS but does not seems to be supported by (D)TLS implementations.
 
 #### secp256r1 SubjectPublicKeyInfo Without Point Compression
 
