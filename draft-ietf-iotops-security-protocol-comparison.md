@@ -63,14 +63,14 @@ informative:
   RFC9175:
   RFC9191:
   RFC9325:
+  RFC9528:
+  RFC9529:
   RFC9547:
   I-D.ietf-core-attacks-on-coap:
   I-D.ietf-core-oscore-edhoc:
   I-D.ietf-core-oscore-groupcomm:
   I-D.ietf-cose-cbor-encoded-cert:
-  I-D.ietf-lake-edhoc:
   I-D.ietf-lake-reqs:
-  I-D.ietf-lake-traces:
   I-D.ietf-schc-8824-update:
   I-D.ietf-tls-ctls:
   I-D.ietf-tls-cert-abridge:
@@ -227,9 +227,9 @@ Small message sizes are very important for reducing energy consumption, latency,
 
 To reduce overhead, processing, and energy consumption in constrained radio networks, IETF has created several working groups and technologies for constrained networks, e.g., (here technologies in parenthesis when the name is different from the working group): 6lo, 6LoWPAN, 6TiSCH, ACE, CBOR, CoRE (CoAP, OSCORE), COSE (COSE, C509), LAKE (EDHOC), LPWAN (SCHC), ROLL (RPL), and TLS (cTLS). Compact formats and protocol have also been suggested as a way to decrease the energy consumption of Internet Applications and Systems in general {{RFC9547}}.
 
-This document analyzes and compares the sizes of Authenticated Key Exchange (AKE) flights and the per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, cTLS {{I-D.ietf-tls-ctls}}, EDHOC {{I-D.ietf-lake-edhoc}} {{I-D.ietf-core-oscore-edhoc}}, OSCORE {{RFC8613}}, and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}. An AKE and a protocol for the protection of application data serve distinct purposes. An AKE is responsible for establishing secure communication channels between parties and negotiating cryptographic keys used for authenticated encryption. AKE protocols typically involve a series of messages exchanged between communicating parties to authenticate each other's identities and derive shared secret keys. TLS, DTLS, and cTLS handshakes as well as EDHOC are examples of AKEs. Protocols for protection of application data are responsible for encrypting and authenticating application-layer data to ensure its confidentiality, integrity, and replay protection during transmission. The TLS and DTLS record layers, OSCORE, and Group OSCORE are examples of protocols for protection of application data. {{handshake}} compares the overhead of mutually authenticated key exchange protocols, while {{record}} covers the overhead of protocols for protection of application data. The protocols are analyzed with different algorithms and options. The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression {{RFC7400}}. DTLS is analyzed with and without Connection ID {{RFC9146}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as Integrity Check Value (ICV).
+This document analyzes and compares the sizes of Authenticated Key Exchange (AKE) flights and the per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, cTLS {{I-D.ietf-tls-ctls}}, EDHOC {{RFC9528}} {{I-D.ietf-core-oscore-edhoc}}, OSCORE {{RFC8613}}, and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}. An AKE and a protocol for the protection of application data serve distinct purposes. An AKE is responsible for establishing secure communication channels between parties and negotiating cryptographic keys used for authenticated encryption. AKE protocols typically involve a series of messages exchanged between communicating parties to authenticate each other's identities and derive shared secret keys. TLS, DTLS, and cTLS handshakes as well as EDHOC are examples of AKEs. Protocols for protection of application data are responsible for encrypting and authenticating application-layer data to ensure its confidentiality, integrity, and replay protection during transmission. The TLS and DTLS record layers, OSCORE, and Group OSCORE are examples of protocols for protection of application data. {{handshake}} compares the overhead of mutually authenticated key exchange protocols, while {{record}} covers the overhead of protocols for protection of application data. The protocols are analyzed with different algorithms and options. The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression {{RFC7400}}. DTLS is analyzed with and without Connection ID {{RFC9146}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as Integrity Check Value (ICV).
 
-Readers of this document also might be interested in the following documents: {{Illustrated-TLS12}}, {{Illustrated-TLS13}}, {{Illustrated-DTLS13}}, and {{I-D.ietf-lake-traces}} explain every byte in example TLS 1.2, TLS 1.3, DTLS 1.3, and EDHOC instances. {{RFC9191}} looks at potential tools available for overcoming the deployment challenges induced by large certificates and long certificate chains and discusses solutions available to overcome these challenges. {{I-D.ietf-cose-cbor-encoded-cert}} gives examples of IoT and Web certificates as well as examples on how effective C509 and TLS certificate compression {{RFC8879}} is at compressing example certificate and certificate chains. {{I-D.ietf-tls-cert-abridge}} and {{I-D.kampanakis-tls-scas-latest}} describe how TLS clients or servers can reduce the size of the TLS handshake by not sending certificate authority certificates. {{I-D.mattsson-tls-compact-ecc}} proposes new optimized encodings for key exchange and signatures with P-256 in TLS 1.3.
+Readers of this document also might be interested in the following documents: {{Illustrated-TLS12}}, {{Illustrated-TLS13}}, {{Illustrated-DTLS13}}, and {{RFC9529}} explain every byte in example TLS 1.2, TLS 1.3, DTLS 1.3, and EDHOC instances. {{RFC9191}} looks at potential tools available for overcoming the deployment challenges induced by large certificates and long certificate chains and discusses solutions available to overcome these challenges. {{I-D.ietf-cose-cbor-encoded-cert}} gives examples of IoT and Web certificates as well as examples on how effective C509 and TLS certificate compression {{RFC8879}} is at compressing example certificate and certificate chains. {{I-D.ietf-tls-cert-abridge}} and {{I-D.kampanakis-tls-scas-latest}} describe how TLS clients or servers can reduce the size of the TLS handshake by not sending certificate authority certificates. {{I-D.mattsson-tls-compact-ecc}} proposes new optimized encodings for key exchange and signatures with P-256 in TLS 1.3.
 
 # Underlying Layers {#layers}
 
@@ -1293,7 +1293,7 @@ Using Connection ID adds 1 byte to flight #1 and #3, and 2 bytes to flight #2.
 
 ## EDHOC
 
-This section gives an estimate of the message sizes of EDHOC {{I-D.ietf-lake-edhoc}} authenticated with static Diffie-Hellman keys and where the static Diffie-Hellman are identified with a key identifier (kid). All examples are given in CBOR diagnostic notation and hexadecimal and are based on the test vectors in Section 4 of {{I-D.ietf-lake-traces}}.
+This section gives an estimate of the message sizes of EDHOC {{RFC9528}} authenticated with static Diffie-Hellman keys and where the static Diffie-Hellman are identified with a key identifier (kid). All examples are given in CBOR diagnostic notation and hexadecimal and are based on the test vectors in Section 4 of {{RFC9529}}.
 
 ### Message Sizes RPK
 
@@ -1347,7 +1347,7 @@ message_3 (19 bytes):
 
 ### Summary
 
-Based on the example above it is relatively easy to calculate numbers also for EDHOC authenticated with signature keys and for authentication keys identified with a SHA-256/64 hash (x5t). Signatures increase the size of flight #2 and #3 with (64 - 8 + 1) bytes while x5t increases the size with 13-14 bytes. The typical message sizes for the previous example and for the other combinations are summarized in {{fig-summary}}. Note that EDHOC treats authentication keys stored in RPK and X.509 in the same way. More detailed examples can be found in {{I-D.ietf-lake-traces}}.
+Based on the example above it is relatively easy to calculate numbers also for EDHOC authenticated with signature keys and for authentication keys identified with a SHA-256/64 hash (x5t). Signatures increase the size of flight #2 and #3 with (64 - 8 + 1) bytes while x5t increases the size with 13-14 bytes. The typical message sizes for the previous example and for the other combinations are summarized in {{fig-summary}}. Note that EDHOC treats authentication keys stored in RPK and X.509 in the same way. More detailed examples can be found in {{RFC9529}}.
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 ==========================================================
@@ -1859,7 +1859,7 @@ Note that the compared protocols have slightly different use cases. TLS and DTLS
 
 When using the security protocols outlined in this document, it is important to adhere to the latest requirements and recommendations for respective protocol. It is also crucial to utilize supported versions of libraries that continue to receive security updates in response to identified vulnerabilities.
 
-While the security considerations provided in DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, cTLS {{I-D.ietf-tls-ctls}}, EDHOC {{I-D.ietf-lake-edhoc}} {{I-D.ietf-core-oscore-edhoc}}, OSCORE {{RFC8613}}, Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}, and X.509 {{RFC5280}} serve as a good starting point, they are not sufficient due to the fact that some of these specifications were authored many years ago. For instance, being compliant to the TLS 1.2 {{RFC5246}} specification is considered very poor security practice, given that the mandatory-to-implement cipher suite TLS_RSA_WITH_AES_128_CBC_SHA possesses at least three major weaknesses.
+While the security considerations provided in DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, cTLS {{I-D.ietf-tls-ctls}}, EDHOC {{RFC9528}} {{I-D.ietf-core-oscore-edhoc}}, OSCORE {{RFC8613}}, Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}, and X.509 {{RFC5280}} serve as a good starting point, they are not sufficient due to the fact that some of these specifications were authored many years ago. For instance, being compliant to the TLS 1.2 {{RFC5246}} specification is considered very poor security practice, given that the mandatory-to-implement cipher suite TLS_RSA_WITH_AES_128_CBC_SHA possesses at least three major weaknesses.
 
 Therefore, implementations and configurations must also align with the latest recommendations and best practices. Notable examples when this document was published include BCP 195 {{RFC9325}}{{RFC8996}}, {{SP-800-52}}, and {{BSI-TLS}}.
 
