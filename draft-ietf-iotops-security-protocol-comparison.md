@@ -22,13 +22,11 @@ author:
 - name: John Preuß Mattsson
   initials: J
   surname: Preuß Mattsson
-  org: Ericsson AB
-  abbrev: Ericsson
+  org: Ericsson
   email: john.mattsson@ericsson.com
 - name: Francesca Palombini
   surname: Palombini
-  org: Ericsson AB
-  abbrev: Ericsson
+  org: Ericsson
   email: francesca.palombini@ericsson.com
 - name: Mališa Vučinić
   surname: Vučinić
