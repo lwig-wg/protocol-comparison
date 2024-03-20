@@ -1912,6 +1912,14 @@ due to the EDHOC CoAP option.
 # Change Log
 {:removeInRFC="true" numbered="false"}
 
+Changes from -05 to -06:
+
+* Editorial changes.
+
+Changes from -04 to -05:
+
+* Editorial changes.
+
 Changes from -03 to -04:
 
 * Added change log
