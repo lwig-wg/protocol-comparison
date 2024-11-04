@@ -148,7 +148,7 @@ informative:
     author:
       -
         ins: "Bundesamt für Sicherheit in der Informationstechnik"
-    date: January 2023
+    date: February 2024
 
   SCHC-eval:
     target: https://ieeexplore.ieee.org/document/9685592
