@@ -75,6 +75,7 @@ informative:
   I-D.ietf-uta-tls13-iot-profile:
   I-D.kampanakis-tls-scas-latest:
   I-D.mattsson-tls-compact-ecc:
+  I-D.mattsson-tls-super-jumbo-record-limit:
 
   SP-800-186:
     target: https://doi.org/10.6028/NIST.SP.800-186
