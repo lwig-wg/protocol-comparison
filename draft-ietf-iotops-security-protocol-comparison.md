@@ -266,7 +266,7 @@ The TLS, DTLS, and cTLS overhead is dependent on the group used for key exchange
 
 {{fig-compare1}} compares the message sizes of DTLS 1.3, cTLS, and EDHOC handshakes with connection ID and the mandatory to implement algorithms CCM_8, P-256, and ECDSA {{I-D.ietf-uta-tls13-iot-profile}} {{I-D.ietf-core-oscore-edhoc}}.
 
-Editor's note: This version of the document analyses the -09 version of cTLS, which seems relatively stable. It is uncertain if the TLS WG will adopt more compact encoding for P-256 and ECDSA such as secp256r1_compact and ecdsa_secp256r1_sha256_compact {{I-D.mattsson-tls-compact-ecc}}.
+Editor's note: This version of the document analyses the -10 version of cTLS, which seems relatively stable.
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 =====================================================================
@@ -301,9 +301,9 @@ Editor's note: This version of the document analyses the -09 version of cTLS, wh
  TLS 1.3  - PSK, ECDHE                   196     190      50     436
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
- cTLS-09  - X.509s by reference, ECDHE   107     200      98     405
- cTLS-09  - PSK, ECDHE                   108     120      20     250
- cTLS-09  - PSK                           43      57      20     120 
+ cTLS-10  - X.509s by reference, ECDHE   107     200      98     405
+ cTLS-10  - PSK, ECDHE                   108     120      20     250
+ cTLS-10  - PSK                           43      57      20     120 
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare2 title="Comparison of message sizes in bytes with CCM_8, secp256r1, and ecdsa_secp256r1_sha256 or PSK and without Connection ID" artwork-align="center"}
@@ -322,9 +322,9 @@ Editor's note: This version of the document analyses the -09 version of cTLS, wh
  TLS 1.3  - PSK, ECDHE                   163     157      50     370
  TLS 1.3  - PSK                          113     117      50     280
 ---------------------------------------------------------------------
- cTLS-09  - X.509s by reference, ECDHE    74     160      91     325
- cTLS-09  - PSK, ECDHE                    75      89      20     186
- cTLS-09  - PSK                           43      57      20     120 
+ cTLS-10  - X.509s by reference, ECDHE    74     160      91     325
+ cTLS-10  - PSK, ECDHE                    75      89      20     186
+ cTLS-10  - PSK                           43      57      20     120 
 =====================================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare3 title="Comparison of message sizes in bytes with CCM_8, x25519, and ed25519 or PSK and without Connection ID" artwork-align="center"}
@@ -1277,7 +1277,7 @@ In TLS 1.2 the number of bytes in the four flights are 170, 1188, 117, and 75 fo
 
 ## cTLS
 
-Version -09 of the cTLS specification {{I-D.ietf-tls-ctls}} has a single example with CCM_8, x25519, and ed25519 in Appendix A. This document uses that example and calculates numbers for different parameters as follows:
+Version -10 of the cTLS specification {{I-D.ietf-tls-ctls}} has a single example with CCM_8, x25519, and ed25519 in Appendix A. This document uses that example and calculates numbers for different parameters as follows:
 
 Using secp256r1 instead x25519 add 33 bytes to the KeyShareEntry.key_exchange in flight #1 and flight #2.
 
@@ -1911,6 +1911,11 @@ due to the EDHOC CoAP option.
 
 # Change Log
 {:removeInRFC="true" numbered="false"}
+
+Changes from -06 to -07:
+
+* Updated to cTLS-10
+* Added reference to draft-mattsson-tls-super-jumbo-record-limit 
 
 Changes from -05 to -06:
 
