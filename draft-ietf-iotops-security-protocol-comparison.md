@@ -1916,6 +1916,7 @@ Changes from -06 to -07:
 
 * Updated to cTLS-10
 * Added reference to draft-mattsson-tls-super-jumbo-record-limit 
+* Updated to newer version of BSI document
 
 Changes from -05 to -06:
 
