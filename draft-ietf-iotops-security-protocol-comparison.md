@@ -64,18 +64,18 @@ informative:
   RFC9528:
   RFC9529:
   RFC9547:
+  RFC9668:
   I-D.ietf-core-attacks-on-coap:
-  I-D.ietf-core-oscore-edhoc:
   I-D.ietf-core-oscore-groupcomm:
   I-D.ietf-cose-cbor-encoded-cert:
   I-D.ietf-lake-reqs:
   I-D.ietf-schc-8824-update:
   I-D.ietf-tls-ctls:
   I-D.ietf-tls-cert-abridge:
+  I-D.ietf-tls-super-jumbo-record-limit:
   I-D.ietf-uta-tls13-iot-profile:
   I-D.kampanakis-tls-scas-latest:
   I-D.mattsson-tls-compact-ecc:
-  I-D.mattsson-tls-super-jumbo-record-limit:
 
   SP-800-186:
     target: https://doi.org/10.6028/NIST.SP.800-186
@@ -226,7 +226,7 @@ Small message sizes are very important for reducing energy consumption, latency,
 
 To reduce overhead, processing, and energy consumption in constrained radio networks, IETF has created several working groups and technologies for constrained networks, e.g., (here technologies in parenthesis when the name is different from the working group): 6lo, 6LoWPAN, 6TiSCH, ACE, CBOR, CoRE (CoAP, OSCORE), COSE (COSE, C509), LAKE (EDHOC), LPWAN (SCHC), ROLL (RPL), and TLS (cTLS). Compact formats and protocol have also been suggested as a way to decrease the energy consumption of Internet Applications and Systems in general {{RFC9547}}.
 
-This document analyzes and compares the sizes of Authenticated Key Exchange (AKE) flights and the per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, cTLS {{I-D.ietf-tls-ctls}}, EDHOC {{RFC9528}} {{I-D.ietf-core-oscore-edhoc}}, OSCORE {{RFC8613}}, and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}. An AKE and a protocol for the protection of application data serve distinct purposes. An AKE is responsible for establishing secure communication channels between parties and negotiating cryptographic keys used for authenticated encryption. AKE protocols typically involve a series of messages exchanged between communicating parties to authenticate each other's identities and derive shared secret keys. TLS, DTLS, and cTLS handshakes as well as EDHOC are examples of AKEs. Protocols for protection of application data are responsible for encrypting and authenticating application-layer data to ensure its confidentiality, integrity, and replay protection during transmission. The TLS and DTLS record layers, OSCORE, and Group OSCORE are examples of protocols for protection of application data. {{handshake}} compares the overhead of mutually authenticated key exchange protocols, while {{record}} covers the overhead of protocols for protection of application data. The protocols are analyzed with different algorithms and options. The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression {{RFC7400}}. DTLS is analyzed with and without Connection ID {{RFC9146}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as Integrity Check Value (ICV).
+This document analyzes and compares the sizes of Authenticated Key Exchange (AKE) flights and the per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, cTLS {{I-D.ietf-tls-ctls}}, EDHOC {{RFC9528}} {{RFC9668}}, OSCORE {{RFC8613}}, and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}. An AKE and a protocol for the protection of application data serve distinct purposes. An AKE is responsible for establishing secure communication channels between parties and negotiating cryptographic keys used for authenticated encryption. AKE protocols typically involve a series of messages exchanged between communicating parties to authenticate each other's identities and derive shared secret keys. TLS, DTLS, and cTLS handshakes as well as EDHOC are examples of AKEs. Protocols for protection of application data are responsible for encrypting and authenticating application-layer data to ensure its confidentiality, integrity, and replay protection during transmission. The TLS and DTLS record layers, OSCORE, and Group OSCORE are examples of protocols for protection of application data. {{handshake}} compares the overhead of mutually authenticated key exchange protocols, while {{record}} covers the overhead of protocols for protection of application data. The protocols are analyzed with different algorithms and options. The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression {{RFC7400}}. DTLS is analyzed with and without Connection ID {{RFC9146}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as Integrity Check Value (ICV).
 
 Readers of this document also might be interested in the following documents: {{Illustrated-TLS12}}, {{Illustrated-TLS13}}, {{Illustrated-DTLS13}}, and {{RFC9529}} explain every byte in example TLS 1.2, TLS 1.3, DTLS 1.3, and EDHOC instances. {{RFC9191}} looks at potential tools available for overcoming the deployment challenges induced by large certificates and long certificate chains and discusses solutions available to overcome these challenges. {{I-D.ietf-cose-cbor-encoded-cert}} gives examples of IoT and Web certificates as well as examples on how effective C509 and TLS certificate compression {{RFC8879}} is at compressing example certificate and certificate chains. {{I-D.ietf-tls-cert-abridge}} and {{I-D.kampanakis-tls-scas-latest}} describe how TLS clients or servers can reduce the size of the TLS handshake by not sending certificate authority certificates. {{I-D.mattsson-tls-compact-ecc}} proposes new optimized encodings for key exchange and signatures with P-256 in TLS 1.3.
 
@@ -234,7 +234,7 @@ Readers of this document also might be interested in the following documents: {{
 
 The described overheads in {{handshake}} and {{record}} are independent of the underlying layers as they do not consider DTLS handshake message fragmentation, how to compose DTLS handshake messages into records, and how the underlying layers influence the choice of application plaintext sizes. The complete overhead for all layers depends on the combination of layers as well as assumptions regarding the devices and applications and is out of scope of the document. This section give a short overview of the overheads of UDP, TCP, and CoAP to give the reader a high-level overview.
 
-DTLS and cTLS are typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. EDHOC is typically sent over CoAP which would typically add 12 bytes to flight #1, 5 bytes to flight #2, and 1 byte to flight #3 when used in the combined mode with OSCORE according to {{I-D.ietf-core-oscore-edhoc}}, see {{marco}}. If EDHOC is used without OSCORE, the overhead would typically be 12 bytes to flight #1 and #3 and 5 bytes to flight #2. OSCORE and Group OSCORE is part of CoAP and are typically sent over UDP. A comparison of the total size for DTLS and EDHOC when transported over IEEE 802.15.4 and 6LoWPAN is provided in {{Performance}}.
+DTLS and cTLS are typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. EDHOC is typically sent over CoAP which would typically add 12 bytes to flight #1, 5 bytes to flight #2, and 1 byte to flight #3 when used in the combined mode with OSCORE according to {{RFC9668}}, see {{marco}}. If EDHOC is used without OSCORE, the overhead would typically be 12 bytes to flight #1 and #3 and 5 bytes to flight #2. OSCORE and Group OSCORE is part of CoAP and are typically sent over UDP. A comparison of the total size for DTLS and EDHOC when transported over IEEE 802.15.4 and 6LoWPAN is provided in {{Performance}}.
 
 IPv6, UDP, and CoAP can be compressed with the Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP) {{RFC8824}}{{I-D.ietf-schc-8824-update}}. Use of SCHC can significantly reduce the overhead. {{SCHC-eval}} gives an evaluation of how SCHC reduces this overhead for OSCORE and the DTLS 1.2 record layer when used in four of the most widely used LPWAN radio technologies 
 
@@ -255,7 +255,7 @@ To enable a comparison between protocols, the following assumptions are made:
 * Only mandatory (D)TLS extensions are included.
 * DoS protection with DTLS HelloRetryRequest or the CoAP Echo Option is not considered.
 
-The choices of algorithms are based on the profiles in {{RFC7925}}, {{I-D.ietf-uta-tls13-iot-profile}}, and {{I-D.ietf-core-oscore-edhoc}}. Many DTLS implementations splits flight #2 in two records.
+The choices of algorithms are based on the profiles in {{RFC7925}}, {{I-D.ietf-uta-tls13-iot-profile}}, and {{RFC9668}}. Many DTLS implementations splits flight #2 in two records.
 
 {{summ-handshake}} gives a short summary of the message overhead based on different parameters and some assumptions. The following sections detail the assumptions and the calculations.
 
@@ -265,7 +265,7 @@ The DTLS, EDHOC, and cTLS overhead is dependent on the parameter Connection ID. 
 
 The TLS, DTLS, and cTLS overhead is dependent on the group used for key exchange and the signature algorithm. secp256r1 and ecdsa_secp256r1_sha256 have less optimized encoding than x25519, ed25519, and {{I-D.mattsson-tls-compact-ecc}}.
 
-{{fig-compare1}} compares the message sizes of DTLS 1.3, cTLS, and EDHOC handshakes with connection ID and the mandatory to implement algorithms CCM_8, P-256, and ECDSA {{I-D.ietf-uta-tls13-iot-profile}} {{I-D.ietf-core-oscore-edhoc}}.
+{{fig-compare1}} compares the message sizes of DTLS 1.3, cTLS, and EDHOC handshakes with connection ID and the mandatory to implement algorithms CCM_8, P-256, and ECDSA {{I-D.ietf-uta-tls13-iot-profile}} {{RFC9668}}.
 
 Editor's note: This version of the document analyses the -10 version of cTLS, which seems relatively stable.
 
@@ -330,7 +330,7 @@ Editor's note: This version of the document analyses the -10 version of cTLS, wh
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare3 title="Comparison of message sizes in bytes with CCM_8, x25519, and ed25519 or PSK and without Connection ID" artwork-align="center"}
 
-The numbers in {{fig-compare2}}, {{fig-compare2}}, and {{fig-compare3}} were calculated with 8 bytes tags which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}} and {{I-D.ietf-core-oscore-edhoc}}. If 16 bytes tag are used, the numbers in the #2 and #3 columns increases with 8 and the numbers in the Total column increases with 16.
+The numbers in {{fig-compare2}}, {{fig-compare2}}, and {{fig-compare3}} were calculated with 8 bytes tags which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}} and {{RFC9668}}. If 16 bytes tag are used, the numbers in the #2 and #3 columns increases with 8 and the numbers in the Total column increases with 16.
 
 The numbers in {{fig-compare1}}, {{fig-compare2}}, and {{fig-compare3}} do not consider underlying layers, see {{layers}}.
 
@@ -1454,9 +1454,9 @@ The OSCORE overhead is dependent on the included CoAP Option numbers as well as 
 {: #fig-overhead3 title="Overhead (excluding ICV) in bytes (Connection/Sender ID = '', Sequence Number = '05')"}
 {: artwork-align="center"}
 
-The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{{{fig-overhead3}}}} do not consider the different Token processing requirements for clients {{RFC9175}} required for secure operation as motivated by {{I-D.ietf-core-attacks-on-coap}}. As reuse of Tokens is easier in OSCORE than DTLS, OSCORE might have slightly lower overhead than DTLS 1.3 for long connection even if DTLS 1.3 has slightly lower overhead than OSCORE for short connections. The mechanism in {{I-D.mattsson-tls-super-jumbo-record-limit}} reduces the overhead of uncompressed TLS 1.3 records with 3 bytes.
+The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{{{fig-overhead3}}}} do not consider the different Token processing requirements for clients {{RFC9175}} required for secure operation as motivated by {{I-D.ietf-core-attacks-on-coap}}. As reuse of Tokens is easier in OSCORE than DTLS, OSCORE might have slightly lower overhead than DTLS 1.3 for long connection even if DTLS 1.3 has slightly lower overhead than OSCORE for short connections. The mechanism in {{I-D.ietf-tls-super-jumbo-record-limit}} reduces the overhead of uncompressed TLS 1.3 records with 3 bytes.
 
-The numbers in {{fig-overhead}} and {{fig-overhead2}} were calculated with 8 bytes ICV which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}}, and {{I-D.ietf-core-oscore-edhoc}}. If 16 bytes tag are used, all numbers increases with 8. 
+The numbers in {{fig-overhead}} and {{fig-overhead2}} were calculated with 8 bytes ICV which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}}, and {{RFC9668}}. If 16 bytes tag are used, all numbers increases with 8. 
 
 The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{fig-overhead3}} do not consider underlying layers, see {{layers}}.
 
@@ -1858,7 +1858,7 @@ Note that the compared protocols have slightly different use cases. TLS and DTLS
 
 When using the security protocols outlined in this document, it is important to adhere to the latest requirements and recommendations for respective protocol. It is also crucial to utilize supported versions of libraries that continue to receive security updates in response to identified vulnerabilities.
 
-While the security considerations provided in DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, cTLS {{I-D.ietf-tls-ctls}}, EDHOC {{RFC9528}} {{I-D.ietf-core-oscore-edhoc}}, OSCORE {{RFC8613}}, Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}, and X.509 {{RFC5280}} serve as a good starting point, they are not sufficient due to the fact that some of these specifications were authored many years ago. For instance, being compliant to the TLS 1.2 {{RFC5246}} specification is considered very poor security practice, given that the mandatory-to-implement cipher suite TLS_RSA_WITH_AES_128_CBC_SHA possesses at least three major weaknesses.
+While the security considerations provided in DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, cTLS {{I-D.ietf-tls-ctls}}, EDHOC {{RFC9528}} {{RFC9668}}, OSCORE {{RFC8613}}, Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}, and X.509 {{RFC5280}} serve as a good starting point, they are not sufficient due to the fact that some of these specifications were authored many years ago. For instance, being compliant to the TLS 1.2 {{RFC5246}} specification is considered very poor security practice, given that the mandatory-to-implement cipher suite TLS_RSA_WITH_AES_128_CBC_SHA possesses at least three major weaknesses.
 
 Therefore, implementations and configurations must also align with the latest recommendations and best practices. Notable examples when this document was published include BCP 195 {{RFC9325}}{{RFC8996}}, {{SP-800-52}}, and {{BSI-TLS}}.
 
@@ -1906,12 +1906,16 @@ For EDHOC message_3 without the combined request
 Total: 12 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-For EDHOC message_3 over OSCORE with the EDHOC + OSCORE combined request {{I-D.ietf-core-oscore-edhoc}}
+For EDHOC message_3 over OSCORE with the EDHOC + OSCORE combined request {{RFC9668}}
 all the overhead contributions from the previous case is gone. The only additional overhead is 1 byte
 due to the EDHOC CoAP option.
 
 # Change Log
 {:removeInRFC="true" numbered="false"}
+
+Changes from -07 to -08:
+
+* Editorial changes including updated references.
 
 Changes from -06 to -07:
 
