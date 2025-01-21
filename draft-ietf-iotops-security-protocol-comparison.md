@@ -1454,7 +1454,7 @@ The OSCORE overhead is dependent on the included CoAP Option numbers as well as 
 {: #fig-overhead3 title="Overhead (excluding ICV) in bytes (Connection/Sender ID = '', Sequence Number = '05')"}
 {: artwork-align="center"}
 
-The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{fig-overhead3}} do not consider the different Token processing requirements for clients {{RFC9175}} required for secure operation as motivated by {{I-D.ietf-core-attacks-on-coap}}. As reuse of Tokens is easier in OSCORE than DTLS, OSCORE might have slightly lower overhead than DTLS 1.3 for long connection even if DTLS 1.3 has slightly lower overhead than OSCORE for short connections. The mechanism in {{I-D.ietf-tls-super-jumbo-record-limit}} reduces the overhead of uncompressed TLS 1.3 records with 3 bytes.
+The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{fig-overhead3}} do not consider the different Token processing requirements for clients {{RFC9175}} required for secure operation as motivated by {{I-D.ietf-core-attacks-on-coap}}. As reuse of Tokens is easier in OSCORE than DTLS, OSCORE might have slightly lower overhead than DTLS 1.3 for long connection even if DTLS 1.3 has slightly lower overhead than OSCORE for short connections. The mechanism in {{I-D.ietf-tls-super-jumbo-record-limit}} reduces the overhead of uncompressed TLS 1.3 records by 3 bytes.
 
 The numbers in {{fig-overhead}} and {{fig-overhead2}} were calculated with 8 bytes ICV which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}}, and Section 8 of {{RFC9528}}. If 16 bytes tag are used, all numbers increases by 8. 
 
@@ -1462,7 +1462,7 @@ The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{fig-overhead3}} do not
 
 ## DTLS 1.2
 
-### DTLS 1.2
+### DTLS 1.2 (Basic)
 
 This section analyzes the overhead of DTLS 1.2 {{RFC6347}}. The nonce follows the strict profiling given in {{RFC7925}}.  This example is taken directly from {{RFC7400}}, Figure 16.
 
@@ -1572,7 +1572,7 @@ When compressed with 6LoWPAN-GHC, DTLS 1.2 with the above parameters (epoch, seq
 
 ## DTLS 1.3
 
-### DTLS 1.3
+### DTLS 1.3 (Basic)
 
 This section analyzes the overhead of DTLS 1.3 {{RFC9147}}. The changes compared to DTLS 1.2 are: omission of version number, merging of epoch into the first byte containing signaling bits, optional omission of length, reduction of sequence number into a 1 or 2-bytes field.
 
@@ -1662,7 +1662,7 @@ When compressed with 6LoWPAN-GHC, DTLS 1.3 with the above parameters (epoch, seq
 
 ## TLS 1.2
 
-### TLS 1.2
+### TLS 1.2 (Basic)
 
 This section analyzes the overhead of TLS 1.2 {{RFC5246}}. The changes compared to DTLS 1.2 is that the TLS 1.2 record layer does not have epoch and sequence number, and that the version is different.
 
@@ -1710,7 +1710,7 @@ When compressed with 6LoWPAN-GHC, TLS 1.2 with the above parameters (epoch, sequ
 
 ## TLS 1.3
 
-### TLS 1.3
+### TLS 1.3 (Basic)
 
 This section analyzes the overhead of TLS 1.3 {{RFC8446}}. The change compared to TLS 1.2 is that the TLS 1.3 record layer uses a different version.
 
@@ -1970,6 +1970,7 @@ Changes from -00 to -01:
 
 The authors want to thank
 {{{Carsten Bormann}}},
+{{{Thomas Fossati}}},
 {{{Russ Housley}}},
 {{{Ari Keränen}}},
 {{{Erik Kline}}},
