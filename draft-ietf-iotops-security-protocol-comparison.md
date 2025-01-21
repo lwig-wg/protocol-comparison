@@ -222,9 +222,9 @@ This document analyzes and compares the sizes of key exchange flights and the pe
 
 # Introduction
 
-Small message sizes are very important for reducing energy consumption, latency, and time to completion in constrained radio network such as Low-Power Personal Area Networks (LPPANs) and Low-Power Wide Area Networks (LPWANs). Constrained radio networks are not only characterized by very small frame sizes on the order of tens of bytes transmitted a few times per day at ultra-low speeds, but also high latency, and severe duty cycles constraints. Some constrained radio networks are also multi-hop where the already small frame sizes are additionally reduced for each additional hop. Too large payload sizes can easily lead to unacceptable completion times due to fragmentation into a large number of frames and long waiting times between frames can be sent (or resent in the case of transmission errors). In constrained radio networks, the processing energy costs are typically almost negligible compared to the energy costs for radio and the energy costs for sensor measurement. Keeping the number of bytes or frames low is also essential for low latency and time to completion as well as efficient use of spectrum to support a large number of devices. For an overview of LPWANs and their limitations, see {{RFC8376}} and {{I-D.ietf-lake-reqs}}.
+Small message sizes are very important for reducing energy consumption, latency, and time to completion in constrained radio network such as Low-Power Personal Area Networks (LPPANs) and Low-Power Wide Area Networks (LPWANs). Constrained radio networks are not only characterized by very small frame sizes on the order of tens of bytes transmitted a few times per day at ultra-low speeds, but also by high latency and severe duty cycles constraints. Some constrained radio networks are also multi-hop, where the already small frame sizes are additionally reduced for each additional hop. Too large payload sizes can easily lead to unacceptable completion times due to fragmentation into a large number of frames and long waiting times between sending each frame (or resending frames, in the case of transmission errors). In constrained radio networks, the processing energy costs are typically almost negligible compared to the energy costs for radio and the energy costs for sensor measurement. Keeping the number of bytes or frames low is also essential for low latency and time to completion as well as efficient use of spectrum to support a large number of devices. For an overview of LPWANs and their limitations, see {{RFC8376}} and {{I-D.ietf-lake-reqs}}.
 
-To reduce overhead, processing, and energy consumption in constrained radio networks, IETF has created several working groups and technologies for constrained networks, e.g., (here technologies in parenthesis when the name is different from the working group): 6lo, 6LoWPAN, 6TiSCH, ACE, CBOR, CoRE (CoAP, OSCORE), COSE (COSE, C509), LAKE (EDHOC), LPWAN (SCHC), ROLL (RPL), and TLS (cTLS). Compact formats and protocol have also been suggested as a way to decrease the energy consumption of Internet Applications and Systems in general {{RFC9547}}.
+To reduce overhead, processing, and energy consumption in constrained radio networks, IETF has created several working groups and technologies for constrained networks, e.g., (here technologies in parenthesis when the name is different from the working group): 6lo, 6LoWPAN, 6TiSCH, ACE, CBOR, CoRE (CoAP, OSCORE, Group OSCORE), COSE (COSE, C509), LAKE (EDHOC), LPWAN, SCHC, ROLL (RPL), and TLS (DTLS, cTLS). Compact formats and protocol have also been suggested as a way to decrease the energy consumption of Internet Applications and Systems in general {{RFC9547}}.
 
 This document analyzes and compares the sizes of Authenticated Key Exchange (AKE) flights and the per-packet message size overheads when using different security protocols to secure CoAP over UPD {{RFC7252}} and TCP {{RFC8323}}. The analyzed security protocols are DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, cTLS {{I-D.ietf-tls-ctls}}, EDHOC {{RFC9528}} {{RFC9668}}, OSCORE {{RFC8613}}, and Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}. An AKE and a protocol for the protection of application data serve distinct purposes. An AKE is responsible for establishing secure communication channels between parties and negotiating cryptographic keys used for authenticated encryption. AKE protocols typically involve a series of messages exchanged between communicating parties to authenticate each other's identities and derive shared secret keys. TLS, DTLS, and cTLS handshakes as well as EDHOC are examples of AKEs. Protocols for protection of application data are responsible for encrypting and authenticating application-layer data to ensure its confidentiality, integrity, and replay protection during transmission. The TLS and DTLS record layers, OSCORE, and Group OSCORE are examples of protocols for protection of application data. {{handshake}} compares the overhead of mutually authenticated key exchange protocols, while {{record}} covers the overhead of protocols for protection of application data. The protocols are analyzed with different algorithms and options. The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression {{RFC7400}}. DTLS is analyzed with and without Connection ID {{RFC9146}}. Readers are expected to be familiar with some of the terms described in RFC 7925 {{RFC7925}}, such as Integrity Check Value (ICV).
 
@@ -232,13 +232,13 @@ Readers of this document also might be interested in the following documents: {{
 
 # Underlying Layers {#layers}
 
-The described overheads in {{handshake}} and {{record}} are independent of the underlying layers as they do not consider DTLS handshake message fragmentation, how to compose DTLS handshake messages into records, and how the underlying layers influence the choice of application plaintext sizes. The complete overhead for all layers depends on the combination of layers as well as assumptions regarding the devices and applications and is out of scope of the document. This section give a short overview of the overheads of UDP, TCP, and CoAP to give the reader a high-level overview.
+The described overheads in {{handshake}} and {{record}} are independent of the underlying layers as they do not consider DTLS handshake message fragmentation, how to compose DTLS handshake messages into records, and how the underlying layers influence the choice of application plaintext sizes. The complete overhead for all layers depends on the combination of layers as well as assumptions regarding the devices and applications and is out of scope of the document. This section gives a short overview of the overheads of UDP, TCP, and CoAP to give the reader a high-level overview.
 
-DTLS and cTLS are typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. EDHOC is typically sent over CoAP which would typically add 12 bytes to flight #1, 5 bytes to flight #2, and 1 byte to flight #3 when used in the combined mode with OSCORE according to {{RFC9668}}, see {{marco}}. If EDHOC is used without OSCORE, the overhead would typically be 12 bytes to flight #1 and #3 and 5 bytes to flight #2. OSCORE and Group OSCORE is part of CoAP and are typically sent over UDP. A comparison of the total size for DTLS and EDHOC when transported over IEEE 802.15.4 and 6LoWPAN is provided in {{Performance}}.
+DTLS and cTLS are typically sent over 8 bytes UDP datagram headers while TLS is typically sent over 20 bytes TCP segment headers. TCP also uses some more bytes for additional messages used in TCP internally. EDHOC is typically sent over CoAP which would typically add 12 bytes to flight #1, 5 bytes to flight #2, and 1 byte to flight #3 when used over OSCORE with the EDHOC + OSCORE combined request according to {{RFC9668}}, see {{marco}}. If EDHOC is used without OSCORE, the overhead would typically be 12 bytes to flight #1 and #3 and 5 bytes to flight #2. OSCORE and Group OSCORE are part of CoAP and are typically sent over UDP. A comparison of the total size for DTLS and EDHOC when transported over IEEE 802.15.4 and 6LoWPAN is provided in {{Performance}}.
 
-IPv6, UDP, and CoAP can be compressed with the Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP) {{RFC8824}}{{I-D.ietf-schc-8824-update}}. Use of SCHC can significantly reduce the overhead. {{SCHC-eval}} gives an evaluation of how SCHC reduces this overhead for OSCORE and the DTLS 1.2 record layer when used in four of the most widely used LPWAN radio technologies 
+IPv6, UDP, and CoAP can be compressed with Static Context Header Compression (SCHC) for the Constrained Application Protocol (CoAP) {{RFC8824}}{{I-D.ietf-schc-8824-update}}. The use of SCHC can significantly reduce the overhead. {{SCHC-eval}} gives an evaluation of how SCHC reduces this overhead for OSCORE and the DTLS 1.2 record layer when used in four of the most widely used LPWAN radio technologies 
 
-Fragmentation can significantly increase the total overhead as many more packet headers have to be sent. CoAP, (D)TLS handshake, and IP supports fragmentation. If, how, and where fragmentation is done depends heavily on the underlying layers. 
+Fragmentation can significantly increase the total overhead as many more packet headers have to be sent. CoAP, (D)TLS handshake, and IP support fragmentation. If, how, and where fragmentation is done depends heavily on the underlying layers. 
 
 # Overhead of Authenticated Key Exchange Protocols {#handshake}
 
@@ -247,25 +247,25 @@ This section analyzes and compares the sizes of key exchange flights for differe
 To enable a comparison between protocols, the following assumptions are made:
 
 * The overhead calculations in this section use an 8 bytes ICV (e.g., AES_128_CCM_8 {{RFC6655}} or AES-CCM-16-64-128 {{RFC9053}}) or 16 bytes e.g., AES-CCM {{SP-800-38C}}, AES-GCM {{SP-800-38D}}, or ChaCha20-Poly1305 {{RFC7539}}).
-* A minimum number of algorithms and cipher suites is offered. The algorithm used/offered are P-256 {{SP-800-186}} or Curve25519 {{RFC7748}}, ECDSA {{FIPS-186-5}} with P-256 and SHA-256 or Ed25519 {{RFC8032}}, AES-CCM_8, and SHA-256 {{FIPS-180-4}}.
-* The length of key identifiers are 1 byte.
-* The length of connection identifiers are 1 byte.
+* A minimum number of algorithms and cipher suites is offered. The algorithm used/offered are: P-256 {{SP-800-186}} or Curve25519 {{RFC7748}}; ECDSA {{FIPS-186-5}} with P-256 and SHA-256, or Ed25519 {{RFC8032}}; AES-CCM_8; and SHA-256 {{FIPS-180-4}}.
+* The length of key identifiers is 1 byte.
+* The length of connection identifiers is 1 byte.
 * DTLS handshake message fragmentation is not considered.
 * As many (D)TLS handshake messages as possible are sent in a single record.
 * Only mandatory (D)TLS extensions are included.
-* DoS protection with DTLS HelloRetryRequest or the CoAP Echo Option is not considered.
+* DoS protection with DTLS HelloVerifyRequest {{RFC6347}}, HelloRetryRequest {{RFC9147}}, or the CoAP Echo Option {{RFC9175}} is not considered.
 
-The choices of algorithms are based on the profiles in {{RFC7925}}, {{I-D.ietf-uta-tls13-iot-profile}}, and {{RFC9668}}. Many DTLS implementations splits flight #2 in two records.
+The choices of algorithms are based on the profiles in {{RFC7925}}, {{I-D.ietf-uta-tls13-iot-profile}}, and on the used EDHOC application profiles, see Section 3.9 of {{RFC9528}}. Many DTLS implementations splits flight #2 in two records.
 
 {{summ-handshake}} gives a short summary of the message overhead based on different parameters and some assumptions. The following sections detail the assumptions and the calculations.
 
 ## Summary {#summ-handshake}
 
-The DTLS, EDHOC, and cTLS overhead is dependent on the parameter Connection ID.  The EDHOC and cTLS overhead is dependent on the key or certificate identifiers included. Key identifiers are byte strings used to identity a cryptographic key and certificate identifiers are used to identify a certificate. If 8 bytes identifiers are used instead of 1 byte, the RPK numbers for flight #2 and #3 increases with 7 bytes and the PSK numbers for flight #1 increases with 7 bytes.
+The DTLS, EDHOC, and cTLS overhead is dependent on the parameter Connection ID.  The EDHOC and cTLS overhead is dependent on the key or certificate identifiers included. Key identifiers are byte strings used to identity a cryptographic key and certificate identifiers are used to identify a certificate. If 8 bytes identifiers are used instead of 1 byte, the RPK numbers for flight #2 and #3 increase by 7 bytes and the PSK numbers for flight #1 increase by 7 bytes.
 
 The TLS, DTLS, and cTLS overhead is dependent on the group used for key exchange and the signature algorithm. secp256r1 and ecdsa_secp256r1_sha256 have less optimized encoding than x25519, ed25519, and {{I-D.mattsson-tls-compact-ecc}}.
 
-{{fig-compare1}} compares the message sizes of DTLS 1.3, cTLS, and EDHOC handshakes with connection ID and the mandatory to implement algorithms CCM_8, P-256, and ECDSA {{I-D.ietf-uta-tls13-iot-profile}} {{RFC9668}}.
+{{fig-compare1}} compares the message sizes of DTLS 1.3, cTLS, and EDHOC handshakes with connection ID and the mandatory to implement algorithms CCM_8, P-256, and ECDSA {{I-D.ietf-uta-tls13-iot-profile}} {{RFC9528}}.
 
 Editor's note: This version of the document analyses the -10 version of cTLS, which seems relatively stable.
 
@@ -288,7 +288,7 @@ Editor's note: This version of the document analyses the -10 version of cTLS, wh
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare1 title="Comparison of message sizes in bytes with CCM_8, P-256, and ECDSA and with Connection ID" artwork-align="center"}
 
-{{fig-compare2}} compares of message sizes of DTLS 1.3 {{RFC9147}} and TLS 1.3 {{RFC8446}} handshakes without connection ID but with the same algorithms CCM_8, P-256, and ECDSA.
+{{fig-compare2}} compares the message sizes of DTLS 1.3 {{RFC9147}} and TLS 1.3 {{RFC8446}} handshakes without connection ID but with the same algorithms CCM_8, P-256, and ECDSA.
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 =====================================================================
@@ -330,7 +330,7 @@ Editor's note: This version of the document analyses the -10 version of cTLS, wh
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #fig-compare3 title="Comparison of message sizes in bytes with CCM_8, x25519, and ed25519 or PSK and without Connection ID" artwork-align="center"}
 
-The numbers in {{fig-compare2}}, {{fig-compare2}}, and {{fig-compare3}} were calculated with 8 bytes tags which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}} and {{RFC9668}}. If 16 bytes tag are used, the numbers in the #2 and #3 columns increases with 8 and the numbers in the Total column increases with 16.
+The numbers in {{fig-compare1}}, {{fig-compare2}}, and {{fig-compare3}} were calculated with 8 bytes tags, consistent with the algorithms that are mandatory to implement as per {{I-D.ietf-uta-tls13-iot-profile}} and Section 8 of {{RFC9528}}. If 16 bytes tag are used, the numbers in the #2 and #3 columns increase by 8 bytes and the numbers in the Total column increase by 16 bytes.
 
 The numbers in {{fig-compare1}}, {{fig-compare2}}, and {{fig-compare3}} do not consider underlying layers, see {{layers}}.
 
@@ -404,7 +404,7 @@ Record Header - DTLSPlaintext (13 bytes):
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 DTLS 1.3 RPK + ECDHE flight #1 gives 185 bytes of overhead.
-With efficiently encoded key share such as x25519 or {{I-D.mattsson-tls-compact-ecc}} the overhead is 185 - 33 = 152 bytes.
+With efficiently encoded key share such as x25519 or {{I-D.mattsson-tls-compact-ecc}}, the overhead is 185 - 33 = 152 bytes.
 
 #### Flight \#2 {#dtls13f2rpk}
 
@@ -517,11 +517,11 @@ e0 8b 0e 45 5a 35 0a e5
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 DTLS 1.3 RPK + ECDHE flight #2 gives 454 bytes of overhead.
-With a point compressed secp256r1 RPK the overhead is 454 - 32 = 422 bytes, see {{rpkformat}}.
-With an ed25519 RPK and signature the overhead is 454 - 47 - 7 = 400 bytes.
-With an efficiently encoded key share such as x25519 or {{I-D.mattsson-tls-compact-ecc}} the overhead is 454 - 33 = 421 bytes.
-With an efficiently encoded signature such {{I-D.mattsson-tls-compact-ecc}} the overhead is 454 - 7 = 447 bytes.
-With x25519 and ed25519 he overhead is 454 - 47 - 33 - 7 = 367 bytes.
+With a point compressed secp256r1 RPK, the overhead is 454 - 32 = 422 bytes, see {{rpkformat}}.
+With an ed25519 RPK and signature, the overhead is 454 - 47 - 7 = 400 bytes.
+With an efficiently encoded key share such as x25519 or {{I-D.mattsson-tls-compact-ecc}}, the overhead is 454 - 33 = 421 bytes.
+With an efficiently encoded signature such {{I-D.mattsson-tls-compact-ecc}}, the overhead is 454 - 7 = 447 bytes.
+With x25519 and ed25519, the overhead is 454 - 47 - 33 - 7 = 367 bytes.
 
 #### Flight \#3 {#dtls13f3rpk}
 
@@ -571,9 +571,9 @@ Auth Tag (8 bytes) // AES-CCM_8:
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 DTLS 1.3 RPK + ECDHE flight #3 gives 255 bytes of overhead.
-With a point compressed secp256r1 RPK the overhead is 255 - 32 = 223 bytes, see {{rpkformat}}.
-With an ed25519 RPK and signature the overhead is 255 - 47 - 7 = 201 bytes.
-With an efficiently encoded signature such as {{I-D.mattsson-tls-compact-ecc}} the overhead is 255 - 7 = 248 bytes.
+With a point compressed secp256r1 RPK, the overhead is 255 - 32 = 223 bytes, see {{rpkformat}}.
+With an ed25519 RPK and signature, the overhead is 255 - 47 - 7 = 201 bytes.
+With an efficiently encoded signature such as {{I-D.mattsson-tls-compact-ecc}}, the overhead is 255 - 7 = 248 bytes.
 
 
 ### Message Sizes PSK + ECDHE
@@ -721,7 +721,7 @@ DTLS 1.3 PSK flight #3 gives 56 bytes of overhead.
 
 In this section, we consider the effect of {{RFC7924}} on the message size overhead.
 
-Cached information can be used to use a cached server certificate from a previous connection and move bytes from flight #2 to flight #1. The cached certificate can be a RPK or X.509.
+Cached information can be used to use a cached server certificate from a previous connection and move bytes from flight #2 to flight #1. The cached certificate can be an RPK or X.509.
 
 The differences compared to {{size-dtls13rpk}} are the following.
 
@@ -742,7 +742,7 @@ Giving a total of:
 185 + 39 = 224 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-In the case the cached certificate is X.509 the following is removed:
+In the case the cached certificate is X.509, the following is removed:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 - Extension - Server Certificate Type (Raw Public Key) (6 bytes)
@@ -775,7 +775,7 @@ Giving a total of:
 454 + 7 - 59 = 402 bytes
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-In the case the cached certificate is X.509 the following is removed:
+In the case the cached certificate is X.509, the following is removed:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 - Extension - Server Certificate Type (Raw Public Key) (6 bytes)
@@ -824,7 +824,7 @@ Enabling resumption adds 41 bytes to the initial DTLS handshake. The resumption 
 
 ### DTLS Without Connection ID
 
-Without a Connection ID the DTLS 1.3 flight sizes changes as follows.
+Without a Connection ID the DTLS 1.3 flight sizes change as follows.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 DTLS 1.3 flight #1:   -6 bytes
@@ -836,7 +836,7 @@ DTLS 1.3 flight #3:   -1 byte
 
 ### Raw Public Keys {#rpkformat}
 
-Raw Public Keys in TLS consists of a DER encoded ASN.1 SubjectPublicKeyInfo structure {{RFC7250}}. This section illustrates the format of P-256 (secp256r1) SubjectPublicKeyInfo {{RFC5480}} with and without point compression as well as an ed25519 SubjectPublicKeyInfo. Point compression in SubjectPublicKeyInfo is standardized in {{RFC5480}} and is therefore theoretically possible to use in PRKs and X.509 certificates used in (D)TLS but does not seem to be supported by (D)TLS implementations.
+Raw Public Keys in TLS consist of a DER encoded ASN.1 SubjectPublicKeyInfo structure {{RFC7250}}. This section illustrates the format of P-256 (secp256r1) SubjectPublicKeyInfo {{RFC5480}} with and without point compression as well as an ed25519 SubjectPublicKeyInfo. Point compression in SubjectPublicKeyInfo is standardized in {{RFC5480}} and is therefore theoretically possible to use in PRKs and X.509 certificates used in (D)TLS but does not seem to be supported by (D)TLS implementations.
 
 #### secp256r1 SubjectPublicKeyInfo Without Point Compression
 
@@ -1271,20 +1271,20 @@ TLS 1.3 PSK flight #3 gives 50 bytes of overhead.
 
 ## TLS 1.2 and DTLS 1.2
 
-The TLS 1.2 and DTLS 1.2 handshakes are not analyzed in detail in this document. One rough comparison on expected size between the TLS 1.2 and TLS 1.3 handshakes can be found by counting the number of bytes in the example handshakes of {{Illustrated-TLS12}} and {{Illustrated-TLS13}}. In these examples the server authenticates with a certificate and the client is not authenticated.
+The TLS 1.2 and DTLS 1.2 handshakes are not analyzed in detail in this document. One rough comparison of expected size between the TLS 1.2 and TLS 1.3 handshakes can be found by counting the number of bytes in the example handshakes of {{Illustrated-TLS12}} and {{Illustrated-TLS13}}. In these examples the server authenticates with a certificate and the client is not authenticated.
 
-In TLS 1.2 the number of bytes in the four flights are 170, 1188, 117, and 75 for a total of 1550 bytes. In TLS 1.3 the number of bytes in the three flights are 253, 1367, and 79 for a total of 1699 bytes. In general, the (D)TLS 1.2 and (D)TLS 1.3 handshakes can be expected to have similar number of bytes.
+In TLS 1.2, the number of bytes in the four flights are 170, 1188, 117, and 75 for a total of 1550 bytes. In TLS 1.3 the number of bytes in the three flights are 253, 1367, and 79 for a total of 1699 bytes. In general, the (D)TLS 1.2 and (D)TLS 1.3 handshakes can be expected to have similar number of bytes.
 
 
 ## cTLS
 
 Version -10 of the cTLS specification {{I-D.ietf-tls-ctls}} has a single example with CCM_8, x25519, and ed25519 in Appendix A. This document uses that example and calculates numbers for different parameters as follows:
 
-Using secp256r1 instead x25519 add 33 bytes to the KeyShareEntry.key_exchange in flight #1 and flight #2.
+Using secp256r1 instead of x25519 adds 33 bytes to the KeyShareEntry.key_exchange in flight #1 and flight #2.
 
-Using ecdsa_secp256r1_sha256 instead ed25519 add an average of 7 bytes to CertificateVerify.signature in flight #2 and flight #3. 
+Using ecdsa_secp256r1_sha256 instead of ed25519 adds an average of 7 bytes to CertificateVerify.signature in flight #2 and flight #3. 
 
-Using PSK authentication instead of ed25519 add 1 byte (psk identifier) to flight #1 and removes 71 bytes (certificate and certificate_verify) from flight #2 and #3.
+Using PSK authentication instead of ed25519 adds 1 byte (psk identifier) to flight #1 and removes 71 bytes (certificate and certificate_verify) from flight #2 and #3.
 
 Using PSK key exchange x25519 removes 32 bytes (KeyShareEntry.key_exchange) from flight #1 and #2.
 
@@ -1292,7 +1292,7 @@ Using Connection ID adds 1 byte to flight #1 and #3, and 2 bytes to flight #2.
 
 ## EDHOC
 
-This section gives an estimate of the message sizes of EDHOC {{RFC9528}} authenticated with static Diffie-Hellman keys and where the static Diffie-Hellman are identified with a key identifier (kid). All examples are given in CBOR diagnostic notation and hexadecimal and are based on the test vectors in Section 4 of {{RFC9529}}.
+This section gives an estimate of the message sizes of EDHOC {{RFC9528}} authenticated with static Diffie-Hellman keys and where the static Diffie-Hellman keys are identified with a key identifier (kid). All examples are given in CBOR diagnostic notation and hexadecimal and are based on the test vectors in Section 4 of {{RFC9529}}.
 
 ### Message Sizes RPK
 
@@ -1346,7 +1346,7 @@ message_3 (19 bytes):
 
 ### Summary
 
-Based on the example above it is relatively easy to calculate numbers also for EDHOC authenticated with signature keys and for authentication keys identified with a SHA-256/64 hash (x5t). Signatures increase the size of flight #2 and #3 with (64 - 8 + 1) bytes while x5t increases the size with 13-14 bytes. The typical message sizes for the previous example and for the other combinations are summarized in {{fig-summary}}. Note that EDHOC treats authentication keys stored in RPK and X.509 in the same way. More detailed examples can be found in {{RFC9529}}.
+Based on the example above it is relatively easy to calculate numbers also for EDHOC authenticated with signature keys and for authentication keys identified with a SHA-256/64 hash (x5t). Signatures increase the size of flight #2 and #3 by 57 (64 - 8 + 1) or 58 bytes, while x5t increases the size by 13-14 bytes compared to kid. The typical message sizes for the previous example and for the other combinations are summarized in {{fig-summary}}. Note that EDHOC treats authentication keys stored in RPK and X.509 in the same way. More detailed examples can be found in {{RFC9529}}.
 
 ~~~~~~~~~~~~~~~~~~~~~~~ aasvg
 ==========================================================
@@ -1361,11 +1361,11 @@ Based on the example above it is relatively easy to calculate numbers also for E
  Total               101        128        216        242
 ==========================================================
 ~~~~~~~~~~~~~~~~~~~~~~~
-{: #fig-summary title="Typical message sizes in bytes" artwork-align="center"}
+{: #fig-summary title="Typical EDHOC message sizes in bytes" artwork-align="center"}
 
 ## Summary
 
-To do a fair comparison, one has to choose a specific deployment and look at the topology, the whole protocol stack, frame sizes (e.g., 51 or 128 bytes), how and where in the protocol stack fragmentation is done, and the expected packet loss. Note that the number of bytes in each frame that is available for the key exchange protocol may depend on the underlying protocol layers as well as on the number of hops in multi-hop networks. The packet loss may depend on how many other devices are transmitting at the same time and may increase during network formation.  The total overhead will be larger due to mechanisms for fragmentation, retransmission, and packet ordering.  The overhead of fragmentation is roughly proportional to the number of fragments, while the expected overhead due to retransmission in noisy environments is a superlinear function of the flight sizes.
+To do a fair comparison, one has to choose a specific deployment and look at the topology, the whole protocol stack, frame sizes (e.g., 51 or 128 bytes), how and where in the protocol stack fragmentation is done, and the expected packet loss. Note that the number of bytes in each frame that is available for the key exchange protocol may depend on the underlying protocol layers as well as on the number of hops in multi-hop networks. The packet loss may depend on how many other devices are transmitting at the same time and may increase during network formation.  The total overhead will be larger due to mechanisms for fragmentation, retransmission, and packet ordering.  The overhead due to fragmentation is roughly proportional to the number of fragments, while the expected overhead due to retransmission in noisy environments is a superlinear function of the flight sizes.
 
 
 
@@ -1376,7 +1376,7 @@ To do a fair comparison, one has to choose a specific deployment and look at the
 
 To enable comparison, all the overhead calculations in this section use an 8 bytes ICV (e.g., AES_128_CCM_8 {{RFC6655}} or AES-CCM-16-64-128 {{RFC9053}}) or 16 bytes (e.g., AES-CCM {{SP-800-38C}}, AES-GCM {{SP-800-38D}}, or ChaCha20-Poly1305 {{RFC7539}}), a plaintext of 6 bytes, and the sequence number ‘05’. This follows the example in {{RFC7400}}, Figure 16.
 
-Note that the compressed overhead calculations for DLTS 1.2, DTLS 1.3, TLS 1.2 and TLS 1.3 are dependent on the parameters epoch, sequence number, and length (where applicable), and all the overhead calculations are dependent on the parameter Connection ID when used. Note that the OSCORE overhead calculations are dependent on the CoAP option numbers, as well as the length of the OSCORE parameters Sender ID, ID Context, and Sequence Number (where applicable). cTLS uses the DTLS 1.3 record layer. The following calculations are only examples.
+Note that the compressed overhead calculations for DLTS 1.2, DTLS 1.3, TLS 1.2, and TLS 1.3 are dependent on the parameters epoch, sequence number, and length (where applicable), and all the overhead calculations are dependent on the parameter Connection ID when used. Note that the OSCORE overhead calculations are dependent on the CoAP option numbers, as well as the length of the OSCORE parameters Sender ID, ID Context, and Sequence Number (where applicable). cTLS uses the DTLS 1.3 record layer. The following calculations are only examples.
 
 {{summ-record}} gives a short summary of the message overhead based on different parameters and some assumptions. The following sections detail the assumptions and the calculations.
 
@@ -1386,7 +1386,7 @@ The DTLS overhead is dependent on the parameter Connection ID. The following ove
 
 The compression overhead (GHC) is dependent on the parameters epoch, sequence number, Connection ID, and length (where applicable). The following overheads should be representative for sequence numbers and Connection IDs with the same length.
 
-The OSCORE overhead is dependent on the included CoAP Option numbers as well as the length of the OSCORE parameters Sender ID and sequence number. The following overheads apply for all sequence numbers and Sender IDs with the same length.
+The OSCORE overhead is dependent on the included CoAP Option numbers as well as the length of the OSCORE parameters Sender ID and sequence number. The following overheads apply for all sequence numbers and Sender IDs with the same length, and for an ID Context of zero-length.
 
 ~~~~~~~~~~~ aasvg
 ===============================================================
@@ -1454,9 +1454,9 @@ The OSCORE overhead is dependent on the included CoAP Option numbers as well as 
 {: #fig-overhead3 title="Overhead (excluding ICV) in bytes (Connection/Sender ID = '', Sequence Number = '05')"}
 {: artwork-align="center"}
 
-The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{{{fig-overhead3}}}} do not consider the different Token processing requirements for clients {{RFC9175}} required for secure operation as motivated by {{I-D.ietf-core-attacks-on-coap}}. As reuse of Tokens is easier in OSCORE than DTLS, OSCORE might have slightly lower overhead than DTLS 1.3 for long connection even if DTLS 1.3 has slightly lower overhead than OSCORE for short connections. The mechanism in {{I-D.ietf-tls-super-jumbo-record-limit}} reduces the overhead of uncompressed TLS 1.3 records with 3 bytes.
+The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{fig-overhead3}} do not consider the different Token processing requirements for clients {{RFC9175}} required for secure operation as motivated by {{I-D.ietf-core-attacks-on-coap}}. As reuse of Tokens is easier in OSCORE than DTLS, OSCORE might have slightly lower overhead than DTLS 1.3 for long connection even if DTLS 1.3 has slightly lower overhead than OSCORE for short connections. The mechanism in {{I-D.ietf-tls-super-jumbo-record-limit}} reduces the overhead of uncompressed TLS 1.3 records with 3 bytes.
 
-The numbers in {{fig-overhead}} and {{fig-overhead2}} were calculated with 8 bytes ICV which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}}, and {{RFC9668}}. If 16 bytes tag are used, all numbers increases with 8. 
+The numbers in {{fig-overhead}} and {{fig-overhead2}} were calculated with 8 bytes ICV which is the mandatory to implement in {{I-D.ietf-uta-tls13-iot-profile}}, and Section 8 of {{RFC9528}}. If 16 bytes tag are used, all numbers increases by 8. 
 
 The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{fig-overhead3}} do not consider underlying layers, see {{layers}}.
 
@@ -1464,7 +1464,7 @@ The numbers in {{fig-overhead}}, {{fig-overhead2}}, and {{fig-overhead3}} do not
 
 ### DTLS 1.2
 
-This section analyzes the overhead of DTLS 1.2 {{RFC6347}}. The nonce follow the strict profiling given in {{RFC7925}}.  This example is taken directly from {{RFC7400}}, Figure 16.
+This section analyzes the overhead of DTLS 1.2 {{RFC6347}}. The nonce follows the strict profiling given in {{RFC7925}}.  This example is taken directly from {{RFC7400}}, Figure 16.
 
 ~~~~~~~~~~~
 DTLS 1.2 record layer (35 bytes, 29 bytes overhead):
@@ -1517,7 +1517,7 @@ When compressed with 6LoWPAN-GHC, DTLS 1.2 with the above parameters (epoch, seq
 
 ### DTLS 1.2 with Connection ID
 
-This section analyzes the overhead of DTLS 1.2 {{RFC6347}} with Connection ID {{RFC9146}}. The overhead calculations in this section uses Connection ID = '42'. DTLS record layer with a Connection ID = '' (the empty string) is equal to DTLS without Connection ID.
+This section analyzes the overhead of DTLS 1.2 {{RFC6347}} with Connection ID {{RFC9146}}. The overhead calculations in this section use Connection ID = '42'. DTLS record layer with a Connection ID = '' (the empty string) is equal to DTLS without Connection ID.
 
 ~~~~~~~~~~~
 DTLS 1.2 record layer (36 bytes, 30 bytes overhead):
@@ -1771,7 +1771,7 @@ Option value (flag byte and sequence number):
 09 05
 Payload marker:
 ff
-Ciphertext (including encrypted code):
+Ciphertext (including encrypted code and payload marker):
 ec ae a0 15 56 67 92
 ICV:
 4d ff 8a 24 e4 cb 35 b9
@@ -1790,7 +1790,7 @@ Option Value (flag byte, sequence number, and Sender ID):
 09 05 42
 Payload marker:
 ff
-Ciphertext (including encrypted code):
+Ciphertext (including encrypted code and payload marker):
 ec ae a0 15 56 67 92
 ICV:
 4d ff 8a 24 e4 cb 35 b9
@@ -1821,22 +1821,22 @@ Unlike DTLS and TLS, OSCORE has much smaller overhead for responses than request
 
 ## Group OSCORE
 
-This section analyzes the overhead of Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}. Group OSCORE defines a pairwise mode where each member of the group can efficiently derive a symmetric pairwise key with any other member of the group for pairwise OSCORE communication. An additional requirement compared to {{RFC8613}} is that ID Context is always included in requests. Assuming 1 byte ID Context and Sender ID this adds 2 bytes to requests.
+This section analyzes the overhead of Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}. Group OSCORE defines a pairwise mode where each member of the group can efficiently derive a symmetric pairwise key with any other member of the group for pairwise OSCORE communication. An additional requirement compared to {{RFC8613}} is that ID Context is always included in requests. For example, if the length of the ID Context is 1 byte and the length of the Sender ID is 1 byte, this adds 2 bytes to requests.
 
 The below calculation Option Delta = ‘9’, ID Context = ‘’, Sender ID = ‘42’, and Sequence Number = ‘05’, and is only an example. ID Context = ‘’ would be the standard for local deployments only having a single group.
 
 ~~~~~~~~~~~
 OSCORE request (21 bytes, 15 bytes overhead):
-93 09 05 42
+93 19 05 00 42
 ff ec ae a0 15 56 67 92 4d ff 8a 24 e4 cb 35 b9
 
 CoAP option delta and length:
 93
-Option Value (flag byte, ID Context length, sequence nr, Sender ID):
-19 00 05 42
+Option Value (flag byte, sequence nr, ID Context length, Sender ID):
+19 05 00 42
 Payload marker:
 ff
-Ciphertext (including encrypted code):
+Ciphertext (including encrypted code and payload marker):
 ec ae a0 15 56 67 92
 ICV:
 4d ff 8a 24 e4 cb 35 b9
@@ -1850,13 +1850,13 @@ DTLS 1.2 has quite a large overhead as it uses an explicit sequence number and a
 
 The Generic Header Compression (6LoWPAN-GHC) can in addition to DTLS 1.2 handle TLS 1.2, and DTLS 1.2 with Connection ID. The Generic Header Compression (6LoWPAN-GHC) works very well for Connection ID and the overhead seems to increase exactly with the length of the Connection ID (which is optimal). The compression of TLS 1.2 is not as good as the compression of DTLS 1.2 (as the static dictionary only contains the DTLS 1.2 version number). Similar compression levels as for DTLS could be achieved also for TLS 1.2, but this would require different static dictionaries. For TLS 1.3 and DTLS 1.3, GHC increases the overhead. The 6LoWPAN-GHC header compression is not available when (D)TLS is used over transports that do not use 6LoWPAN together with 6LoWPAN-GHC.
 
-New security protocols like OSCORE, TLS 1.3, and DTLS 1.3 have much lower overhead than DTLS 1.2 and TLS 1.2. The overhead is even smaller than DTLS 1.2 and TLS 1.2 over 6LoWPAN with compression, and therefore the small overhead is achieved even on deployments without 6LoWPAN or 6LoWPAN without compression. OSCORE is lightweight because it makes use of CoAP, CBOR, and COSE, which were designed to have as low overhead as possible. As can be seen in {{fig-overhead3}}, Group OSCORE for pairwise communication increases the overhead of OSCORE requests with 20%.
+New security protocols like OSCORE, TLS 1.3, and DTLS 1.3 have much lower overhead than DTLS 1.2 and TLS 1.2. The overhead is even smaller than DTLS 1.2 and TLS 1.2 over 6LoWPAN with compression, and therefore the small overhead is achieved even on deployments without 6LoWPAN or 6LoWPAN without compression. OSCORE is lightweight because it makes use of CoAP, CBOR, and COSE, which were designed to have as low overhead as possible. As it can be seen in {{fig-overhead3}}, Group OSCORE for pairwise communication increases the overhead of OSCORE requests by 20%.
 
-Note that the compared protocols have slightly different use cases. TLS and DTLS are designed for the transport layer and are terminated in CoAP proxies. OSCORE is designed for the application layer and protects information end-to-end between the CoAP client and the CoAP server. Group OSCORE is designed for communication in a group.
+Note that the compared protocols have slightly different use cases. TLS and DTLS are designed for the transport layer and are terminated at CoAP proxies. OSCORE is designed for the application layer and protects information end-to-end between the CoAP client and the CoAP server. Group OSCORE is designed for communication in a group.
 
 # Security Considerations
 
-When using the security protocols outlined in this document, it is important to adhere to the latest requirements and recommendations for respective protocol. It is also crucial to utilize supported versions of libraries that continue to receive security updates in response to identified vulnerabilities.
+When using the security protocols outlined in this document, it is important to adhere to the latest requirements and recommendations for the respective protocol. It is also crucial to utilize supported versions of libraries that continue to receive security updates in response to identified vulnerabilities.
 
 While the security considerations provided in DTLS 1.2 {{RFC6347}}, DTLS 1.3 {{RFC9147}}, TLS 1.2 {{RFC5246}}, TLS 1.3 {{RFC8446}}, cTLS {{I-D.ietf-tls-ctls}}, EDHOC {{RFC9528}} {{RFC9668}}, OSCORE {{RFC8613}}, Group OSCORE {{I-D.ietf-core-oscore-groupcomm}}, and X.509 {{RFC5280}} serve as a good starting point, they are not sufficient due to the fact that some of these specifications were authored many years ago. For instance, being compliant to the TLS 1.2 {{RFC5246}} specification is considered very poor security practice, given that the mandatory-to-implement cipher suite TLS_RSA_WITH_AES_128_CBC_SHA possesses at least three major weaknesses.
 
@@ -1870,7 +1870,7 @@ This document has no actions for IANA.
 
 # EDHOC Over CoAP and OSCORE {#marco}
 
-The overhead of CoAP and OSCORE when used to transport EDHOC is a bit more complex than the overhead of UPD and TCP. Assuming a that the CoAP Token has a length of 0 bytes, that CoAP Content-Format is not used, that the EDHOC Initiator is the CoAP client, that the connection identifiers have 1-byte encodings, and the CoAP URI path is "edhoc", the additional overhead due to CoAP being used as transport is:
+The overhead of CoAP and OSCORE when used to transport EDHOC is a bit more complex than the overhead of UPD and TCP. Assuming that the CoAP Token has a length of 0 bytes, that the CoAP Content-Format is not used, that the EDHOC Initiator is the CoAP client, that the connection identifiers have 1-byte encodings, and that the CoAP URI path is "edhoc", the additional overhead due to CoAP being used as transport is:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 For EDHOC message_1
