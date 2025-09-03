@@ -1,5 +1,5 @@
 ---
-title: Comparison of CoAP Security Protocols
+title: Comparison of Constrained Application Protocol (CoAP) Security Protocols
 docname: draft-ietf-iotops-security-protocol-comparison-latest
 
 ipr: trust200902
@@ -216,7 +216,7 @@ informative:
 
 --- abstract
 
-This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure CoAP. Small message sizes are very important for reducing energy consumption, latency, and time to completion in constrained radio network such as Low-Power Wide Area Networks (LPWANs). The analyzed security protocols are DTLS 1.2, DTLS 1.3, TLS 1.2, TLS 1.3, cTLS, EDHOC, OSCORE, and Group OSCORE. The DTLS and TLS record layers are analyzed with and without 6LoWPAN-GHC compression. DTLS is analyzed with and without Connection ID.
+This document analyzes and compares the sizes of key exchange flights and the per-packet message size overheads when using different security protocols to secure the Constrained Application Protocol (CoAP). Small message sizes are very important for reducing energy consumption, latency, and time to completion in constrained radio network such as Low-Power Wide Area Networks (LPWANs). The analyzed security protocols are (D)TLS (and more specifically DTLS 1.2, DTLS 1.3, TLS 1.2, and TLS 1.3), cTLS, EDHOC, OSCORE, and Group OSCORE. The DTLS and TLS record layers are analyzed with and without Generic Header Compression for IPv6 over Low-Power Wireless Personal Area Networks(6LoWPAN-GHC). DTLS is analyzed with and without Connection ID.
 
 --- middle
 
